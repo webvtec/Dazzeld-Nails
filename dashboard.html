@@ -87,14 +87,17 @@
     <script>
         firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        console.log('Logged in as:', user.email); // This will confirm what Firebase sees
+        console.log('Logged in as:', user.email);
+
         const adminKey = user.email.replace(/\./g, ',');
+        console.log('Checking admin key:', adminKey);
+
         const adminRef = firebase.database().ref('admins/' + adminKey);
 
         adminRef.once('value', (snapshot) => {
             if (snapshot.exists() && snapshot.val() === true) {
                 console.log('Authorized admin.');
-                // Continue showing the dashboard
+                // Admin is allowed, continue
             } else {
                 alert('You are not authorized to access this page.');
                 firebase.auth().signOut();
