@@ -1,51 +1,58 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
+    font-family: Arial, sans-serif;
 }
 
-.login-container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 90%;
-    max-width: 400px;
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    background-color: #6200ea;
+    overflow-x: hidden;
+    padding-top: 60px;
+    transition: 0.3s;
 }
 
-input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    width: 85%;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #4CAF50;
+.sidebar h2 {
     color: white;
+    text-align: center;
+}
+
+.sidebar a {
+    padding: 15px 25px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background-color: #3700b3;
+}
+
+.open-btn {
+    font-size: 20px;
+    background-color: #6200ea;
+    color: white;
+    padding: 10px 15px;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
+    margin: 20px;
 }
 
-button:hover {
-    background-color: #45a049;
+.open-btn:hover {
+    background-color: #3700b3;
 }
 
-.google-btn {
-    background-color: #4285F4;
+#main {
+    transition: margin-left 0.3s;
+    padding: 20px;
 }
 
-.google-btn:hover {
-    background-color: #357ae8;
+.content {
+    text-align: center;
+    padding: 50px;
 }
