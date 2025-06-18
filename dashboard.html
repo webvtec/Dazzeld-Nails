@@ -4,27 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #6200ea;
+        }
+
+        form {
+            margin-top: 20px;
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+
+        button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+
+        #uploadStatus {
+            margin-top: 15px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
     <h1>Admin Dashboard</h1>
-    <h2>Add Menu Item</h2>
+    <p>Add new menu items here:</p>
+
     <form id="menuForm">
-        <input type="text" id="itemName" placeholder="Item Name" required><br><br>
-        <input type="number" id="itemPrice" placeholder="Price" required><br><br>
-        <input type="file" id="itemImage" accept="image/*" required><br><br>
+        <input type="text" id="itemName" placeholder="Item Name" required>
+        <input type="number" id="itemPrice" placeholder="Price" required>
+        <input type="file" id="itemImage" accept="image/*" required>
         <button type="submit">Add Item</button>
     </form>
 
     <p id="uploadStatus"></p>
 
-    <!-- Firebase -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
 
     <script>
+        // Protect the page (only allow logged-in users)
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = "login.html"; // Redirect if not logged in
+            }
+        });
+
+        // Upload Form Handler
         const menuForm = document.getElementById('menuForm');
         menuForm.addEventListener('submit', function (e) {
             e.preventDefault();
