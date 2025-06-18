@@ -99,15 +99,13 @@
             const password = document.getElementById('password').value;
 
             firebase.auth().signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    loginStatus.innerText = 'Login successful!';
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    loginStatus.innerText = 'Login failed: ' + error.message;
-                    loginStatus.style.color = 'red';
-                });
-        });
+    .then((userCredential) => {
+        // Successfully signed in
+        window.location.href = "dashboard.html";
+    })
+    .catch((error) => {
+        alert('Login failed: ' + error.message);
+    });
 
         // Google Login
         const googleLoginBtn = document.getElementById('googleLoginBtn');
