@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+
+    <h1>Admin Dashboard</h1>
+    <h2>Add Menu Item</h2>
+    <form id="menuForm">
+        <input type="text" id="itemName" placeholder="Item Name" required><br><br>
+        <input type="number" id="itemPrice" placeholder="Price" required><br><br>
+        <input type="file" id="itemImage" accept="image/*" required><br><br>
+        <button type="submit">Add Item</button>
+    </form>
+
+    <p id="uploadStatus"></p>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const menuForm = document.getElementById('menuForm');
+        menuForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const itemName = document.getElementById('itemName').value;
+            const itemPrice = document.getElementById('itemPrice').value;
+            const itemImage = document.getElementById('itemImage').files[0];
+
+            const storageRef = firebase.storage().ref('menu-images/' + itemImage.name);
+            const uploadTask = storageRef.put(itemImage);
+
+            uploadTask.on('state_changed',
+                function(snapshot) {},
+                function(error) {
+                    document.getElementById('uploadStatus').innerText = 'Upload failed.';
+                },
+                function() {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                        const newItemRef = firebase.database().ref('menu').push();
+                        newItemRef.set({
+                            name: itemName,
+                            price: itemPrice,
+                            imageUrl: downloadURL
+                        });
+                        document.getElementById('uploadStatus').innerText = 'Item added successfully!';
+                        menuForm.reset();
+                    });
+                }
+            );
+        });
+    </script>
+
+</body>
+</html>
