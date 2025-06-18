@@ -39,3 +39,16 @@ firebase.auth().onAuthStateChanged(user => {
         document.getElementById('login-section').style.display = 'none';
     }
 });
+
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('main');
+
+    if (sidebar.style.left === '-250px') {
+        sidebar.style.left = '0';
+        main.style.marginLeft = '250px';
+    } else {
+        sidebar.style.left = '-250px';
+        main.style.marginLeft = '0';
+    }
+}
