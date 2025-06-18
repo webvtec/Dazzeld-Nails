@@ -9,6 +9,7 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
+            background-color: #f9f9f9;
         }
 
         h1 {
@@ -17,9 +18,10 @@
 
         form {
             margin-top: 20px;
-            background: #f4f4f4;
+            background: #ffffff;
             padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         input,
@@ -28,6 +30,8 @@
             width: 100%;
             margin-bottom: 15px;
             padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
 
         button {
@@ -35,6 +39,7 @@
             color: white;
             border: none;
             cursor: pointer;
+            font-size: 16px;
         }
 
         button:hover {
@@ -46,22 +51,29 @@
             color: green;
             font-weight: bold;
         }
+
+        #loading {
+            font-weight: bold;
+            color: #6200ea;
+        }
     </style>
 </head>
 
 <body>
 
     <h1>Admin Dashboard</h1>
-    <p>Add new menu items here:</p>
+    <div id="loading">Checking authorization...</div>
 
-    <form id="menuForm">
-        <input type="text" id="itemName" placeholder="Item Name" required>
-        <input type="number" id="itemPrice" placeholder="Price" required>
-        <input type="file" id="itemImage" accept="image/*" required>
-        <button type="submit">Add Item</button>
-    </form>
-
-    <p id="uploadStatus"></p>
+    <div id="dashboard" style="display: none;">
+        <p>Add new menu items here:</p>
+        <form id="menuForm">
+            <input type="text" id="itemName" placeholder="Item Name" required>
+            <input type="number" id="itemPrice" placeholder="Price" required>
+            <input type="file" id="itemImage" accept="image/*" required>
+            <button type="submit">Add Item</button>
+        </form>
+        <p id="uploadStatus"></p>
+    </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -73,27 +85,26 @@
     <script src="firebase-config.js"></script>
 
     <script>
-        // Admin email (replace this with your admin email)
-        const adminEmail = 'admin@spiritzbar.com'.replace('.', ',');
-
-        // Protect the page (allow only admin)
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                // Check if the logged-in email matches admin in the database
-                const adminRef = firebase.database().ref('admins/' + user.email.replace('.', ','));
+                const adminKey = user.email.replace(/\./g, ','); // Replace all dots
+                const adminRef = firebase.database().ref('admins/' + adminKey);
+
                 adminRef.once('value', (snapshot) => {
-                    if (!snapshot.exists()) {
+                    if (snapshot.exists() && snapshot.val() === true) {
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('dashboard').style.display = 'block';
+                    } else {
                         alert('You are not authorized to access this page.');
+                        firebase.auth().signOut();
                         window.location.href = "index.html";
                     }
                 });
             } else {
-                // Not logged in
                 window.location.href = "login.html";
             }
         });
 
-        // Handle form submission
         const menuForm = document.getElementById('menuForm');
         menuForm.addEventListener('submit', function (e) {
             e.preventDefault();
