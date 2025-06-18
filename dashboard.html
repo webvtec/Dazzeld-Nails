@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,7 +22,8 @@
             border-radius: 10px;
         }
 
-        input, button {
+        input,
+        button {
             display: block;
             width: 100%;
             margin-bottom: 15px;
@@ -46,6 +48,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <h1>Admin Dashboard</h1>
@@ -70,14 +73,27 @@
     <script src="firebase-config.js"></script>
 
     <script>
-        // Protect the page (only allow logged-in users)
+        // Admin email (replace this with your admin email)
+        const adminEmail = 'admin@spiritzbar.com'.replace('.', ',');
+
+        // Protect the page (allow only admin)
         firebase.auth().onAuthStateChanged((user) => {
-            if (!user) {
-                window.location.href = "login.html"; // Redirect if not logged in
+            if (user) {
+                // Check if the logged-in email matches admin in the database
+                const adminRef = firebase.database().ref('admins/' + user.email.replace('.', ','));
+                adminRef.once('value', (snapshot) => {
+                    if (!snapshot.exists()) {
+                        alert('You are not authorized to access this page.');
+                        window.location.href = "index.html";
+                    }
+                });
+            } else {
+                // Not logged in
+                window.location.href = "login.html";
             }
         });
 
-        // Upload Form Handler
+        // Handle form submission
         const menuForm = document.getElementById('menuForm');
         menuForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -90,12 +106,12 @@
             const uploadTask = storageRef.put(itemImage);
 
             uploadTask.on('state_changed',
-                function(snapshot) {},
-                function(error) {
+                function (snapshot) { },
+                function (error) {
                     document.getElementById('uploadStatus').innerText = 'Upload failed.';
                 },
-                function() {
-                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                function () {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                         const newItemRef = firebase.database().ref('menu').push();
                         newItemRef.set({
                             name: itemName,
@@ -111,4 +127,5 @@
     </script>
 
 </body>
+
 </html>
