@@ -87,20 +87,13 @@
     <script>
         firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        console.log('Logged in as:', user.email);
-
-        const adminKey = user.email.replace(/\./g, ',');
-        console.log('Checking admin key:', adminKey);
-
-        const adminRef = firebase.database().ref('admins/' + adminKey);
-
+        const adminRef = firebase.database().ref('admins/' + user.email.replace('.', ','));
         adminRef.once('value', (snapshot) => {
-            if (snapshot.exists() && snapshot.val() === true) {
-                console.log('Authorized admin.');
-                // Admin is allowed, continue
+            if (snapshot.exists()) {
+                // ✅ Authorized: Proceed to dashboard
+                window.location.href = "dashboard.html"; // Or whatever your main admin page is
             } else {
                 alert('You are not authorized to access this page.');
-                firebase.auth().signOut();
                 window.location.href = "index.html";
             }
         });
