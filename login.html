@@ -1,31 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Spiritz Sports Bar & Grill</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #6200ea;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+
+        #loginStatus {
+            text-align: center;
+            margin-top: 10px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
 
     <div class="login-container">
         <h1>Admin Login</h1>
 
-        <input type="email" id="email" placeholder="Enter Email"><br>
-        <input type="password" id="password" placeholder="Enter Password"><br>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
 
-        <button id="emailLoginBtn">Login with Email</button>
-        <button id="googleLoginBtn" class="google-btn">Login with Google</button>
+        <button id="googleLoginBtn">Login with Google</button>
+
+        <p id="loginStatus"></p>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
     <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
 
-    <!-- Custom Scripts -->
-    <script src="script.js"></script>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const loginStatus = document.getElementById('loginStatus');
+
+        // Email/Password Login
+        loginForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    loginStatus.innerText = 'Login successful!';
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    loginStatus.innerText = 'Login failed: ' + error.message;
+                    loginStatus.style.color = 'red';
+                });
+        });
+
+        // Google Login
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+
+        googleLoginBtn.addEventListener('click', function () {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    loginStatus.innerText = 'Google login successful!';
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    loginStatus.innerText = 'Google login failed: ' + error.message;
+                    loginStatus.style.color = 'red';
+                });
+        });
+    </script>
+
 </body>
+
 </html>
