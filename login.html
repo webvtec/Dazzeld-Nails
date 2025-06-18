@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Spiritz Sports Bar & Grill</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Login to Manage Site</h1>
-    <input type="email" id="email" placeholder="Email"><br>
-    <input type="password" id="password" placeholder="Password"><br>
-    <button onclick="login()">Login</button>
 
+    <div class="login-container">
+        <h1>Admin Login</h1>
+
+        <input type="email" id="email" placeholder="Enter Email"><br>
+        <input type="password" id="password" placeholder="Enter Password"><br>
+
+        <button id="emailLoginBtn">Login with Email</button>
+        <button id="googleLoginBtn" class="google-btn">Login with Google</button>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <!-- Firebase Config -->
     <script src="firebase-config.js"></script>
+
+    <!-- Custom Scripts -->
     <script src="script.js"></script>
 </body>
 </html>
