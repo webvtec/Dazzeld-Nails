@@ -4,82 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
+    <title>Login Page</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .login-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        h1 {
             text-align: center;
-            color: #6200ea;
-            margin-bottom: 20px;
+            padding: 50px;
         }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            width: 200px;
         }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #6200ea;
+        .google-button {
+            background-color: #db4437;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
             cursor: pointer;
-            margin-bottom: 10px;
         }
 
-        button:hover {
-            background-color: #3700b3;
-        }
-
-        #loginStatus {
-            text-align: center;
-            margin-top: 10px;
-            color: green;
-            font-weight: bold;
+        .google-button:hover {
+            background-color: #a33d2d;
         }
     </style>
 </head>
 
 <body>
+    <h1>Login</h1>
+    <input type="email" id="email" placeholder="Email" required><br>
+    <input type="password" id="password" placeholder="Password" required><br>
+    <button onclick="emailLogin()">Login with Email</button><br><br>
 
-    <div class="login-container">
-        <h1>Admin Login</h1>
-
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-
-        <button id="googleLoginBtn">Login with Google</button>
-
-        <p id="loginStatus"></p>
-    </div>
+    <button class="google-button" onclick="googleLogin()">Login with Google</button>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -89,39 +47,33 @@
     <script src="firebase-config.js"></script>
 
     <script>
-        const loginForm = document.getElementById('loginForm');
-        const loginStatus = document.getElementById('loginStatus');
-
         // Email/Password Login
-        loginForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        function emailLogin() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-        // Successfully signed in
-        window.location.href = "dashboard.html";
-    })
-    .catch((error) => {
-        alert('Login failed: ' + error.message);
-    });
-
-        // Google Login
-        const googleLoginBtn = document.getElementById('googleLoginBtn');
-
-        googleLoginBtn.addEventListener('click', function () {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    loginStatus.innerText = 'Google login successful!';
-                    window.location.href = 'dashboard.html';
+                .then(() => {
+                    window.location.href = "dashboard.html";
                 })
                 .catch((error) => {
-                    loginStatus.innerText = 'Google login failed: ' + error.message;
-                    loginStatus.style.color = 'red';
+                    alert('Login failed: ' + error.message);
                 });
-        });
+        }
+
+        // Google Login
+        function googleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // Google account signed in
+                    window.location.href = "dashboard.html";
+                })
+                .catch((error) => {
+                    alert('Google login failed: ' + error.message);
+                });
+        }
     </script>
 
 </body>
