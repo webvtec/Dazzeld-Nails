@@ -4,19 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spiritz Sports Bar & Grill</title>
-    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #6200ea;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #3700b3;
+        }
+
+        .open-btn {
+            font-size: 20px;
+            background-color: #6200ea;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        .open-btn:hover {
+            background-color: #3700b3;
+        }
+
+        #main {
+            transition: margin-left 0.3s;
+            padding: 20px;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <h2>Menu</h2>
-        <a href="index.html">🏠 Home</a>
-        <a href="booking.html">📅 Book a Table</a>
-        <a href="menu.html">🍽️ View Menu</a>
-        <a href="events.html">🎉 Events</a>
-        <a href="order.html">🛒 Order Food</a>
-        <a href="contact.html">📞 Contact Us</a>
+        <a href="#" onclick="showSection('home')">🏠 Home</a>
+        <a href="#" onclick="showSection('booking')">📅 Book a Table</a>
+        <a href="#" onclick="showSection('menu')">🍽️ View Menu</a>
+        <a href="#" onclick="showSection('events')">🎉 Events</a>
+        <a href="#" onclick="showSection('order')">🛒 Order Food</a>
+        <a href="#" onclick="showSection('contact')">📞 Contact Us</a>
         <a href="login.html">🔑 Admin Login</a>
     </div>
 
@@ -24,12 +103,93 @@
     <div id="main">
         <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
 
-        <div class="content">
+        <!-- Home Section -->
+        <div id="home" class="content-section active">
             <h1>Welcome to Spiritz Sports Bar & Grill</h1>
-            <p>Enjoy great food, drinks, and live sports.</p>
+            <p>Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
+        </div>
+
+        <!-- Booking Section -->
+        <div id="booking" class="content-section">
+            <h2>Book a Table</h2>
+            <form onsubmit="submitBooking(event)">
+                <input type="text" id="name" placeholder="Your Name" required><br><br>
+                <input type="email" id="email" placeholder="Email" required><br><br>
+                <input type="text" id="phone" placeholder="Phone Number" required><br><br>
+                <input type="date" id="date" required><br><br>
+                <input type="time" id="time" required><br><br>
+                <input type="number" id="people" placeholder="Number of People" required><br><br>
+                <button type="submit">Book Now</button>
+            </form>
+            <p id="bookingConfirmation" style="color: green; margin-top: 15px;"></p>
+        </div>
+
+        <!-- Menu Section -->
+        <div id="menu" class="content-section">
+            <h2>Our Menu</h2>
+            <p>Delicious meals and refreshing drinks served daily.</p>
+            <ul>
+                <li>🍔 Burger - $8</li>
+                <li>🍕 Pizza - $12</li>
+                <li>🥗 Salad - $7</li>
+                <li>🍹 Cocktail - $6</li>
+            </ul>
+        </div>
+
+        <!-- Events Section -->
+        <div id="events" class="content-section">
+            <h2>Upcoming Events</h2>
+            <ul>
+                <li>Friday Night Live - June 21</li>
+                <li>Big Game Watch Party - June 23</li>
+                <li>Reggae Night - June 30</li>
+            </ul>
+        </div>
+
+        <!-- Order Section -->
+        <div id="order" class="content-section">
+            <h2>Order for Pickup or Delivery</h2>
+            <p>Call us at (876) 123-4567 to place your order now!</p>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="content-section">
+            <h2>Contact Us</h2>
+            <p>📍 Location: 123 Spiritz Lane, Kingston, Jamaica</p>
+            <p>📞 Phone: (876) 123-4567</p>
+            <p>📧 Email: contact@spiritzbar.com</p>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- JavaScript -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const main = document.getElementById('main');
+
+            if (sidebar.style.left === '-250px') {
+                sidebar.style.left = '0';
+                main.style.marginLeft = '250px';
+            } else {
+                sidebar.style.left = '-250px';
+                main.style.marginLeft = '0';
+            }
+        }
+
+        function showSection(sectionId) {
+            const sections = document.getElementsByClassName('content-section');
+            for (let i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById(sectionId).classList.add('active');
+            toggleSidebar();
+        }
+
+        function submitBooking(event) {
+            event.preventDefault();
+            document.getElementById('bookingConfirmation').innerText = 'Thank you! Your booking has been submitted.';
+        }
+    </script>
+
 </body>
 </html>
