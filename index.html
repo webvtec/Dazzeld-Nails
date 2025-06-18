@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritz Sports Bar & Grill</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Welcome to Spiritz Sports Bar & Grill</h1>
+
+    <div id="user-section" style="display:none;">
+        <h2>Upload Images</h2>
+        <input type="file" id="fileInput">
+        <button onclick="uploadImage()">Upload</button>
+        <div id="uploadedImage"></div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="login-section">
+        <a href="login.html">Login to manage site</a>
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
