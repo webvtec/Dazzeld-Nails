@@ -5,26 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spiritz Sports Bar & Grill</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
 </head>
 <body>
-    <h1>Welcome to Spiritz Sports Bar & Grill</h1>
 
-    <div id="user-section" style="display:none;">
-        <h2>Upload Images</h2>
-        <input type="file" id="fileInput">
-        <button onclick="uploadImage()">Upload</button>
-        <div id="uploadedImage"></div>
-        <button onclick="logout()">Logout</button>
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <h2>Menu</h2>
+        <a href="index.html">🏠 Home</a>
+        <a href="booking.html">📅 Book a Table</a>
+        <a href="menu.html">🍽️ View Menu</a>
+        <a href="events.html">🎉 Events</a>
+        <a href="order.html">🛒 Order Food</a>
+        <a href="contact.html">📞 Contact Us</a>
+        <a href="login.html">🔑 Admin Login</a>
     </div>
 
-    <div id="login-section">
-        <a href="login.html">Login to manage site</a>
+    <!-- Page Content -->
+    <div id="main">
+        <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
+
+        <div class="content">
+            <h1>Welcome to Spiritz Sports Bar & Grill</h1>
+            <p>Enjoy great food, drinks, and live sports.</p>
+        </div>
     </div>
 
-    <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
