@@ -31,9 +31,9 @@ function uploadImage() {
     const file = document.getElementById('fileInput').files[0];
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'YOUR_UPLOAD_PRESET'); // Replace with your unsigned preset name
+    formData.append('upload_preset', 'resturant_uploads'); // Replace with your unsigned preset name
 
-    fetch('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
+    fetch('https://api.cloudinary.com/v1_1/WebVtec/image/upload', {
         method: 'POST',
         body: formData
     })
