@@ -143,12 +143,14 @@
 
     <!-- Sidebar -->
     <<div id="sidebar" class="sidebar">
+    <div id="sidebar" class="sidebar" style="position: fixed; width: 200px; height: 100%; top: 0; left: -200px; background-color: rgba(0, 0, 0, 0.7); overflow-x: hidden; padding: 40px 0 20px 0; transition: 0.3s; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: space-between;">
+
     <div>
-        <h2>MENU</h2>
-        <a href="#" onclick="showSection('home')">🏠 HOME</a>
-        <a href="#" onclick="showSection('menu')">🍽️ VIEW MENU</a>
-        <a href="#" onclick="showSection('booking')">📅 BOOK A TABLE</a>
-        <a href="#" onclick="showSection('events')" style="margin-bottom: 20px;">🎉 EVENTS</a>
+        <h2 style="color: white; margin-bottom: 20px;">MENU</h2>
+        <a href="#" onclick="showSection('home')" style="margin-bottom: 10px; padding: 10px 20px; border-radius: 5px;">🏠 HOME</a>
+        <a href="#" onclick="showSection('menu')" style="margin-bottom: 10px; padding: 10px 20px; border-radius: 5px;">🍽️ VIEW MENU</a>
+        <a href="#" onclick="showSection('booking')" style="margin-bottom: 10px; padding: 10px 20px; border-radius: 5px;">📅 BOOK A TABLE</a>
+        <a href="#" onclick="showSection('events')" style="margin-bottom: 20px; padding: 10px 20px; border-radius: 5px;">🎉 EVENTS</a>
 
         <!-- Admin Login Button -->
         <div style="display: flex; justify-content: center; margin-top: 20px;">
@@ -156,12 +158,13 @@
         </div>
     </div>
 
-    <!-- Wavy Edge -->
-    <div style="position: absolute; top: 0; right: 0; height: 100%; width: 50px; overflow: hidden;">
-        <svg viewBox="0 0 50 500" preserveAspectRatio="none" style="height: 100%; width: 100%;">
-            <path d="M0,0 C30,250 0,250 50,500 L0,500 Z" fill="rgba(0, 0, 0, 0.6)"></path>
+    <!-- Wavy Edge at the Bottom -->
+    <div style="width: 100%; overflow: hidden; line-height: 0;">
+        <svg viewBox="0 0 500 50" preserveAspectRatio="none" style="width: 100%; height: 50px;">
+            <path d="M0,0 C150,50 350,0 500,50 L500,0 L0,0 Z" style="fill: rgba(0, 0, 0, 0.6);"></path>
         </svg>
     </div>
+
 </div>
 
     <div id="main">
