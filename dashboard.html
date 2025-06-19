@@ -134,9 +134,10 @@
         }
 
         .card button {
-            width: auto;
-            padding: 5px 10px;
-            margin-top: 10px;
+            width: 48%;
+            padding: 8px 10px;
+            margin: 5px 1%;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -253,18 +254,29 @@
                 card.classList.add('card');
                 card.innerHTML = `
                     <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
-                    <h3 contenteditable="true" onblur="updateMenuItem(${index}, 'name', this.innerText)">${item.name}</h3>
-                    <p contenteditable="true" onblur="updateMenuItem(${index}, 'price', this.innerText)">$${item.price}</p>
+                    <input type="text" id="name-${index}" value="${item.name}" placeholder="Item Name" style="margin-bottom: 10px;">
+                    <input type="text" id="price-${index}" value="${item.price}" placeholder="Price" style="margin-bottom: 10px;">
+                    <input type="text" id="image-${index}" value="${item.imageUrl}" placeholder="Image URL" style="margin-bottom: 10px;">
+                    <button onclick="saveMenuItem(${index})">💾 Save</button>
                     <button onclick="deleteMenuItem(${index})">🗑️ Delete</button>
                 `;
                 menuList.appendChild(card);
             });
         }
 
-        function updateMenuItem(index, field, value) {
+        function saveMenuItem(index) {
             const menu = JSON.parse(localStorage.getItem('menu')) || [];
-            menu[index][field] = value;
+            const updatedName = document.getElementById(`name-${index}`).value;
+            const updatedPrice = document.getElementById(`price-${index}`).value;
+            const updatedImage = document.getElementById(`image-${index}`).value;
+
+            menu[index].name = updatedName;
+            menu[index].price = updatedPrice;
+            menu[index].imageUrl = updatedImage;
+
             localStorage.setItem('menu', JSON.stringify(menu));
+            alert('Menu item updated successfully!');
+            loadMenu();
         }
 
         function deleteMenuItem(index) {
