@@ -124,16 +124,18 @@
 <body>
 
     <div id="sidebar" class="sidebar">
-        <h2>Menu</h2>
-        <a href="#" onclick="showSection('home')">🏠 Home</a>
-        <a href="#" onclick="showSection('booking')">📅 Book a Table</a>
-        <a href="#" onclick="showSection('menu')">🍽️ View Menu</a>
-        <a href="#" onclick="showSection('events')">🎉 Events</a>
-                <a href="#" onclick="showSection('contact')">📞 Contact Us</a>
-        <div style='position: absolute; bottom: 20px; width: 100%; text-align: center;'>
-            <a href="login.html">🔑 Admin Login</a>
-        </div>
+    <h2>Menu</h2>
+    <a href="#" onclick="showSection('home')">🏠 Home</a>
+    <a href="#" onclick="showSection('booking')">📅 Book a Table</a>
+    <a href="#" onclick="showSection('menu')">🍽️ View Menu</a>
+    <a href="#" onclick="showSection('events')">🎉 Events</a>
+    <a href="#" onclick="showSection('contact')">📞 Contact Us</a>
+
+    <!-- Admin Login button fixed at the bottom -->
+    <div style="position: absolute; bottom: 20px; width: 100%; text-align: center;">
+        <a href="login.html">🔑 Admin Login</a>
     </div>
+</div>
 
     <div id="main">
         <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
