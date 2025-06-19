@@ -95,7 +95,7 @@
             background-color: white;
             border-radius: 8px;
             padding: 10px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
@@ -181,7 +181,6 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
@@ -221,13 +220,16 @@
                 menuList.innerHTML = '';
                 snapshot.forEach((childSnapshot) => {
                     const item = childSnapshot.val();
+
                     const itemCard = document.createElement('div');
                     itemCard.classList.add('menu-card');
+
                     itemCard.innerHTML = `
                         <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
                         <h3>${item.name}</h3>
                         <p>Price: $${item.price}</p>
                     `;
+
                     menuList.appendChild(itemCard);
                 });
             });
