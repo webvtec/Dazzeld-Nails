@@ -7,9 +7,24 @@
     <title>SPIRITZ SPORTS BAR & GRILL</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        <h1 id="homeTitle" style="font-family: 'Pacifico', cursive; color: #6200ea; text-align: center; font-size: 36px; text-shadow: 2px 2px 5px rgba(0,0,0,0.2);">
+        <h1 id="homeTitle" style="
+    font-family: 'Lobster', cursive; 
+    font-size: 50px; 
+    text-align: center; 
+    background: linear-gradient(45deg, #ff4e50, #f9d423, #24c6dc, #abecd6);
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; 
+    animation: vibe 2s infinite; 
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);">
     Welcome to Spiritz Sports Bar & Grill
 </h1>
+
+    @keyframes vibe {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05) rotate(-1deg); }
+    100% { transform: scale(1); }
+}
+
 
         body {
             margin: 0;
