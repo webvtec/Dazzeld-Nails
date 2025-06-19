@@ -6,8 +6,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <style>
-        /* (CSS remains unchanged) */
-        /* All styles from the previous file stay here */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .sidebar {
+            width: 220px;
+            position: fixed;
+            top: 0;
+            left: -220px;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-x: hidden;
+            padding: 40px 0 20px 0;
+            transition: 0.4s;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #3700b3;
+        }
+
+        .open-btn {
+            font-size: 22px;
+            background-color: #6200ea;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+            border-radius: 5px;
+        }
+
+        .open-btn:hover {
+            background-color: #3700b3;
+        }
+
+        #main {
+            transition: margin-left 0.4s;
+            padding: 20px;
+            margin-left: 0;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        input,
+        textarea,
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .menu-item img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .edit-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .menu-item input {
+            width: 90%;
+            margin-bottom: 12px;
+            padding: 12px;
+            font-size: 20px;
+            text-align: center;
+            border: 1.5px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .menu-item input[id^="price-"] {
+            font-size: 18px;
+            color: #6200ea;
+            font-weight: bold;
+        }
+
+        .menu-item button {
+            width: 100%;
+            padding: 12px 14px;
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .delete-button {
+            width: 48%;
+            padding: 12px 14px;
+            margin: 5px 1%;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #e53935;
+        }
+
+        .delete-button:hover {
+            background-color: #b71c1c;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -55,6 +249,8 @@
                 <button type="submit">Add Menu Item</button>
             </form>
             <div id="menuList" class="menu-grid"></div>
+
+            <!-- Global Save Button -->
             <button onclick="saveAllMenuItems()">💾 Save All Menu Items</button>
         </div>
 
@@ -72,14 +268,7 @@
 
                 <button type="submit">Add Event</button>
             </form>
-
-            <h3>Upcoming Events</h3>
-            <div id="upcomingEvents"></div>
-
-            <h3>Past Events</h3>
-            <div id="pastEvents"></div>
-
-            <button onclick="saveAllEvents()">💾 Save All Events</button>
+            <div id="eventList"></div>
         </div>
 
     </div>
@@ -103,6 +292,7 @@
                 sections[i].classList.remove('active');
             }
             document.getElementById(sectionId).classList.add('active');
+            toggleSidebar();
         }
 
         function loadHomeContent() {
@@ -186,89 +376,9 @@
             loadMenu();
         }
 
-        document.getElementById('eventForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const title = document.getElementById('eventTitle').value;
-            const imageUrl = document.getElementById('eventImageURL').value;
-            const date = document.getElementById('eventDate').value;
-
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-            events.push({ title, imageUrl, date });
-            localStorage.setItem('events', JSON.stringify(events));
-
-            document.getElementById('eventForm').reset();
-            loadEvents();
-        });
-
-        function loadEvents() {
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-            const upcomingContainer = document.getElementById('upcomingEvents');
-            const pastContainer = document.getElementById('pastEvents');
-
-            upcomingContainer.innerHTML = '';
-            pastContainer.innerHTML = '';
-
-            const today = new Date().toISOString().split('T')[0];
-
-            events.forEach((event, index) => {
-                const container = document.createElement('div');
-                container.classList.add('menu-item');
-                container.innerHTML = `
-                    <input type="text" id="eventTitle-${index}" value="${event.title}">
-                    <div class="image-container">
-                        <img id="eventImage-${index}" src="${event.imageUrl}" alt="${event.title}" onerror="this.src='https://via.placeholder.com/150';">
-                        <div class="edit-icon" onclick="editEventImage(${index})">✏️</div>
-                    </div>
-                    <input type="date" id="eventDate-${index}" value="${event.date}">
-                    <div class="button-row">
-                        <button class="delete-button" onclick="deleteEvent(${index})">🗑️ Delete</button>
-                    </div>
-                `;
-
-                if (event.date >= today) {
-                    upcomingContainer.appendChild(container);
-                } else {
-                    pastContainer.appendChild(container);
-                }
-            });
-        }
-
-        function editEventImage(index) {
-            const newUrl = prompt('Enter new image URL:');
-            if (newUrl) {
-                const events = JSON.parse(localStorage.getItem('events')) || [];
-                events[index].imageUrl = newUrl;
-                localStorage.setItem('events', JSON.stringify(events));
-                loadEvents();
-            }
-        }
-
-        function deleteEvent(index) {
-            if (confirm('Delete this event?')) {
-                const events = JSON.parse(localStorage.getItem('events')) || [];
-                events.splice(index, 1);
-                localStorage.setItem('events', JSON.stringify(events));
-                loadEvents();
-            }
-        }
-
-        function saveAllEvents() {
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-            events.forEach((event, index) => {
-                const updatedTitle = document.getElementById(`eventTitle-${index}`).value;
-                const updatedDate = document.getElementById(`eventDate-${index}`).value;
-                event.title = updatedTitle;
-                event.date = updatedDate;
-            });
-            localStorage.setItem('events', JSON.stringify(events));
-            alert('All events saved successfully!');
-            loadEvents();
-        }
-
         window.onload = function () {
             loadHomeContent();
             loadMenu();
-            loadEvents();
         }
     </script>
 
