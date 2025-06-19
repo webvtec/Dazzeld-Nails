@@ -13,26 +13,24 @@
         }
 
         .sidebar {
-            height: 100%;
-            width: 200px; /* Sidebar is now slimmer */
+            width: 200px;
             position: fixed;
             top: 0;
             left: -200px;
-            background-color: rgba(98, 0, 234, 1);
+            background-color: rgba(98, 0, 234, 0.7);
             overflow-x: hidden;
-            padding-top: 40px;
+            padding: 40px 0 20px 0;
             transition: 0.3s;
             z-index: 1000;
-
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
         }
 
         .sidebar h2 {
             color: white;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .sidebar a {
@@ -42,6 +40,8 @@
             color: white;
             display: block;
             transition: 0.3s;
+            margin-bottom: 10px;
+            border-radius: 5px;
         }
 
         .sidebar a:hover {
@@ -70,10 +70,8 @@
         .content-section {
             display: none;
             padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
+            width: 100%;
         }
 
         .content-section.active {
@@ -98,9 +96,7 @@
 
         .menu-card {
             background-color: white;
-            border-radius: 8px;
             padding: 10px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             flex: 1 1 calc(50% - 15px);
             box-sizing: border-box;
@@ -109,7 +105,6 @@
         .menu-card img {
             width: 100%;
             height: auto;
-            border-radius: 8px;
             margin-bottom: 10px;
         }
 
@@ -128,20 +123,20 @@
 
 <body>
 
-    <div id="sidebar" class="sidebar" style="position: fixed; width: 200px; min-height: auto; height: auto; top: 0; left: -200px; background-color: rgba(98, 0, 234, 1); overflow-x: hidden; padding: 40px 0 20px 0; transition: 0.3s; z-index: 1000; display: flex; flex-direction: column; align-items: center;">
-    <div>
-        <h2 style="color: white; margin-bottom: 20px;">MENU</h2>
-        <a href="#" onclick="showSection('home')" style="margin-bottom: 10px; padding: 10px 20px; border-radius: 5px;">🏠 HOME</a>
-        <a href="#" onclick="showSection('menu')" style="margin-bottom: 10px; padding: 10px 20px; border-radius: 5px;">🍽️ VIEW MENU</a>
-        <a href="#" onclick="showSection('booking')" style="margin-bottom: 10px; padding: 10px 20px; border-radius: 5px;">📅 BOOK A TABLE</a>
-        <a href="#" onclick="showSection('events')" style="margin-bottom: 20px; padding: 10px 20px; border-radius: 5px;">🎉 EVENTS</a>
+    <div id="sidebar" class="sidebar">
+        <div>
+            <h2>MENU</h2>
+            <a href="#" onclick="showSection('home')">🏠 HOME</a>
+            <a href="#" onclick="showSection('menu')">🍽️ VIEW MENU</a>
+            <a href="#" onclick="showSection('booking')">📅 BOOK A TABLE</a>
+            <a href="#" onclick="showSection('events')">🎉 EVENTS</a>
 
-        <!-- Clean Admin Login button -->
-        <div style="display: flex; justify-content: center; margin-top: 20px;">
-            <a href="login.html" style="background-color: white; color: #6200ea; padding: 10px 20px; border-radius: 7px; text-decoration: none; font-weight: bold;">ADMIN</a>
+            <!-- Clean Admin Login button -->
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <a href="login.html" style="background-color: white; color: #6200ea; padding: 10px 20px; border-radius: 7px; text-decoration: none; font-weight: bold;">ADMIN</a>
+            </div>
         </div>
-    </div> <!-- ✅ This closing tag was missing -->
-</div>
+    </div>
 
     <div id="main">
         <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
@@ -153,7 +148,7 @@
 
         <div id="booking" class="content-section">
             <h2>Book a Table</h2>
-            <form onsubmit="submitBooking(event)" style="max-width: 400px; margin: auto;">
+            <form onsubmit="submitBooking(event)">
                 <input type="text" id="name" placeholder="Your Name" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
                 <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
                 <input type="text" id="phone" placeholder="Phone Number" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
@@ -249,4 +244,5 @@
         }
     </script>
 </body>
+
 </html>
