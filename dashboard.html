@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Spiritz Sports Bar & Grill</title>
     <style>
         body {
             margin: 0;
@@ -12,81 +12,83 @@
             background-color: #f4f4f4;
         }
 
-        .header {
-            background-color: #6200ea;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .menu-button {
-            font-size: 20px;
-            background-color: #3700b3;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
         .sidebar {
-            position: absolute;
-            top: 60px;
-            left: 0;
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
             background-color: #6200ea;
-            border-radius: 0 5px 5px 0;
-            overflow: hidden;
-            display: none;
+            overflow-x: hidden;
+            padding-top: 60px;
+            transition: 0.3s;
             z-index: 1000;
         }
 
-        .sidebar a {
-            display: block;
+        .sidebar h2 {
             color: white;
-            padding: 12px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
             text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
         }
 
         .sidebar a:hover {
             background-color: #3700b3;
         }
 
-        .content {
-            padding: 20px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        input,
-        textarea,
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
+        .open-btn {
+            font-size: 20px;
             background-color: #6200ea;
             color: white;
+            padding: 10px 15px;
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            margin: 20px;
         }
 
-        button:hover {
+        .open-btn:hover {
             background-color: #3700b3;
         }
 
-        #menuList {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        #main {
+            transition: margin-left 0.3s;
+            padding: 20px;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
+        .menu-grid {
+            display: flex;
+            flex-wrap: wrap;
             gap: 15px;
+            padding: 10px;
         }
 
         .menu-card {
@@ -95,6 +97,8 @@
             padding: 10px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            flex: 1 1 calc(50% - 15px);
+            box-sizing: border-box;
         }
 
         .menu-card img {
@@ -114,151 +118,102 @@
             font-weight: bold;
             color: #6200ea;
         }
-
-        .menu-card button {
-            width: 45%;
-            margin: 5px 2%;
-        }
     </style>
 </head>
 
 <body>
 
-    <div class="header">
-        <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
-        <h1>Admin Dashboard</h1>
+    <div id="sidebar" class="sidebar">
+        <h2>Menu</h2>
+        <a href="#" onclick="showSection('home')">🏠 Home</a>
+        <a href="#" onclick="showSection('booking')">📅 Book a Table</a>
+        <a href="#" onclick="showSection('menu')">🍽️ View Menu</a>
+        <a href="#" onclick="showSection('events')">🎉 Events</a>
+        <a href="#" onclick="showSection('order')">🛒 Order Food</a>
+        <a href="#" onclick="showSection('contact')">📞 Contact Us</a>
+        <a href="login.html">🔑 Admin Login</a>
     </div>
 
-    <div class="sidebar" id="sidebar">
-        <a href="#" onclick="showSection('homeSection')">🏠 Home</a>
-        <a href="#" onclick="showSection('menuSection')">📋 View Menu</a>
-        <a href="#" onclick="showSection('bookingSection')">📅 Book a Table</a>
-        <a href="#" onclick="showSection('orderSection')">🛒 Order Food</a>
-        <a href="#" onclick="showSection('contactSection')">📞 Contact Info</a>
-    </div>
+    <div id="main">
+        <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
 
-    <div class="content">
-        <div id="loading">Checking authorization...</div>
-
-        <div id="homeSection" class="hidden">
-            <h2>Home Content</h2>
-            <textarea id="homeContent" placeholder="Edit home content here..."></textarea>
-            <button onclick="saveContent('homeContent')">Save</button>
+        <div id="home" class="content-section active">
+            <h1 id="homeTitle" contenteditable="true">Welcome to Spiritz Sports Bar & Grill</h1>
+            <p id="homeDescription" contenteditable="true">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
+            <button onclick="saveHomeContent()">Save Home Content</button>
         </div>
 
-        <div id="menuSection" class="hidden">
-            <h2>Menu Items</h2>
-            <form id="menuForm">
-                <input type="text" id="itemName" placeholder="Item Name" required>
-                <input type="number" id="itemPrice" placeholder="Price" required>
-                <input type="url" id="itemImageURL" placeholder="Image URL" required>
-                <button type="submit">Add Item</button>
+        <div id="booking" class="content-section">
+            <h2>Book a Table</h2>
+            <form onsubmit="submitBooking(event)">
+                <input type="text" id="name" placeholder="Your Name" required><br><br>
+                <input type="email" id="email" placeholder="Email" required><br><br>
+                <input type="text" id="phone" placeholder="Phone Number" required><br><br>
+                <input type="date" id="date" required><br><br>
+                <input type="time" id="time" required><br><br>
+                <input type="number" id="people" placeholder="Number of People" required><br><br>
+                <button type="submit">Book Now</button>
             </form>
-            <p id="uploadStatus"></p>
-            <div id="menuList"></div>
+            <p id="bookingConfirmation" style="color: green; margin-top: 15px;"></p>
         </div>
 
-        <div id="bookingSection" class="hidden">
-            <h2>Booking Info</h2>
-            <textarea id="bookingContent" placeholder="Edit booking instructions here..."></textarea>
-            <button onclick="saveContent('bookingContent')">Save</button>
+        <div id="menu" class="content-section">
+            <h2>Our Menu</h2>
+            <div id="menuList" class="menu-grid"></div>
         </div>
 
-        <div id="orderSection" class="hidden">
-            <h2>Order Info</h2>
-            <textarea id="orderContent" placeholder="Edit order instructions here..."></textarea>
-            <button onclick="saveContent('orderContent')">Save</button>
+        <div id="events" class="content-section">
+            <h2>Upcoming Events</h2>
+            <ul>
+                <li>Friday Night Live - June 21</li>
+                <li>Big Game Watch Party - June 23</li>
+                <li>Reggae Night - June 30</li>
+            </ul>
         </div>
 
-        <div id="contactSection" class="hidden">
-            <h2>Contact Info</h2>
-            <textarea id="contactContent" placeholder="Edit contact info here..."></textarea>
-            <button onclick="saveContent('contactContent')">Save</button>
+        <div id="order" class="content-section">
+            <h2>Order for Pickup or Delivery</h2>
+            <p>Call us at (876) 123-4567 to place your order now!</p>
+        </div>
+
+        <div id="contact" class="content-section">
+            <h2>Contact Us</h2>
+            <p>📍 Location: 123 Spiritz Lane, Kingston, Jamaica</p>
+            <p>📞 Phone: (876) 123-4567</p>
+            <p>📧 Email: contact@spiritzbar.com</p>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="firebase-config.js"></script>
 
     <script>
-        let sidebarVisible = false;
-
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            sidebarVisible = !sidebarVisible;
-            sidebar.style.display = sidebarVisible ? 'block' : 'none';
+            const main = document.getElementById('main');
+            if (sidebar.style.left === '-250px') {
+                sidebar.style.left = '0';
+                main.style.marginLeft = '250px';
+            } else {
+                sidebar.style.left = '-250px';
+                main.style.marginLeft = '0';
+            }
         }
 
         function showSection(sectionId) {
-            const sections = ['homeSection', 'menuSection', 'bookingSection', 'orderSection', 'contactSection'];
-            sections.forEach(id => document.getElementById(id).classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
-        }
-
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user && user.uid === 'O0PySpbvj8dHS6fBWCagxFLxguU2') {
-                document.getElementById('loading').style.display = 'none';
-                showSection('homeSection');
-                loadContent();
-                loadMenu();
-            } else {
-                alert('You are not authorized to access this page.');
-                firebase.auth().signOut().then(() => {
-                    window.location.href = 'login.html';
-                });
+            const sections = document.getElementsByClassName('content-section');
+            for (let i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
             }
-        });
-
-        function saveContent(sectionId) {
-            const content = document.getElementById(sectionId).value;
-            firebase.database().ref('siteContent/' + sectionId).set(content);
-            alert('Content saved!');
+            document.getElementById(sectionId).classList.add('active');
+            toggleSidebar();
         }
 
-        function loadContent() {
-            const sections = ['homeContent', 'bookingContent', 'orderContent', 'contactContent'];
-            sections.forEach(sectionId => {
-                firebase.database().ref('siteContent/' + sectionId).on('value', (snapshot) => {
-                    document.getElementById(sectionId).value = snapshot.val() || '';
-                });
-            });
+        function submitBooking(event) {
+            event.preventDefault();
+            document.getElementById('bookingConfirmation').innerText = 'Thank you! Your booking has been submitted.';
         }
-
-        const menuForm = document.getElementById('menuForm');
-        menuForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const itemName = document.getElementById('itemName').value;
-            const itemPrice = document.getElementById('itemPrice').value;
-            const itemImageURL = document.getElementById('itemImageURL').value;
-
-            if (!itemImageURL) {
-                document.getElementById('uploadStatus').innerText = 'Please enter an image URL.';
-                return;
-            }
-
-            document.getElementById('uploadStatus').innerText = 'Saving item...';
-
-            const newItemRef = firebase.database().ref('menu').push();
-            newItemRef.set({
-                name: itemName,
-                price: itemPrice,
-                imageUrl: itemImageURL
-            }, function (error) {
-                if (error) {
-                    document.getElementById('uploadStatus').innerText = 'Failed to add item.';
-                } else {
-                    document.getElementById('uploadStatus').innerText = 'Item added successfully!';
-                    menuForm.reset();
-                    loadMenu();
-                    setTimeout(() => {
-                        document.getElementById('uploadStatus').innerText = '';
-                    }, 3000);
-                }
-            });
-        });
 
         function loadMenu() {
             const menuList = document.getElementById('menuList');
@@ -268,16 +223,14 @@
                 menuList.innerHTML = '';
                 snapshot.forEach((childSnapshot) => {
                     const item = childSnapshot.val();
-                    const itemKey = childSnapshot.key;
 
                     const itemCard = document.createElement('div');
                     itemCard.classList.add('menu-card');
 
                     itemCard.innerHTML = `
                         <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
-                        <h3 contenteditable="true" onblur="updateItem('${itemKey}', 'name', this.innerText)">${item.name}</h3>
-                        <p contenteditable="true" onblur="updateItem('${itemKey}', 'price', this.innerText)">$${item.price}</p>
-                        <button onclick="deleteItem('${itemKey}')">🗑️ Delete</button>
+                        <h3>${item.name}</h3>
+                        <p>Price: $${item.price}</p>
                     `;
 
                     menuList.appendChild(itemCard);
@@ -285,16 +238,26 @@
             });
         }
 
-        function updateItem(itemKey, field, newValue) {
-            const itemRef = firebase.database().ref('menu/' + itemKey + '/' + field);
-            itemRef.set(newValue);
+        function saveHomeContent() {
+            const title = document.getElementById('homeTitle').innerText;
+            const description = document.getElementById('homeDescription').innerText;
+            firebase.database().ref('siteContent/homeTitle').set(title);
+            firebase.database().ref('siteContent/homeDescription').set(description);
+            alert('Home content saved!');
         }
 
-        function deleteItem(itemKey) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                const itemRef = firebase.database().ref('menu/' + itemKey);
-                itemRef.remove();
-            }
+        function loadHomeContent() {
+            firebase.database().ref('siteContent/homeTitle').on('value', (snapshot) => {
+                document.getElementById('homeTitle').innerText = snapshot.val() || 'Welcome to Spiritz Sports Bar & Grill';
+            });
+            firebase.database().ref('siteContent/homeDescription').on('value', (snapshot) => {
+                document.getElementById('homeDescription').innerText = snapshot.val() || 'Enjoy great food, drinks, and live sports in a vibrant atmosphere.';
+            });
+        }
+
+        window.onload = function () {
+            loadMenu();
+            loadHomeContent();
         }
     </script>
 
