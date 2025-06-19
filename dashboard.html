@@ -23,7 +23,7 @@
             padding: 20px;
         }
 
-        input, button {
+        input, textarea, button {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -43,7 +43,7 @@
             background-color: #3700b3;
         }
 
-        .event-card {
+        .card {
             background-color: white;
             border-radius: 8px;
             padding: 10px;
@@ -52,25 +52,18 @@
             text-align: center;
         }
 
-        .event-card img {
+        .card img {
             width: 100%;
             height: auto;
             border-radius: 8px;
             margin-bottom: 10px;
         }
 
-        .event-card h3 {
+        .card h3, .card p {
             margin: 5px 0;
-            font-size: 18px;
         }
 
-        .event-card p {
-            margin: 0;
-            font-weight: bold;
-            color: #6200ea;
-        }
-
-        .event-card button {
+        .card button {
             width: auto;
             padding: 5px 10px;
             margin-top: 10px;
@@ -85,53 +78,99 @@
     </div>
 
     <div class="content">
-        <h2>Add Event</h2>
+        <!-- Home Section -->
+        <h2>Home Content</h2>
+        <input type="text" id="homeTitle" placeholder="Home Title">
+        <textarea id="homeDescription" placeholder="Home Description"></textarea>
+        <button onclick="saveHomeContent()">Save Home Content</button>
+
+        <!-- Menu Section -->
+        <h2>Menu Items</h2>
+        <form id="menuForm">
+            <input type="text" id="itemName" placeholder="Item Name" required>
+            <input type="number" id="itemPrice" placeholder="Price" required>
+            <input type="url" id="itemImageURL" placeholder="Image URL" required>
+            <button type="submit">Add Menu Item</button>
+        </form>
+        <div id="menuList"></div>
+
+        <!-- Events Section -->
+        <h2>Events</h2>
         <form id="eventForm">
             <input type="text" id="eventTitle" placeholder="Event Title" required>
             <input type="url" id="eventImageURL" placeholder="Image URL" required>
             <input type="date" id="eventDate" required>
             <button type="submit">Add Event</button>
         </form>
-
-        <h2>Existing Events</h2>
         <div id="eventList"></div>
     </div>
 
     <script>
-        const eventForm = document.getElementById('eventForm');
-        const eventList = document.getElementById('eventList');
+        // Load Home Content
+        function loadHomeContent() {
+            document.getElementById('homeTitle').value = localStorage.getItem('homeTitle') || '';
+            document.getElementById('homeDescription').value = localStorage.getItem('homeDescription') || '';
+        }
 
-        function loadEvents() {
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-            eventList.innerHTML = '';
+        function saveHomeContent() {
+            localStorage.setItem('homeTitle', document.getElementById('homeTitle').value);
+            localStorage.setItem('homeDescription', document.getElementById('homeDescription').value);
+            alert('Home content saved!');
+        }
 
-            events.forEach((event, index) => {
-                const eventCard = document.createElement('div');
-                eventCard.classList.add('event-card');
+        // Menu Management
+        const menuForm = document.getElementById('menuForm');
+        menuForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('itemName').value;
+            const price = document.getElementById('itemPrice').value;
+            const imageUrl = document.getElementById('itemImageURL').value;
 
-                eventCard.innerHTML = `
-                    <img src="${event.imageUrl}" alt="${event.title}" onerror="this.src='https://via.placeholder.com/150';">
-                    <h3>${event.title}</h3>
-                    <p>${event.date}</p>
-                    <button onclick="deleteEvent(${index})">🗑️ Delete</button>
+            const menu = JSON.parse(localStorage.getItem('menu')) || [];
+            menu.push({ name, price, imageUrl });
+            localStorage.setItem('menu', JSON.stringify(menu));
+
+            menuForm.reset();
+            loadMenu();
+        });
+
+        function loadMenu() {
+            const menu = JSON.parse(localStorage.getItem('menu')) || [];
+            const menuList = document.getElementById('menuList');
+            menuList.innerHTML = '';
+
+            menu.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
+                    <h3 contenteditable="true" onblur="updateMenuItem(${index}, 'name', this.innerText)">${item.name}</h3>
+                    <p contenteditable="true" onblur="updateMenuItem(${index}, 'price', this.innerText)">$${item.price}</p>
+                    <button onclick="deleteMenuItem(${index})">🗑️ Delete</button>
                 `;
-
-                eventList.appendChild(eventCard);
+                menuList.appendChild(card);
             });
         }
 
-        function deleteEvent(index) {
-            if (confirm('Are you sure you want to delete this event?')) {
-                const events = JSON.parse(localStorage.getItem('events')) || [];
-                events.splice(index, 1);
-                localStorage.setItem('events', JSON.stringify(events));
-                loadEvents();
+        function updateMenuItem(index, field, value) {
+            const menu = JSON.parse(localStorage.getItem('menu')) || [];
+            menu[index][field] = value;
+            localStorage.setItem('menu', JSON.stringify(menu));
+        }
+
+        function deleteMenuItem(index) {
+            if (confirm('Delete this menu item?')) {
+                const menu = JSON.parse(localStorage.getItem('menu')) || [];
+                menu.splice(index, 1);
+                localStorage.setItem('menu', JSON.stringify(menu));
+                loadMenu();
             }
         }
 
+        // Event Management
+        const eventForm = document.getElementById('eventForm');
         eventForm.addEventListener('submit', function (e) {
             e.preventDefault();
-
             const title = document.getElementById('eventTitle').value;
             const imageUrl = document.getElementById('eventImageURL').value;
             const date = document.getElementById('eventDate').value;
@@ -142,10 +181,46 @@
 
             eventForm.reset();
             loadEvents();
-            alert('Event added successfully!');
         });
 
-        window.onload = loadEvents;
+        function loadEvents() {
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            const eventList = document.getElementById('eventList');
+            eventList.innerHTML = '';
+
+            events.forEach((event, index) => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <img src="${event.imageUrl}" alt="${event.title}" onerror="this.src='https://via.placeholder.com/150';">
+                    <h3 contenteditable="true" onblur="updateEvent(${index}, 'title', this.innerText)">${event.title}</h3>
+                    <p contenteditable="true" onblur="updateEvent(${index}, 'date', this.innerText)">${event.date}</p>
+                    <button onclick="deleteEvent(${index})">🗑️ Delete</button>
+                `;
+                eventList.appendChild(card);
+            });
+        }
+
+        function updateEvent(index, field, value) {
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            events[index][field] = value;
+            localStorage.setItem('events', JSON.stringify(events));
+        }
+
+        function deleteEvent(index) {
+            if (confirm('Delete this event?')) {
+                const events = JSON.parse(localStorage.getItem('events')) || [];
+                events.splice(index, 1);
+                localStorage.setItem('events', JSON.stringify(events));
+                loadEvents();
+            }
+        }
+
+        window.onload = function () {
+            loadHomeContent();
+            loadMenu();
+            loadEvents();
+        }
     </script>
 
 </body>
