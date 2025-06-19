@@ -83,6 +83,24 @@
         p {
             font-size: 16px;
         }
+
+        ul#menuList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul#menuList li {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        ul#menuList img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin-top: 5px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -127,12 +145,8 @@
         <!-- Menu Section -->
         <div id="menu" class="content-section">
             <h2>Our Menu</h2>
-            <p>Delicious meals and refreshing drinks served daily.</p>
-            <ul>
-                <li>🍔 Burger - $8</li>
-                <li>🍕 Pizza - $12</li>
-                <li>🥗 Salad - $7</li>
-                <li>🍹 Cocktail - $6</li>
+            <ul id="menuList">
+                <!-- Menu items will be loaded here -->
             </ul>
         </div>
 
@@ -161,6 +175,11 @@
         </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <!-- JavaScript -->
     <script>
         function toggleSidebar() {
@@ -188,6 +207,26 @@
         function submitBooking(event) {
             event.preventDefault();
             document.getElementById('bookingConfirmation').innerText = 'Thank you! Your booking has been submitted.';
+        }
+
+        // Load menu items from Firebase
+        function loadMenu() {
+            const menuList = document.getElementById('menuList');
+            const menuRef = firebase.database().ref('menu');
+
+            menuRef.on('value', (snapshot) => {
+                menuList.innerHTML = ''; // Clear existing items
+                snapshot.forEach((childSnapshot) => {
+                    const item = childSnapshot.val();
+                    const li = document.createElement('li');
+                    li.innerHTML = `${item.name} - $${item.price}<br><img src="${item.imageUrl}" alt="${item.name}">`;
+                    menuList.appendChild(li);
+                });
+            });
+        }
+
+        window.onload = function () {
+            loadMenu();
         }
     </script>
 
