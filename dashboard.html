@@ -125,24 +125,47 @@
             padding: 20px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            min-height: 450px;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            width: 100%;
         }
 
         .card img {
             width: 100%;
-            max-height: 250px;
+            max-height: 280px;
             object-fit: cover;
             border-radius: 8px;
             margin-bottom: 15px;
         }
 
+        .edit-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
         .card input {
-            width: 100%;
-            margin-bottom: 15px;
+            width: 90%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         .card h3 {
+            font-size: 26px;
             margin-bottom: 15px;
-            font-size: 24px;
             color: #333;
         }
 
@@ -181,11 +204,8 @@
 </head>
 
 <body>
-
-    <!-- Sidebar Button -->
     <button class="open-btn" onclick="toggleSidebar()">☰</button>
 
-    <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <h2>ADMIN</h2>
         <a href="#" onclick="showSection('homeSection')">📄 Home Content</a>
@@ -198,7 +218,6 @@
 
     <div id="main">
 
-        <!-- Home Section -->
         <div id="homeSection" class="content-section active">
             <h2>Home Content</h2>
             <form onsubmit="event.preventDefault(); saveHomeContent();">
@@ -212,7 +231,6 @@
             </form>
         </div>
 
-        <!-- Menu Section -->
         <div id="menuSection" class="content-section">
             <h2>Menu Items</h2>
             <form id="menuForm">
@@ -230,7 +248,6 @@
             <div id="menuList" class="menu-grid"></div>
         </div>
 
-        <!-- Event Section -->
         <div id="eventSection" class="content-section">
             <h2>Events</h2>
             <form id="eventForm">
@@ -308,12 +325,11 @@
                 card.classList.add('card');
                 card.innerHTML = `
                     <input type="text" id="name-${index}" value="${item.name}" style="margin-bottom: 15px; text-align: center; font-size: 20px; font-weight: bold;">
-                    <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
+                    <div class="image-container">
+                        <img id="image-${index}" src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
+                        <div class="edit-icon" onclick="editImage(${index})">✏️</div>
+                    </div>
                     <input type="text" id="price-${index}" value="${item.price}" style="margin-top: 15px; text-align: center; font-size: 18px; font-weight: bold;">
-
-                    <label style="margin-top: 15px;">Image URL</label>
-                    <input type="text" id="image-${index}" value="${item.imageUrl}">
-
                     <div class="button-row">
                         <button onclick="saveMenuItem(${index})">💾 Save</button>
                         <button onclick="deleteMenuItem(${index})">🗑️ Delete</button>
@@ -323,16 +339,22 @@
             });
         }
 
+        function editImage(index) {
+            const newUrl = prompt('Enter new image URL:');
+            if (newUrl) {
+                const menu = JSON.parse(localStorage.getItem('menu')) || [];
+                menu[index].imageUrl = newUrl;
+                localStorage.setItem('menu', JSON.stringify(menu));
+                loadMenu();
+            }
+        }
+
         function saveMenuItem(index) {
             const menu = JSON.parse(localStorage.getItem('menu')) || [];
             const updatedName = document.getElementById(`name-${index}`).value;
             const updatedPrice = document.getElementById(`price-${index}`).value;
-            const updatedImage = document.getElementById(`image-${index}`).value;
-
             menu[index].name = updatedName;
             menu[index].price = updatedPrice;
-            menu[index].imageUrl = updatedImage;
-
             localStorage.setItem('menu', JSON.stringify(menu));
             alert('Menu item updated successfully!');
             loadMenu();
@@ -347,58 +369,9 @@
             }
         }
 
-        const eventForm = document.getElementById('eventForm');
-        eventForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const title = document.getElementById('eventTitle').value;
-            const imageUrl = document.getElementById('eventImageURL').value;
-            const date = document.getElementById('eventDate').value;
-
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-            events.push({ title, imageUrl, date });
-            localStorage.setItem('events', JSON.stringify(events));
-
-            eventForm.reset();
-            loadEvents();
-        });
-
-        function loadEvents() {
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-            const eventList = document.getElementById('eventList');
-            eventList.innerHTML = '';
-
-            events.forEach((event, index) => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.innerHTML = `
-                    <img src="${event.imageUrl}" alt="${event.title}" onerror="this.src='https://via.placeholder.com/150';">
-                    <h3 contenteditable="true" onblur="updateEvent(${index}, 'title', this.innerText)">${event.title}</h3>
-                    <p contenteditable="true" onblur="updateEvent(${index}, 'date', this.innerText)">${event.date}</p>
-                    <button onclick="deleteEvent(${index})">🗑️ Delete</button>
-                `;
-                eventList.appendChild(card);
-            });
-        }
-
-        function updateEvent(index, field, value) {
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-            events[index][field] = value;
-            localStorage.setItem('events', JSON.stringify(events));
-        }
-
-        function deleteEvent(index) {
-            if (confirm('Delete this event?')) {
-                const events = JSON.parse(localStorage.getItem('events')) || [];
-                events.splice(index, 1);
-                localStorage.setItem('events', JSON.stringify(events));
-                loadEvents();
-            }
-        }
-
         window.onload = function () {
             loadHomeContent();
             loadMenu();
-            loadEvents();
         }
     </script>
 
