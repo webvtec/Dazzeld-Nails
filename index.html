@@ -211,20 +211,22 @@
 
         // Load menu items from Firebase
         function loadMenu() {
-            const menuList = document.getElementById('menuList');
-            const menuRef = firebase.database().ref('menu');
+    const menuList = document.getElementById('menuList');
+    const menuRef = firebase.database().ref('menu');
 
-            menuRef.on('value', (snapshot) => {
-                menuList.innerHTML = ''; // Clear existing items
-                snapshot.forEach((childSnapshot) => {
-                    const item = childSnapshot.val();
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-    ${item.name} - $${item.price}<br>
-    <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">`;
-                });
-            });
-        }
+    menuRef.on('value', (snapshot) => {
+        menuList.innerHTML = ''; // Clear existing items
+        snapshot.forEach((childSnapshot) => {
+            const item = childSnapshot.val();
+            const li = document.createElement('li');
+            li.innerHTML = `
+                ${item.name} - $${item.price}<br>
+                <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
+            `;
+            menuList.appendChild(li);
+        });
+    });
+}
 
         window.onload = function () {
             loadMenu();
