@@ -165,30 +165,19 @@
             <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
 
-        <div id="booking" class="content-section" style="display: none; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column;">
-    <div style="background-color: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px;">
-
-        <h2 style="text-align: center; color: #6200ea; margin-bottom: 20px;">Book a Table</h2>
-
-        <form onsubmit="submitBooking(event)">
-            <input type="text" id="name" placeholder="Your Name" required style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 7px; border: 1px solid #ddd;"><br>
-
-            <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 7px; border: 1px solid #ddd;"><br>
-
-            <input type="text" id="phone" placeholder="Phone Number" required style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 7px; border: 1px solid #ddd;"><br>
-
-            <input type="date" id="date" required style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 7px; border: 1px solid #ddd;"><br>
-
-            <input type="time" id="time" required style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 7px; border: 1px solid #ddd;"><br>
-
-            <input type="number" id="people" placeholder="Number of People" required style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 7px; border: 1px solid #ddd;"><br>
-
-            <button type="submit" style="background-color: #6200ea; color: white; padding: 12px 20px; border: none; border-radius: 7px; cursor: pointer; font-size: 16px; width: 100%;">Book Now</button>
-        </form>
-
-        <p id="bookingConfirmation" style="color: green; margin-top: 15px; text-align: center;"></p>
-    </div>
-</div>
+        <div id="booking" class="content-section">
+            <h2>Book a Table</h2>
+            <form onsubmit="submitBooking(event)">
+                <input type="text" id="name" placeholder="Your Name" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="text" id="phone" placeholder="Phone Number" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="date" id="date" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="time" id="time" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="number" id="people" placeholder="Number of People" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <button type="submit" style="background-color: #6200ea; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Book Now</button>
+            </form>
+            <p id="bookingConfirmation" style="color: green; margin-top: 15px; text-align: center;"></p>
+        </div>
 
         <div id="menu" class="content-section">
             <h2>Our Menu</h2>
