@@ -135,7 +135,6 @@
             <a href="#" onclick="showSection('booking')">📅 Book a Table</a>
             <a href="#" onclick="showSection('menu')">🍽️ View Menu</a>
             <a href="#" onclick="showSection('events')">🎉 Events</a>
-            <a href="#" onclick="showSection('contact')">📞 Contact Us</a>
         </div>
 
         <!-- Admin Login button pinned at the bottom -->
@@ -148,9 +147,8 @@
         <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
 
         <div id="home" class="content-section active">
-            <h1 id="homeTitle" contenteditable="true">Welcome to Spiritz Sports Bar & Grill</h1>
-            <p id="homeDescription" contenteditable="true">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
-            <button onclick="saveHomeContent()">Save Home Content</button>
+            <h1 id="homeTitle">Welcome to Spiritz Sports Bar & Grill</h1>
+            <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
 
         <div id="booking" class="content-section">
@@ -179,13 +177,6 @@
                 <li>Big Game Watch Party - June 23</li>
                 <li>Reggae Night - June 30</li>
             </ul>
-        </div>
-
-        <div id="contact" class="content-section">
-            <h2>Contact Us</h2>
-            <p>📍 Location: 123 Spiritz Lane, Kingston, Jamaica</p>
-            <p>📞 Phone: (876) 123-4567</p>
-            <p>📧 Email: contact@spiritzbar.com</p>
         </div>
     </div>
 
@@ -241,14 +232,6 @@
                     menuList.appendChild(itemCard);
                 });
             });
-        }
-
-        function saveHomeContent() {
-            const title = document.getElementById('homeTitle').innerText;
-            const description = document.getElementById('homeDescription').innerText;
-            firebase.database().ref('siteContent/homeTitle').set(title);
-            firebase.database().ref('siteContent/homeDescription').set(description);
-            alert('Home content saved!');
         }
 
         function loadHomeContent() {
