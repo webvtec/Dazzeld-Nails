@@ -219,8 +219,9 @@
                 snapshot.forEach((childSnapshot) => {
                     const item = childSnapshot.val();
                     const li = document.createElement('li');
-                    li.innerHTML = `${item.name} - $${item.price}<br><img src="${item.imageUrl}" alt="${item.name}">`;
-                    menuList.appendChild(li);
+                    li.innerHTML = `
+    ${item.name} - $${item.price}<br>
+    <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">`;
                 });
             });
         }
