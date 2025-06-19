@@ -12,23 +12,90 @@
             background-color: #f4f4f4;
         }
 
-        .header {
-            background-color: #6200ea;
-            color: white;
-            padding: 15px;
-            text-align: center;
+        /* Sidebar Style */
+        .sidebar {
+            width: 220px;
+            position: fixed;
+            top: 0;
+            left: -220px;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-x: hidden;
+            padding: 40px 0 20px 0;
+            transition: 0.4s;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
         }
 
-        .content {
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar a {
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #3700b3;
+        }
+
+        /* Menu Button */
+        .open-btn {
+            font-size: 22px;
+            background-color: #6200ea;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+            border-radius: 5px;
+        }
+
+        .open-btn:hover {
+            background-color: #3700b3;
+        }
+
+        /* Main Content */
+        #main {
+            transition: margin-left 0.4s;
             padding: 20px;
+            margin-left: 0;
+        }
+
+        .content-section {
+            display: none;
+            padding: 20px;
+            margin-top: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .content-section.active {
+            display: block;
         }
 
         input, textarea, button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 16px;
         }
 
         button {
@@ -36,7 +103,6 @@
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 16px;
         }
 
         button:hover {
@@ -46,15 +112,16 @@
         .card {
             background-color: white;
             border-radius: 8px;
-            padding: 10px;
+            padding: 15px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         .card img {
             width: 100%;
-            height: auto;
+            max-height: 200px;
+            object-fit: cover;
             border-radius: 8px;
             margin-bottom: 10px;
         }
@@ -68,45 +135,96 @@
             padding: 5px 10px;
             margin-top: 10px;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+
+            #main {
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="header">
-        <h1>Admin Dashboard</h1>
+    <!-- Sidebar Button -->
+    <button class="open-btn" onclick="toggleSidebar()">☰</button>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <h2>ADMIN</h2>
+        <a href="#" onclick="showSection('homeSection')">📄 Home Content</a>
+        <a href="#" onclick="showSection('menuSection')">🍽️ Menu Items</a>
+        <a href="#" onclick="showSection('eventSection')">🎉 Events</a>
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <a href="index.html" style="background-color: white; color: #6200ea; padding: 10px 20px; border-radius: 7px; text-decoration: none; font-weight: bold;">VIEW SITE</a>
+        </div>
     </div>
 
-    <div class="content">
+    <div id="main">
+
         <!-- Home Section -->
-        <h2>Home Content</h2>
-        <input type="text" id="homeTitle" placeholder="Home Title">
-        <textarea id="homeDescription" placeholder="Home Description"></textarea>
-        <button onclick="saveHomeContent()">Save Home Content</button>
+        <div id="homeSection" class="content-section active">
+            <h2>Home Content</h2>
+            <input type="text" id="homeTitle" placeholder="Home Title">
+            <textarea id="homeDescription" placeholder="Home Description"></textarea>
+            <button onclick="saveHomeContent()">Save Home Content</button>
+        </div>
 
         <!-- Menu Section -->
-        <h2>Menu Items</h2>
-        <form id="menuForm">
-            <input type="text" id="itemName" placeholder="Item Name" required>
-            <input type="number" id="itemPrice" placeholder="Price" required>
-            <input type="url" id="itemImageURL" placeholder="Image URL" required>
-            <button type="submit">Add Menu Item</button>
-        </form>
-        <div id="menuList"></div>
+        <div id="menuSection" class="content-section">
+            <h2>Menu Items</h2>
+            <form id="menuForm">
+                <input type="text" id="itemName" placeholder="Item Name" required>
+                <input type="number" id="itemPrice" placeholder="Price" required>
+                <input type="url" id="itemImageURL" placeholder="Image URL" required>
+                <button type="submit">Add Menu Item</button>
+            </form>
+            <div id="menuList"></div>
+        </div>
 
-        <!-- Events Section -->
-        <h2>Events</h2>
-        <form id="eventForm">
-            <input type="text" id="eventTitle" placeholder="Event Title" required>
-            <input type="url" id="eventImageURL" placeholder="Image URL" required>
-            <input type="date" id="eventDate" required>
-            <button type="submit">Add Event</button>
-        </form>
-        <div id="eventList"></div>
+        <!-- Event Section -->
+        <div id="eventSection" class="content-section">
+            <h2>Events</h2>
+            <form id="eventForm">
+                <input type="text" id="eventTitle" placeholder="Event Title" required>
+                <input type="url" id="eventImageURL" placeholder="Image URL" required>
+                <input type="date" id="eventDate" required>
+                <button type="submit">Add Event</button>
+            </form>
+            <div id="eventList"></div>
+        </div>
+
     </div>
 
     <script>
-        // Load Home Content
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const main = document.getElementById('main');
+            if (sidebar.style.left === '-220px' || sidebar.style.left === '' || sidebar.style.left === '-100%') {
+                sidebar.style.left = '0';
+                main.style.marginLeft = window.innerWidth > 600 ? '220px' : '0';
+            } else {
+                sidebar.style.left = window.innerWidth > 600 ? '-220px' : '-100%';
+                main.style.marginLeft = '0';
+            }
+        }
+
+        function showSection(sectionId) {
+            const sections = document.getElementsByClassName('content-section');
+            for (let i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById(sectionId).classList.add('active');
+            toggleSidebar();
+        }
+
+        // Home Content
         function loadHomeContent() {
             document.getElementById('homeTitle').value = localStorage.getItem('homeTitle') || '';
             document.getElementById('homeDescription').value = localStorage.getItem('homeDescription') || '';
