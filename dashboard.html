@@ -202,6 +202,56 @@
             margin-bottom: 20px;
             color: #333;
         }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .event-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .event-item img {
+            width: 100%;
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .event-item input {
+            width: 90%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .event-item button {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .event-section-title {
+            margin-top: 40px;
+            margin-bottom: 10px;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -233,6 +283,7 @@
                 <button type="submit">Save Home Content</button>
             </form>
         </div>
+
         <div id="menuSection" class="content-section">
             <h2>Menu Items</h2>
             <form id="menuForm">
@@ -266,11 +317,11 @@
                 <button type="submit">Add Event</button>
             </form>
 
-            <h3>Upcoming Events</h3>
-            <div id="upcomingEvents"></div>
+            <h3 class="event-section-title">Upcoming Events</h3>
+            <div id="upcomingEvents" class="event-grid"></div>
 
-            <h3>Past Events</h3>
-            <div id="pastEvents"></div>
+            <h3 class="event-section-title">Past Events</h3>
+            <div id="pastEvents" class="event-grid"></div>
 
             <button onclick="saveAllEvents()">💾 Save All Events</button>
         </div>
@@ -406,7 +457,7 @@
 
             events.forEach((event, index) => {
                 const container = document.createElement('div');
-                container.classList.add('menu-item');
+                container.classList.add('event-item');
                 container.innerHTML = `
                     <input type="text" id="eventTitle-${index}" value="${event.title}">
                     <div class="image-container">
@@ -427,7 +478,7 @@
             });
         }
 
-        function editEventImage(index) {
+                function editEventImage(index) {
             const newUrl = prompt('Enter new image URL:');
             if (newUrl) {
                 const events = JSON.parse(localStorage.getItem('events')) || [];
