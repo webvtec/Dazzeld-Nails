@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spiritz Sports Bar & Grill</title>
-
     <style>
         body {
             margin: 0;
@@ -68,7 +68,7 @@
             padding: 20px;
             background-color: white;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
         }
 
@@ -84,28 +84,43 @@
             font-size: 16px;
         }
 
-        ul#menuList {
-            list-style-type: none;
-            padding: 0;
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 10px;
         }
 
-        ul#menuList li {
-            margin-bottom: 15px;
+        .menu-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .menu-card h3 {
+            margin: 5px 0;
             font-size: 18px;
         }
 
-        ul#menuList img {
-            width: 150px;
-            height: auto;
-            display: block;
-            margin-top: 5px;
-            border-radius: 8px;
+        .menu-card p {
+            margin: 0;
+            font-weight: bold;
+            color: #6200ea;
         }
     </style>
 </head>
+
 <body>
 
-    <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <h2>Menu</h2>
         <a href="#" onclick="showSection('home')">🏠 Home</a>
@@ -117,17 +132,14 @@
         <a href="login.html">🔑 Admin Login</a>
     </div>
 
-    <!-- Page Content -->
     <div id="main">
         <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
 
-        <!-- Home Section -->
         <div id="home" class="content-section active">
             <h1>Welcome to Spiritz Sports Bar & Grill</h1>
             <p>Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
 
-        <!-- Booking Section -->
         <div id="booking" class="content-section">
             <h2>Book a Table</h2>
             <form onsubmit="submitBooking(event)">
@@ -142,15 +154,11 @@
             <p id="bookingConfirmation" style="color: green; margin-top: 15px;"></p>
         </div>
 
-        <!-- Menu Section -->
         <div id="menu" class="content-section">
             <h2>Our Menu</h2>
-            <ul id="menuList">
-                <!-- Menu items will be loaded here -->
-            </ul>
+            <div id="menuList" class="menu-grid"></div>
         </div>
 
-        <!-- Events Section -->
         <div id="events" class="content-section">
             <h2>Upcoming Events</h2>
             <ul>
@@ -160,13 +168,11 @@
             </ul>
         </div>
 
-        <!-- Order Section -->
         <div id="order" class="content-section">
             <h2>Order for Pickup or Delivery</h2>
             <p>Call us at (876) 123-4567 to place your order now!</p>
         </div>
 
-        <!-- Contact Section -->
         <div id="contact" class="content-section">
             <h2>Contact Us</h2>
             <p>📍 Location: 123 Spiritz Lane, Kingston, Jamaica</p>
@@ -180,12 +186,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
 
-    <!-- JavaScript -->
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const main = document.getElementById('main');
-
             if (sidebar.style.left === '-250px') {
                 sidebar.style.left = '0';
                 main.style.marginLeft = '250px';
@@ -209,24 +213,25 @@
             document.getElementById('bookingConfirmation').innerText = 'Thank you! Your booking has been submitted.';
         }
 
-        // Load menu items from Firebase
         function loadMenu() {
-    const menuList = document.getElementById('menuList');
-    const menuRef = firebase.database().ref('menu');
+            const menuList = document.getElementById('menuList');
+            const menuRef = firebase.database().ref('menu');
 
-    menuRef.on('value', (snapshot) => {
-        menuList.innerHTML = ''; // Clear existing items
-        snapshot.forEach((childSnapshot) => {
-            const item = childSnapshot.val();
-            const li = document.createElement('li');
-            li.innerHTML = `
-                ${item.name} - $${item.price}<br>
-                <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
-            `;
-            menuList.appendChild(li);
-        });
-    });
-}
+            menuRef.on('value', (snapshot) => {
+                menuList.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const item = childSnapshot.val();
+                    const itemCard = document.createElement('div');
+                    itemCard.classList.add('menu-card');
+                    itemCard.innerHTML = `
+                        <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
+                        <h3>${item.name}</h3>
+                        <p>Price: $${item.price}</p>
+                    `;
+                    menuList.appendChild(itemCard);
+                });
+            });
+        }
 
         window.onload = function () {
             loadMenu();
@@ -234,4 +239,5 @@
     </script>
 
 </body>
+
 </html>
