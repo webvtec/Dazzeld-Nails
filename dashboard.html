@@ -86,21 +86,28 @@
 
     <script>
         firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        const adminRef = firebase.database().ref('admins/' + user.email.replace('.', ','));
-        adminRef.once('value', (snapshot) => {
-            if (snapshot.exists()) {
-                // ✅ Authorized: Proceed to dashboard
-                window.location.href = "dashboard.html"; // Or whatever your main admin page is
+            if (user) {
+                // Convert email to Firebase-safe path key
+                const safeEmail = user.email.replace('.', ',');
+                const adminRef = firebase.database().ref('admins/' + safeEmail);
+
+                adminRef.once('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        // Authorized admin
+                        document.getElementById('loading').style.display = 'none';
+                        document.getElementById('dashboard').style.display = 'block';
+                    } else {
+                        alert('You are not authorized to access this page.');
+                        firebase.auth().signOut().then(() => {
+                            window.location.href = "login.html";
+                        });
+                    }
+                });
             } else {
-                alert('You are not authorized to access this page.');
-                window.location.href = "index.html";
+                // Not logged in
+                window.location.href = "login.html";
             }
         });
-    } else {
-        window.location.href = "login.html";
-    }
-});
 
         const menuForm = document.getElementById('menuForm');
         menuForm.addEventListener('submit', function (e) {
@@ -109,6 +116,13 @@
             const itemName = document.getElementById('itemName').value;
             const itemPrice = document.getElementById('itemPrice').value;
             const itemImage = document.getElementById('itemImage').files[0];
+
+            if (!itemImage) {
+                document.getElementById('uploadStatus').innerText = 'Please select an image.';
+                return;
+            }
+
+            document.getElementById('uploadStatus').innerText = 'Uploading...';
 
             const storageRef = firebase.storage().ref('menu-images/' + itemImage.name);
             const uploadTask = storageRef.put(itemImage);
@@ -128,6 +142,11 @@
                         });
                         document.getElementById('uploadStatus').innerText = 'Item added successfully!';
                         menuForm.reset();
+
+                        // Clear success message after 3 seconds
+                        setTimeout(() => {
+                            document.getElementById('uploadStatus').innerText = '';
+                        }, 3000);
                     });
                 }
             );
