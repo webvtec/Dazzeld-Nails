@@ -138,9 +138,8 @@
         <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
 
         <div id="home" class="content-section active">
-            <h1 id="homeTitle" contenteditable="true">Welcome to Spiritz Sports Bar & Grill</h1>
-            <p id="homeDescription" contenteditable="true">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
-            <button onclick="saveHomeContent()">Save Home Content</button>
+            <h1>Welcome to Spiritz Sports Bar & Grill</h1>
+            <p>Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
 
         <div id="booking" class="content-section">
@@ -238,26 +237,8 @@
             });
         }
 
-        function saveHomeContent() {
-            const title = document.getElementById('homeTitle').innerText;
-            const description = document.getElementById('homeDescription').innerText;
-            firebase.database().ref('siteContent/homeTitle').set(title);
-            firebase.database().ref('siteContent/homeDescription').set(description);
-            alert('Home content saved!');
-        }
-
-        function loadHomeContent() {
-            firebase.database().ref('siteContent/homeTitle').on('value', (snapshot) => {
-                document.getElementById('homeTitle').innerText = snapshot.val() || 'Welcome to Spiritz Sports Bar & Grill';
-            });
-            firebase.database().ref('siteContent/homeDescription').on('value', (snapshot) => {
-                document.getElementById('homeDescription').innerText = snapshot.val() || 'Enjoy great food, drinks, and live sports in a vibrant atmosphere.';
-            });
-        }
-
         window.onload = function () {
             loadMenu();
-            loadHomeContent();
         }
     </script>
 
