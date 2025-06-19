@@ -8,6 +8,7 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
         }
@@ -57,8 +58,8 @@
             cursor: pointer;
             margin: 0;
             position: fixed;
-            top: 10px;
-            left: 10px;
+            top: 0;
+            left: 0;
             z-index: 1100;
         }
 
@@ -129,6 +130,15 @@
 
 <body>
 
+    <!-- Menu Button Top-Left -->
+    <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
+
+    <!-- Location Button Top-Right -->
+    <a href="https://www.google.com/maps/place/Spiritz+Sports+Bar+%26+Grill/@17.997019,-76.793579,17z" target="_blank" style="position: fixed; top: 0; right: 0; background-color: #6200ea; color: red; padding: 10px 15px; font-size: 20px; text-decoration: none; z-index: 1100; display: flex; align-items: center; border-bottom-left-radius: 7px;">
+        📍 Location
+    </a>
+
+    <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <div>
             <h2>MENU</h2>
@@ -145,7 +155,7 @@
     </div>
 
     <div id="main">
-        <button class="open-btn" onclick="toggleSidebar()" style="position: fixed; top: 0; left: 0; margin: 0; padding: 10px 15px; z-index: 1100; border: none; background-color: #6200ea; color: white; font-size: 20px; cursor: pointer;">☰ Menu</button>
+
         <div id="home" class="content-section active">
             <h1 id="homeTitle">Welcome to Spiritz Sports Bar & Grill</h1>
             <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
