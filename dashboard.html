@@ -69,7 +69,7 @@
         <form id="menuForm">
             <input type="text" id="itemName" placeholder="Item Name" required>
             <input type="number" id="itemPrice" placeholder="Price" required>
-            <input type="file" id="itemImage" accept="image/*" required>
+            <input type="url" id="itemImageURL" placeholder="Image URL" required>
             <button type="submit">Add Item</button>
         </form>
         <p id="uploadStatus"></p>
@@ -77,7 +77,6 @@
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
@@ -87,9 +86,8 @@
     <script>
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                // Convert email to Firebase-safe path key
-                const safeEmail = user.email.replace('.', ',');
-                const adminRef = firebase.database().ref('admins/' + safeEmail);
+                // Use UID for admin check
+                const adminRef = firebase.database().ref('admins/' + user.uid);
 
                 adminRef.once('value', (snapshot) => {
                     if (snapshot.exists()) {
@@ -115,41 +113,33 @@
 
             const itemName = document.getElementById('itemName').value;
             const itemPrice = document.getElementById('itemPrice').value;
-            const itemImage = document.getElementById('itemImage').files[0];
+            const itemImageURL = document.getElementById('itemImageURL').value;
 
-            if (!itemImage) {
-                document.getElementById('uploadStatus').innerText = 'Please select an image.';
+            if (!itemImageURL) {
+                document.getElementById('uploadStatus').innerText = 'Please enter an image URL.';
                 return;
             }
 
-            document.getElementById('uploadStatus').innerText = 'Uploading...';
+            document.getElementById('uploadStatus').innerText = 'Saving item...';
 
-            const storageRef = firebase.storage().ref('menu-images/' + itemImage.name);
-            const uploadTask = storageRef.put(itemImage);
+            const newItemRef = firebase.database().ref('menu').push();
+            newItemRef.set({
+                name: itemName,
+                price: itemPrice,
+                imageUrl: itemImageURL
+            }, function (error) {
+                if (error) {
+                    document.getElementById('uploadStatus').innerText = 'Failed to add item to the menu.';
+                } else {
+                    document.getElementById('uploadStatus').innerText = 'Item added successfully!';
+                    menuForm.reset();
 
-            uploadTask.on('state_changed',
-                function (snapshot) { },
-                function (error) {
-                    document.getElementById('uploadStatus').innerText = 'Upload failed.';
-                },
-                function () {
-                    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                        const newItemRef = firebase.database().ref('menu').push();
-                        newItemRef.set({
-                            name: itemName,
-                            price: itemPrice,
-                            imageUrl: downloadURL
-                        });
-                        document.getElementById('uploadStatus').innerText = 'Item added successfully!';
-                        menuForm.reset();
-
-                        // Clear success message after 3 seconds
-                        setTimeout(() => {
-                            document.getElementById('uploadStatus').innerText = '';
-                        }, 3000);
-                    });
+                    // Clear success message after 3 seconds
+                    setTimeout(() => {
+                        document.getElementById('uploadStatus').innerText = '';
+                    }, 3000);
                 }
-            );
+            });
         });
     </script>
 
