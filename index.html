@@ -23,6 +23,10 @@
             padding-top: 60px;
             transition: 0.3s;
             z-index: 1000;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .sidebar h2 {
@@ -76,7 +80,8 @@
             display: block;
         }
 
-        h1, h2 {
+        h1,
+        h2 {
             color: #333;
         }
 
@@ -123,21 +128,21 @@
 
 <body>
 
-    <div id="sidebar" class="sidebar" style="position: fixed; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
-    <div>
-        <h2>Menu</h2>
-        <a href="#" onclick="showSection('home')">🏠 Home</a>
-        <a href="#" onclick="showSection('booking')">📅 Book a Table</a>
-        <a href="#" onclick="showSection('menu')">🍽️ View Menu</a>
-        <a href="#" onclick="showSection('events')">🎉 Events</a>
-        <a href="#" onclick="showSection('contact')">📞 Contact Us</a>
-    </div>
+    <div id="sidebar" class="sidebar">
+        <div>
+            <h2>Menu</h2>
+            <a href="#" onclick="showSection('home')">🏠 Home</a>
+            <a href="#" onclick="showSection('booking')">📅 Book a Table</a>
+            <a href="#" onclick="showSection('menu')">🍽️ View Menu</a>
+            <a href="#" onclick="showSection('events')">🎉 Events</a>
+            <a href="#" onclick="showSection('contact')">📞 Contact Us</a>
+        </div>
 
-    <!-- Admin Login button fixed at the bottom -->
-    <div style="padding: 20px; text-align: center;">
-        <a href="login.html" style="color: white; text-decoration: none; font-size: 18px;">🔑 Admin Login</a>
+        <!-- Admin Login button pinned at the bottom -->
+        <div style="padding: 20px; text-align: center;">
+            <a href="login.html" style="color: white; text-decoration: none; font-size: 18px;">🔑 Admin Login</a>
+        </div>
     </div>
-</div>
 
     <div id="main">
         <button class="open-btn" onclick="toggleSidebar()">☰ Menu</button>
@@ -174,11 +179,6 @@
                 <li>Big Game Watch Party - June 23</li>
                 <li>Reggae Night - June 30</li>
             </ul>
-        </div>
-
-        <div id="order" class="content-section">
-            <h2>Order for Pickup or Delivery</h2>
-            <p>Call us at (876) 123-4567 to place your order now!</p>
         </div>
 
         <div id="contact" class="content-section">
