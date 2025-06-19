@@ -210,15 +210,16 @@
             margin-top: 20px;
         }
 
-        .event-item {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .event-item input {
+    width: 100%; /* full width of the container */
+    box-sizing: border-box; /* ensures padding is included in width */
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
         .event-item img {
             width: 100%;
