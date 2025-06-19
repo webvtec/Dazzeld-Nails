@@ -206,32 +206,60 @@
             <div id="menuList" class="menu-grid"></div>
         </div>
 
-        <div id="events" class="content-section">
+        <!-- Updated Events Section with Dynamic Firebase Loading -->
+<div id="events" class="content-section">
     <h2 style="text-align: center; margin-bottom: 30px;">Upcoming Events</h2>
 
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 30px;">
+    <div id="upcomingEvents" style="display: flex; flex-direction: column; align-items: center; gap: 30px;"></div>
 
-        <!-- Event 1 -->
-        <div style="width: 100%; max-width: 600px; text-align: center;">
-            <h3 style="margin-bottom: 10px;">Friday Night Live - June 21</h3>
-            <img src="https://via.placeholder.com/600x400" alt="Friday Night Live" style="width: 100%; border-radius: 10px;">
-        </div>
+    <h2 style="text-align: center; margin: 50px 0 30px 0;">Past Events</h2>
 
-        <!-- Event 2 -->
-        <div style="width: 100%; max-width: 600px; text-align: center;">
-            <h3 style="margin-bottom: 10px;">Big Game Watch Party - June 23</h3>
-            <img src="https://via.placeholder.com/600x400" alt="Big Game Watch Party" style="width: 100%; border-radius: 10px;">
-        </div>
-
-        <!-- Event 3 -->
-        <div style="width: 100%; max-width: 600px; text-align: center;">
-            <h3 style="margin-bottom: 10px;">Reggae Night - June 30</h3>
-            <img src="https://via.placeholder.com/600x400" alt="Reggae Night" style="width: 100%; border-radius: 10px;">
-        </div>
-
-    </div>
+    <div id="pastEvents" style="display: flex; flex-direction: column; align-items: center; gap: 30px;"></div>
 </div>
 
+<script>
+    function loadEvents() {
+        const upcomingContainer = document.getElementById('upcomingEvents');
+        const pastContainer = document.getElementById('pastEvents');
+
+        const eventsRef = firebase.database().ref('events');
+
+        eventsRef.child('upcoming').on('value', snapshot => {
+            upcomingContainer.innerHTML = '';
+            snapshot.forEach(childSnapshot => {
+                const event = childSnapshot.val();
+                const eventDiv = document.createElement('div');
+                eventDiv.style = 'width: 100%; max-width: 600px; text-align: center;';
+                eventDiv.innerHTML = `
+                    <h3 style="margin-bottom: 10px;">${event.title}</h3>
+                    <img src="${event.imageUrl}" alt="${event.title}" style="width: 100%; border-radius: 10px;">
+                `;
+                upcomingContainer.appendChild(eventDiv);
+            });
+        });
+
+        eventsRef.child('past').on('value', snapshot => {
+            pastContainer.innerHTML = '';
+            snapshot.forEach(childSnapshot => {
+                const event = childSnapshot.val();
+                const eventDiv = document.createElement('div');
+                eventDiv.style = 'width: 100%; max-width: 600px; text-align: center;';
+                eventDiv.innerHTML = `
+                    <h3 style="margin-bottom: 10px;">${event.title}</h3>
+                    <img src="${event.imageUrl}" alt="${event.title}" style="width: 100%; border-radius: 10px;">
+                `;
+                pastContainer.appendChild(eventDiv);
+            });
+        });
+    }
+
+    // Call this in your window.onload
+    window.onload = function () {
+        loadMenu();
+        loadHomeContent();
+        loadEvents();
+    }
+</script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <script src="firebase-config.js"></script>
