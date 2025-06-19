@@ -164,17 +164,30 @@
         }
 
         .menu-item button {
-            width: 48%;
+            width: 100%;
             padding: 12px 14px;
-            margin: 5px 1%;
+            margin: 10px 0;
             font-size: 16px;
             font-weight: bold;
         }
 
         .button-row {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             margin-top: 15px;
+        }
+
+        .delete-button {
+            width: 48%;
+            padding: 12px 14px;
+            margin: 5px 1%;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #e53935;
+        }
+
+        .delete-button:hover {
+            background-color: #b71c1c;
         }
 
         form {
@@ -236,6 +249,9 @@
                 <button type="submit">Add Menu Item</button>
             </form>
             <div id="menuList" class="menu-grid"></div>
+
+            <!-- Global Save Button -->
+            <button onclick="saveAllMenuItems()">💾 Save All Menu Items</button>
         </div>
 
         <div id="eventSection" class="content-section">
@@ -321,8 +337,7 @@
                     </div>
                     <input type="text" id="price-${index}" value="${item.price}">
                     <div class="button-row">
-                        <button onclick="saveMenuItem(${index})">💾 Save</button>
-                        <button onclick="deleteMenuItem(${index})">🗑️ Delete</button>
+                        <button class="delete-button" onclick="deleteMenuItem(${index})">🗑️ Delete</button>
                     </div>
                 `;
                 menuList.appendChild(itemDiv);
@@ -339,17 +354,6 @@
             }
         }
 
-        function saveMenuItem(index) {
-            const menu = JSON.parse(localStorage.getItem('menu')) || [];
-            const updatedName = document.getElementById(`name-${index}`).value;
-            const updatedPrice = document.getElementById(`price-${index}`).value;
-            menu[index].name = updatedName;
-            menu[index].price = updatedPrice;
-            localStorage.setItem('menu', JSON.stringify(menu));
-            alert('Menu item updated successfully!');
-            loadMenu();
-        }
-
         function deleteMenuItem(index) {
             if (confirm('Delete this menu item?')) {
                 const menu = JSON.parse(localStorage.getItem('menu')) || [];
@@ -357,6 +361,19 @@
                 localStorage.setItem('menu', JSON.stringify(menu));
                 loadMenu();
             }
+        }
+
+        function saveAllMenuItems() {
+            const menu = JSON.parse(localStorage.getItem('menu')) || [];
+            menu.forEach((item, index) => {
+                const updatedName = document.getElementById(`name-${index}`).value;
+                const updatedPrice = document.getElementById(`price-${index}`).value;
+                item.name = updatedName;
+                item.price = updatedPrice;
+            });
+            localStorage.setItem('menu', JSON.stringify(menu));
+            alert('All menu items saved successfully!');
+            loadMenu();
         }
 
         window.onload = function () {
