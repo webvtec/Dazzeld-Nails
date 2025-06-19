@@ -14,13 +14,13 @@
 
         .sidebar {
             height: 100%;
-            width: 250px;
+            width: 200px; /* Sidebar is now slimmer */
             position: fixed;
             top: 0;
-            left: -250px;
+            left: -200px;
             background-color: #6200ea;
             overflow-x: hidden;
-            padding-top: 60px;
+            padding-top: 40px;
             transition: 0.3s;
             z-index: 1000;
 
@@ -36,9 +36,9 @@
         }
 
         .sidebar a {
-            padding: 15px 25px;
+            padding: 12px 20px;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
             display: block;
             transition: 0.3s;
@@ -139,7 +139,7 @@
 
         <!-- Admin Login button pinned at the bottom -->
         <div style="padding: 20px; text-align: center;">
-            <a href="login.html" style="color: white; text-decoration: none; font-size: 18px;">🔑 Admin Login</a>
+            <a href="login.html" style="color: white; text-decoration: none; font-size: 16px;">🔑 Admin Login</a>
         </div>
     </div>
 
@@ -153,16 +153,16 @@
 
         <div id="booking" class="content-section">
             <h2>Book a Table</h2>
-            <form onsubmit="submitBooking(event)">
-                <input type="text" id="name" placeholder="Your Name" required><br><br>
-                <input type="email" id="email" placeholder="Email" required><br><br>
-                <input type="text" id="phone" placeholder="Phone Number" required><br><br>
-                <input type="date" id="date" required><br><br>
-                <input type="time" id="time" required><br><br>
-                <input type="number" id="people" placeholder="Number of People" required><br><br>
-                <button type="submit">Book Now</button>
+            <form onsubmit="submitBooking(event)" style="max-width: 400px; margin: auto;">
+                <input type="text" id="name" placeholder="Your Name" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="text" id="phone" placeholder="Phone Number" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="date" id="date" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="time" id="time" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <input type="number" id="people" placeholder="Number of People" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
+                <button type="submit" style="background-color: #6200ea; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Book Now</button>
             </form>
-            <p id="bookingConfirmation" style="color: green; margin-top: 15px;"></p>
+            <p id="bookingConfirmation" style="color: green; margin-top: 15px; text-align: center;"></p>
         </div>
 
         <div id="menu" class="content-section">
@@ -188,11 +188,11 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const main = document.getElementById('main');
-            if (sidebar.style.left === '-250px') {
+            if (sidebar.style.left === '-200px') {
                 sidebar.style.left = '0';
-                main.style.marginLeft = '250px';
+                main.style.marginLeft = '200px';
             } else {
-                sidebar.style.left = '-250px';
+                sidebar.style.left = '-200px';
                 main.style.marginLeft = '0';
             }
         }
