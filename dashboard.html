@@ -12,93 +12,63 @@
             background-color: #f4f4f4;
         }
 
-        .sidebar {
-            width: 220px;
-            position: fixed;
-            top: 0;
-            left: -220px;
-            background-color: rgba(0, 0, 0, 0.8);
-            overflow-x: hidden;
-            padding: 40px 0 20px 0;
-            transition: 0.4s;
-            z-index: 1000;
+        .header {
+            background-color: #6200ea;
+            color: white;
+            padding: 15px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            height: 100%;
         }
 
-        .sidebar h2 {
+        .menu-button {
+            font-size: 20px;
+            background-color: #3700b3;
             color: white;
-            text-align: center;
-            margin-bottom: 30px;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .sidebar {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: #6200ea;
+            border-radius: 0 5px 5px 0;
+            overflow: hidden;
+            display: none;
+            z-index: 1000;
         }
 
         .sidebar a {
+            display: block;
+            color: white;
             padding: 12px 20px;
             text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.3s;
-            margin-bottom: 15px;
-            border-radius: 5px;
         }
 
         .sidebar a:hover {
             background-color: #3700b3;
         }
 
-        .open-btn {
-            font-size: 22px;
-            background-color: #6200ea;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1100;
-            border-radius: 5px;
-        }
-
-        .open-btn:hover {
-            background-color: #3700b3;
-        }
-
-        #main {
-            transition: margin-left 0.4s;
+        .content {
             padding: 20px;
-            margin-left: 0;
         }
 
-        .content-section {
+        .hidden {
             display: none;
-            padding: 20px;
-            margin-top: 20px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
-        .content-section.active {
-            display: block;
-        }
-
-        input, textarea, button {
+        input,
+        textarea,
+        button {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
         }
 
         button {
@@ -106,48 +76,42 @@
             color: white;
             border: none;
             cursor: pointer;
+            font-size: 16px;
         }
 
         button:hover {
             background-color: #3700b3;
         }
 
-        .menu-grid {
+        #menuList {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
+            gap: 20px;
             margin-top: 20px;
         }
 
-        .card {
+        .menu-card {
             background-color: white;
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             min-height: 500px;
-            max-width: 450px;
-            margin: auto;
         }
 
-        .image-container {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .card img {
-            width: 100%;
-            max-height: 350px;
-            object-fit: cover;
+        .menu-card img {
+            width: 80%;
+            max-height: 300px;
+            object-fit: contain;
             border-radius: 8px;
             margin-bottom: 15px;
+            position: relative;
         }
 
         .edit-icon {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 10px;
+            right: 10px;
             background-color: rgba(0, 0, 0, 0.6);
             color: white;
             padding: 5px;
@@ -156,225 +120,201 @@
             font-size: 14px;
         }
 
-        .card input {
-            width: 90%;
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .card h3 {
-            font-size: 26px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .card p {
-            margin: 10px 0;
+        .menu-card h3,
+        .menu-card p {
             font-size: 20px;
             font-weight: bold;
-            color: #6200ea;
+            margin: 10px 0;
         }
 
-        .card button {
-            width: 48%;
-            padding: 10px 12px;
-            margin: 5px 1%;
-            font-size: 14px;
-        }
-
-        .button-row {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-            color: #333;
+        .menu-card button {
+            width: 45%;
+            margin: 5px 2%;
         }
     </style>
 </head>
 
 <body>
 
-    <button class="open-btn" onclick="toggleSidebar()">☰</button>
-
-    <div id="sidebar" class="sidebar">
-        <h2>ADMIN</h2>
-        <a href="#" onclick="showSection('homeSection')">📄 Home Content</a>
-        <a href="#" onclick="showSection('menuSection')">🍽️ Menu Items</a>
-        <a href="#" onclick="showSection('eventSection')">🎉 Events</a>
-        <div style="display: flex; justify-content: center; margin-top: 20px;">
-            <a href="index.html" style="background-color: white; color: #6200ea; padding: 10px 20px; border-radius: 7px; text-decoration: none; font-weight: bold;">VIEW SITE</a>
-        </div>
+    <div class="header">
+        <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
+        <h1>Admin Dashboard</h1>
     </div>
 
-    <div id="main">
+    <div class="sidebar" id="sidebar">
+        <a href="#" onclick="showSection('homeSection')">🏠 Home</a>
+        <a href="#" onclick="showSection('menuSection')">📋 View Menu</a>
+        <a href="#" onclick="showSection('bookingSection')">📅 Book a Table</a>
+        <a href="#" onclick="showSection('orderSection')">🛒 Order Food</a>
+        <a href="#" onclick="showSection('contactSection')">📞 Contact Info</a>
+    </div>
 
-        <div id="homeSection" class="content-section active">
+    <div class="content">
+        <div id="loading">Checking authorization...</div>
+
+        <div id="homeSection" class="hidden">
             <h2>Home Content</h2>
-            <form onsubmit="event.preventDefault(); saveHomeContent();">
-                <label for="homeTitle">Home Title</label>
-                <input type="text" id="homeTitle" placeholder="Home Title">
-
-                <label for="homeDescription">Home Description</label>
-                <textarea id="homeDescription" placeholder="Home Description"></textarea>
-
-                <button type="submit">Save Home Content</button>
-            </form>
+            <textarea id="homeContent" placeholder="Edit home content here..."></textarea>
+            <button onclick="saveContent('homeContent')">Save</button>
         </div>
 
-        <div id="menuSection" class="content-section">
+        <div id="menuSection" class="hidden">
             <h2>Menu Items</h2>
             <form id="menuForm">
-                <label for="itemName">Item Name</label>
                 <input type="text" id="itemName" placeholder="Item Name" required>
-
-                <label for="itemPrice">Item Price</label>
                 <input type="number" id="itemPrice" placeholder="Price" required>
-
-                <label for="itemImageURL">Image URL</label>
                 <input type="url" id="itemImageURL" placeholder="Image URL" required>
-
-                <button type="submit">Add Menu Item</button>
+                <button type="submit">Add Item</button>
             </form>
-            <div id="menuList" class="menu-grid"></div>
+            <p id="uploadStatus"></p>
+            <div id="menuList"></div>
         </div>
 
-        <div id="eventSection" class="content-section">
-            <h2>Events</h2>
-            <form id="eventForm">
-                <label for="eventTitle">Event Title</label>
-                <input type="text" id="eventTitle" placeholder="Event Title" required>
-
-                <label for="eventImageURL">Image URL</label>
-                <input type="url" id="eventImageURL" placeholder="Image URL" required>
-
-                <label for="eventDate">Event Date</label>
-                <input type="date" id="eventDate" required>
-
-                <button type="submit">Add Event</button>
-            </form>
-            <div id="eventList"></div>
+        <div id="bookingSection" class="hidden">
+            <h2>Booking Info</h2>
+            <textarea id="bookingContent" placeholder="Edit booking instructions here..."></textarea>
+            <button onclick="saveContent('bookingContent')">Save</button>
         </div>
 
+        <div id="orderSection" class="hidden">
+            <h2>Order Info</h2>
+            <textarea id="orderContent" placeholder="Edit order instructions here..."></textarea>
+            <button onclick="saveContent('orderContent')">Save</button>
+        </div>
+
+        <div id="contactSection" class="hidden">
+            <h2>Contact Info</h2>
+            <textarea id="contactContent" placeholder="Edit contact info here..."></textarea>
+            <button onclick="saveContent('contactContent')">Save</button>
+        </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
     <script>
+        let sidebarVisible = false;
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            const main = document.getElementById('main');
-            if (sidebar.style.left === '-220px' || sidebar.style.left === '') {
-                sidebar.style.left = '0';
-                main.style.marginLeft = '220px';
-            } else {
-                sidebar.style.left = '-220px';
-                main.style.marginLeft = '0';
-            }
+            sidebarVisible = !sidebarVisible;
+            sidebar.style.display = sidebarVisible ? 'block' : 'none';
         }
 
         function showSection(sectionId) {
-            const sections = document.getElementsByClassName('content-section');
-            for (let i = 0; i < sections.length; i++) {
-                sections[i].classList.remove('active');
+            const sections = ['homeSection', 'menuSection', 'bookingSection', 'orderSection', 'contactSection'];
+            sections.forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user && user.uid === 'O0PySpbvj8dHS6fBWCagxFLxguU2') {
+                document.getElementById('loading').style.display = 'none';
+                showSection('homeSection');
+                loadContent();
+                loadMenu();
+            } else {
+                alert('You are not authorized to access this page.');
+                firebase.auth().signOut().then(() => {
+                    window.location.href = 'login.html';
+                });
             }
-            document.getElementById(sectionId).classList.add('active');
-            toggleSidebar();
+        });
+
+        function saveContent(sectionId) {
+            const content = document.getElementById(sectionId).value;
+            firebase.database().ref('siteContent/' + sectionId).set(content);
+            alert('Content saved!');
         }
 
-        function loadHomeContent() {
-            document.getElementById('homeTitle').value = localStorage.getItem('homeTitle') || '';
-            document.getElementById('homeDescription').value = localStorage.getItem('homeDescription') || '';
-        }
-
-        function saveHomeContent() {
-            localStorage.setItem('homeTitle', document.getElementById('homeTitle').value);
-            localStorage.setItem('homeDescription', document.getElementById('homeDescription').value);
-            alert('Home content saved!');
+        function loadContent() {
+            const sections = ['homeContent', 'bookingContent', 'orderContent', 'contactContent'];
+            sections.forEach(sectionId => {
+                firebase.database().ref('siteContent/' + sectionId).on('value', (snapshot) => {
+                    document.getElementById(sectionId).value = snapshot.val() || '';
+                });
+            });
         }
 
         const menuForm = document.getElementById('menuForm');
         menuForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            const name = document.getElementById('itemName').value;
-            const price = document.getElementById('itemPrice').value;
-            const imageUrl = document.getElementById('itemImageURL').value;
 
-            const menu = JSON.parse(localStorage.getItem('menu')) || [];
-            menu.push({ name, price, imageUrl });
-            localStorage.setItem('menu', JSON.stringify(menu));
+            const itemName = document.getElementById('itemName').value;
+            const itemPrice = document.getElementById('itemPrice').value;
+            const itemImageURL = document.getElementById('itemImageURL').value;
 
-            menuForm.reset();
-            loadMenu();
+            if (!itemImageURL) {
+                document.getElementById('uploadStatus').innerText = 'Please enter an image URL.';
+                return;
+            }
+
+            document.getElementById('uploadStatus').innerText = 'Saving item...';
+
+            const newItemRef = firebase.database().ref('menu').push();
+            newItemRef.set({
+                name: itemName,
+                price: itemPrice,
+                imageUrl: itemImageURL
+            }, function (error) {
+                if (error) {
+                    document.getElementById('uploadStatus').innerText = 'Failed to add item.';
+                } else {
+                    document.getElementById('uploadStatus').innerText = 'Item added successfully!';
+                    menuForm.reset();
+                    loadMenu();
+                    setTimeout(() => {
+                        document.getElementById('uploadStatus').innerText = '';
+                    }, 3000);
+                }
+            });
         });
 
         function loadMenu() {
-            const menu = JSON.parse(localStorage.getItem('menu')) || [];
             const menuList = document.getElementById('menuList');
-            menuList.innerHTML = '';
+            const menuRef = firebase.database().ref('menu');
 
-            menu.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.innerHTML = `
-                    <input type="text" id="name-${index}" value="${item.name}" style="margin-bottom: 15px; text-align: center; font-size: 20px; font-weight: bold;">
-                    <div class="image-container">
-                        <img id="image-${index}" src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
-                        <div class="edit-icon" onclick="editImage(${index})">✏️</div>
-                    </div>
-                    <input type="text" id="price-${index}" value="${item.price}" style="margin-top: 15px; text-align: center; font-size: 18px; font-weight: bold;">
-                    <div class="button-row">
-                        <button onclick="saveMenuItem(${index})">💾 Save</button>
-                        <button onclick="deleteMenuItem(${index})">🗑️ Delete</button>
-                    </div>
-                `;
-                menuList.appendChild(card);
+            menuRef.on('value', (snapshot) => {
+                menuList.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const item = childSnapshot.val();
+                    const itemKey = childSnapshot.key;
+
+                    const itemCard = document.createElement('div');
+                    itemCard.classList.add('menu-card');
+
+                    itemCard.innerHTML = `
+                        <div style="position: relative;">
+                            <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/150';">
+                            <div class="edit-icon" onclick="editImage('${itemKey}', '${item.imageUrl}')">✏️</div>
+                        </div>
+                        <h3 contenteditable="true" onblur="updateItem('${itemKey}', 'name', this.innerText)">${item.name}</h3>
+                        <p contenteditable="true" onblur="updateItem('${itemKey}', 'price', this.innerText)">$${item.price}</p>
+                        <button onclick="deleteItem('${itemKey}')">🗑️ Delete</button>
+                    `;
+
+                    menuList.appendChild(itemCard);
+                });
             });
         }
 
-        function editImage(index) {
-            const newUrl = prompt('Enter new image URL:');
+        function editImage(itemKey, currentUrl) {
+            const newUrl = prompt('Enter new image URL:', currentUrl);
             if (newUrl) {
-                const menu = JSON.parse(localStorage.getItem('menu')) || [];
-                menu[index].imageUrl = newUrl;
-                localStorage.setItem('menu', JSON.stringify(menu));
-                loadMenu();
+                firebase.database().ref('menu/' + itemKey + '/imageUrl').set(newUrl);
             }
         }
 
-        function saveMenuItem(index) {
-            const menu = JSON.parse(localStorage.getItem('menu')) || [];
-            const updatedName = document.getElementById(`name-${index}`).value;
-            const updatedPrice = document.getElementById(`price-${index}`).value;
-            menu[index].name = updatedName;
-            menu[index].price = updatedPrice;
-            localStorage.setItem('menu', JSON.stringify(menu));
-            alert('Menu item updated successfully!');
-            loadMenu();
+        function updateItem(itemKey, field, newValue) {
+            firebase.database().ref('menu/' + itemKey + '/' + field).set(newValue);
         }
 
-        function deleteMenuItem(index) {
-            if (confirm('Delete this menu item?')) {
-                const menu = JSON.parse(localStorage.getItem('menu')) || [];
-                menu.splice(index, 1);
-                localStorage.setItem('menu', JSON.stringify(menu));
-                loadMenu();
+        function deleteItem(itemKey) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                firebase.database().ref('menu/' + itemKey).remove();
             }
-        }
-
-        window.onload = function () {
-            loadHomeContent();
-            loadMenu();
         }
     </script>
 
