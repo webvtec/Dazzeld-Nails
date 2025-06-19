@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <style>
-        /* Your existing CSS remains unchanged */
-        /* Keep your entire original CSS */
+        /* (CSS remains unchanged) */
+        /* All styles from the previous file stay here */
     </style>
 </head>
 
@@ -27,7 +27,6 @@
 
     <div id="main">
 
-        <!-- Home Section -->
         <div id="homeSection" class="content-section active">
             <h2>Home Content</h2>
             <form onsubmit="event.preventDefault(); saveHomeContent();">
@@ -41,7 +40,6 @@
             </form>
         </div>
 
-        <!-- Menu Section -->
         <div id="menuSection" class="content-section">
             <h2>Menu Items</h2>
             <form id="menuForm">
@@ -60,7 +58,6 @@
             <button onclick="saveAllMenuItems()">💾 Save All Menu Items</button>
         </div>
 
-        <!-- Events Section -->
         <div id="eventSection" class="content-section">
             <h2>Events</h2>
             <form id="eventForm">
@@ -106,7 +103,6 @@
                 sections[i].classList.remove('active');
             }
             document.getElementById(sectionId).classList.add('active');
-            toggleSidebar();
         }
 
         function loadHomeContent() {
@@ -189,8 +185,6 @@
             alert('All menu items saved successfully!');
             loadMenu();
         }
-
-        // EVENTS SECTION
 
         document.getElementById('eventForm').addEventListener('submit', function (e) {
             e.preventDefault();
