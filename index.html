@@ -18,31 +18,31 @@
         }
 
         .header-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 45px;
-            background-color: #6200ea;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 10px;
-            z-index: 1200;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 45px;
+    background-color: #6200ea;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribute space correctly */
+    padding: 0 10px; /* Small side padding */
+    z-index: 1200;
+}
 
         .vibey-heading {
-            font-family: 'Lobster', cursive;
-            font-size: 27px;
-            margin: 0;
-            background: linear-gradient(90deg, #ff4e50, #f9d423, #24c6dc, #abecd6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-            white-space: nowrap;
-            text-align: center;
-            flex: 1;
-        }
+    font-family: 'Lobster', cursive;
+    font-size: 27px;
+    margin: 0;
+    background: linear-gradient(90deg, #ff4e50, #f9d423, #24c6dc, #abecd6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    text-align: center;
+    flex: 1; /* Forces it to take up centered space */
+}
 
         .open-btn, .location-button {
             background-color: #50C878;
@@ -206,42 +206,28 @@
             background-color: #3700b3;
         }
 
-        #booking {
-    padding-top: 80px; /* Adds space under the header */
-    display: block; /* Natural layout */
-}
-
-.form-wrapper {
-    width: 100%; /* Just keep width control */
-    display: flex;
-    justify-content: center; /* Center the form horizontally */
-}
-
-.reservation-form {
-    max-width: 400px;
-    width: 100%;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-}
+        #bookingConfirmation {
+            color: green;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="header-bar">
-        <button class="open-btn" onclick="toggleSidebar()">☰</button>
+    <button class="open-btn" onclick="toggleSidebar()">☰</button>
 
-        <h1 class="site-title vibey-heading">KIMONE'S KOLLECTION</h1>
+    <h1 class="site-title vibey-heading">KIMONE'S KOLLECTION</h1>
 
-        <a href="https://maps.app.goo.gl/hxFZgQTcXUJvCLzg7" target="_blank" class="location-button">
-            <span style="font-size: 22px; color: red;">📍</span>
-        </a>
-    </div>
+    <a href="https://maps.app.goo.gl/hxFZgQTcXUJvCLzg7" target="_blank" class="location-button">
+        <span style="font-size: 22px; color: red;">📍</span>
+    </a>
+</div>
 
+    <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <h2>MENU</h2>
         <a href="#" onclick="showSection('home')">💫 DESIGNS</a>
@@ -249,6 +235,7 @@
         <a href="#" onclick="showSection('booking')">🤳🏽 ORDER</a>
         <a href="#" onclick="showSection('events')">🎉 EVENTS</a>
 
+        <!-- Admin Login Button -->
         <div style="display: flex; justify-content: center; margin-top: 20px;">
             <a href="dashboard.html" style="background-color: white; color: #6200ea; padding: 10px 20px; border-radius: 7px; text-decoration: none; font-weight: bold;">ADMIN</a>
         </div>
@@ -258,47 +245,44 @@
         <div id="home" class="content-section active">
             <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
-       <div id="booking" class="content-section">
-    <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
 
-    <div class="form-wrapper">
-        <form onsubmit="submitBooking(event)" class="reservation-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" placeholder="Your Name" required>
+        <div id="booking" class="content-section">
+            <h2 style="text-align: center;">RESERVATION</h2>
+            <form onsubmit="submitBooking(event)" class="reservation-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Your Name" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" placeholder="Email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Email" required>
 
-            <label for="emailOption">Select an option:</label>
-            <select id="emailOption" name="emailOption" required>
-                <option value="">--Please choose an option--</option>
-                <option value="now">Now</option>
-                <option value="later">Later</option>
-                <option value="never">Never</option>
-                <option value="nail">Nail</option>
-            </select>
+                <label for="emailOption">Select an option:</label>
+                <select id="emailOption" name="emailOption" required>
+                    <option value="">--Please choose an option--</option>
+                    <option value="now">Now</option>
+                    <option value="later">Later</option>
+                    <option value="never">Never</option>
+                    <option value="nail">Nail</option>
+                </select>
 
-            <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" placeholder="Phone Number" required>
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" placeholder="Phone Number" required>
 
-            <label for="photo1">Upload Photo 1:</label>
-            <input type="file" id="photo1" accept="image/*" required>
+                <label for="photo1">Upload Photo 1:</label>
+                <input type="file" id="photo1" accept="image/*" required>
 
-            <label for="photo2">Upload Photo 2:</label>
-            <input type="file" id="photo2" accept="image/*" required>
+                <label for="photo2">Upload Photo 2:</label>
+                <input type="file" id="photo2" accept="image/*" required>
 
-            <label for="photo3">Upload Photo 3:</label>
-            <input type="file" id="photo3" accept="image/*" required>
+                <label for="photo3">Upload Photo 3:</label>
+                <input type="file" id="photo3" accept="image/*" required>
 
-            <label for="address">Address:</label>
-            <input type="text" id="address" placeholder="Address" required>
+                <label for="address">Address:</label>
+                <input type="text" id="address" placeholder="Address" required>
 
-            <button type="submit">BOOK NOW</button>
-        </form>
-    </div>
-
-    <p id="bookingConfirmation"></p>
-</div>
+                <button type="submit">BOOK NOW</button>
+            </form>
+            <p id="bookingConfirmation"></p>
+        </div>
 
         <div id="menu" class="content-section">
             <h2>Our Menu</h2>
@@ -369,4 +353,5 @@
     </script>
 
 </body>
+
 </html>
