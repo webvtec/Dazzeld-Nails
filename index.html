@@ -163,17 +163,21 @@
             color: #6200ea;
         }
         .reservation-form {
-    max-width: 500px;
-    margin: 0 auto;
+    max-width: 400px;  /* Smaller for mobile fit */
+    width: 100%;       /* Always respect screen size */
+    margin: 0 auto;    /* Center the form */
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Force padding inside width */
 }
 
 .reservation-form input,
 .reservation-form button {
-    width: 100%;
+    width: 100%;       /* Fully contained */
+    max-width: 100%;   /* Never overflow */
+    box-sizing: border-box; /* Prevent overflow from padding */
     padding: 12px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -234,17 +238,17 @@
         </div>
 
         <div id="booking" class="content-section">
-            <h2>RESERVATION</h2>
-            <form onsubmit="submitBooking(event)" class="reservation-form">
-    <input type="text" id="name" placeholder="Your Name" required>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="text" id="phone" placeholder="Phone Number" required>
-    <input type="date" id="date" required>
-    <input type="time" id="time" required>
-    <input type="number" id="people" placeholder="Number of People" required>
-    <button type="submit">BOOK NOW</button>
-</form>
-<p id="bookingConfirmation"></p>
+    <h2 style="text-align: center;">RESERVATION</h2>
+    <form onsubmit="submitBooking(event)" class="reservation-form">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+        <input type="date" id="date" required>
+        <input type="time" id="time" required>
+        <input type="number" id="people" placeholder="Number of People" required>
+        <button type="submit">BOOK NOW</button>
+    </form>
+    <p id="bookingConfirmation"></p>
         </div>
 
         <div id="menu" class="content-section">
