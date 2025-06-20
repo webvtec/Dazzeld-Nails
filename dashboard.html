@@ -49,6 +49,22 @@
             background-color: #3700b3;
         }
 
+        .header-title {
+    position: fixed;
+    top: 0;
+    left: 50px; /* Starts right after the menu button */
+    right: 0;
+    height: 40px; /* Same height as button (adjust if needed) */
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    background-color: #6200ea;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    z-index: 1100;
+}
+
         .open-btn {
             font-size: 22px;
             background-color: #6200ea;
@@ -284,6 +300,7 @@
 <body>
 
     <button class="open-btn" onclick="toggleSidebar()">☰</button>
+    <div class="header-title">ADMIN DASHBOARD</div>
 
     <div id="sidebar" class="sidebar">
         <h2>ADMIN</h2>
