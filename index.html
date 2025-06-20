@@ -179,38 +179,59 @@
             color: #6200ea;
         }
         .reservation-form {
-    max-width: 400px;  /* Smaller for mobile fit */
-    width: 100%;       /* Always respect screen size */
-    margin: 0 auto;    /* Center the form */
-    background-color: white;
+    max-width: 500px;
+    margin: 0 auto;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Force padding inside width */
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
 
-.reservation-form input,
-.reservation-form button {
-    width: 100%;       /* Fully contained */
-    max-width: 100%;   /* Never overflow */
-    box-sizing: border-box; /* Prevent overflow from padding */
-    padding: 12px;
+.reservation-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
 }
 
-.reservation-form button {
-    background-color: #6200ea;
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.form-group input[type="file"] {
+    padding: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF;
     color: white;
     border: none;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
-    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
-.reservation-form button:hover {
-    background-color: #3700b3;
+button:hover {
+    background-color: #0056b3;
 }
 
 #bookingConfirmation {
@@ -255,36 +276,53 @@
         <div id="booking" class="content-section">
     <h2 style="text-align: center;">CUSTOM ORDER</h2>
 <form onsubmit="submitBooking(event)" class="reservation-form">
-    <label for="name">Name:</label>
-    <input type="text" id="name" placeholder="Your Name" required>
+    <h2>Reservation Form</h2>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" placeholder="Email" required>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Your Name" required>
+    </div>
 
-    <!-- Email Options Dropdown -->
-    <label for="emailOption">Select an option:</label>
-    <select id="emailOption" name="emailOption" required>
-        <option value="">--Please choose an option--</option>
-        <option value="now">Now</option>
-        <option value="later">Later</option>
-        <option value="never">Never</option>
-        <option value="nail">Nail</option>
-    </select>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email" required>
+    </div>
 
-    <label for="phone">Phone Number:</label>
-    <input type="text" id="phone" placeholder="Phone Number" required>
+    <div class="form-group">
+        <label for="emailOption">Select an option:</label>
+        <select id="emailOption" name="emailOption" required>
+            <option value="">--Please choose an option--</option>
+            <option value="now">Now</option>
+            <option value="later">Later</option>
+            <option value="never">Never</option>
+            <option value="nail">Nail</option>
+        </select>
+    </div>
 
-    <label for="photo1">Upload Photo 1:</label>
-    <input type="file" id="photo1" accept="image/*" required>
+    <div class="form-group">
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+    </div>
 
-    <label for="photo2">Upload Photo 2:</label>
-    <input type="file" id="photo2" accept="image/*" required>
+    <div class="form-group">
+        <label for="photo1">Upload Photo 1:</label>
+        <input type="file" id="photo1" accept="image/*" required>
+    </div>
 
-    <label for="photo3">Upload Photo 3:</label>
-    <input type="file" id="photo3" accept="image/*" required>
+    <div class="form-group">
+        <label for="photo2">Upload Photo 2:</label>
+        <input type="file" id="photo2" accept="image/*" required>
+    </div>
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" placeholder="Address" required>
+    <div class="form-group">
+        <label for="photo3">Upload Photo 3:</label>
+        <input type="file" id="photo3" accept="image/*" required>
+    </div>
+
+    <div class="form-group">
+        <label for="address">Address:</label>
+        <input type="text" id="address" placeholder="Address" required>
+    </div>
 
     <button type="submit">BOOK NOW</button>
 </form>
