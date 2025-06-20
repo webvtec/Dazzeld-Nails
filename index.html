@@ -256,6 +256,10 @@
 
         <div id="booking" class="content-section">
     <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
+
+    <div class="form-center"> <!-- Add this div -->
+        <form onsubmit="submitBooking(event)" class="reservation-form">
+            <!-- form fields remain the same -->
             <form onsubmit="submitBooking(event)" class="reservation-form">
                 <label for="name">Name:</label>
                 <input type="text" id="name" placeholder="Your Name" required>
@@ -290,7 +294,13 @@
                 <button type="submit">BOOK NOW</button>
             </form>
             <p id="bookingConfirmation"></p>
-        </div>
+    </div>
+        </form>
+    </div>
+
+    <p id="bookingConfirmation"></p>
+</div>
+
 
         <div id="menu" class="content-section">
             <h2>Our Menu</h2>
