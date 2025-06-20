@@ -13,7 +13,20 @@
         max-width: 100%;
     }
 
-    /* Your existing CSS with sidebar fix included */
+.top-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #6200ea;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    z-index: 1200;
+}
+
 .vibey-heading {
     font-family: 'Lobster', cursive;
     font-size: 24px;
@@ -211,13 +224,13 @@
 
 <body>
 
-    <!-- Sidebar Button -->
+    <div class="top-header">
     <button class="open-btn" onclick="toggleSidebar()">☰</button>
-
-    <!-- Location Button -->
+    <h1 class="site-title vibey-heading">KIMONE'S KOLLECTION</h1>
     <a href="https://maps.app.goo.gl/hxFZgQTcXUJvCLzg7" target="_blank" class="location-button">
         <span style="font-size: 22px; color: red;">📍</span>
     </a>
+</div>
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
