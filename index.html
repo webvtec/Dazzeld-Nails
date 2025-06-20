@@ -162,6 +162,44 @@
             font-weight: bold;
             color: #6200ea;
         }
+        .reservation-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-form input,
+.reservation-form button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.reservation-form button {
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.reservation-form button:hover {
+    background-color: #3700b3;
+}
+
+#bookingConfirmation {
+    color: green;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
     </style>
 </head>
 
@@ -197,16 +235,16 @@
 
         <div id="booking" class="content-section">
             <h2>RESERVATION</h2>
-            <form onsubmit="submitBooking(event)">
-                <input type="text" id="name" placeholder="Your Name" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
-                <input type="email" id="email" placeholder="Email" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
-                <input type="text" id="phone" placeholder="Phone Number" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
-                <input type="date" id="date" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
-                <input type="time" id="time" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
-                <input type="number" id="people" placeholder="Number of People" required style="width: 100%; padding: 10px; margin-bottom: 15px;"><br>
-                <button type="submit" style="background-color: #6200ea; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">BOOK NOW</button>
-            </form>
-            <p id="bookingConfirmation" style="color: green; margin-top: 15px; text-align: center;"></p>
+            <form onsubmit="submitBooking(event)" class="reservation-form">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="text" id="phone" placeholder="Phone Number" required>
+    <input type="date" id="date" required>
+    <input type="time" id="time" required>
+    <input type="number" id="people" placeholder="Number of People" required>
+    <button type="submit">BOOK NOW</button>
+</form>
+<p id="bookingConfirmation"></p>
         </div>
 
         <div id="menu" class="content-section">
