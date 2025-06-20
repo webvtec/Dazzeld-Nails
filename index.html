@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KIMONE'S KOLLECTION</title>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <style>
     html, body {
@@ -12,31 +13,16 @@
         max-width: 100%;
     }
 
-.top-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 45px;
-    background-color: #6200ea;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    z-index: 1200;
-}
-
+    /* Your existing CSS with sidebar fix included */
 .vibey-heading {
     font-family: 'Lobster', cursive;
-    font-size: 27px;
+    font-size: 24px;
     text-align: center;
     background: linear-gradient(45deg, #ff4e50, #f9d423, #24c6dc, #abecd6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    flex: 1;
     margin: 0;
 }
 
@@ -87,7 +73,6 @@
             font-size: 20px;
             background-color: #6200ea;
             color: white;
-            height: 45px;  /* Match header height */
             padding: 8px 12px;
             border: none;
             cursor: pointer;
@@ -95,7 +80,7 @@
             top: 0px;
             left: 0px;
             z-index: 1100;
-            border-bottom-right-radius: 0px;
+            border-bottom-right-radius: 7px;
         }
 
         .open-btn:hover {
@@ -103,19 +88,18 @@
         }
 
         .location-button {
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    background-color: #4CAF50;
-    height: 45px; /* Match header height */
-    width: 45px;  /* Make it a square button */
-    z-index: 1100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom-left-radius: 0px;
-    text-decoration: none;
-}
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            background-color: #6200ea;
+            padding: 10px;
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom-left-radius: 7px;
+            text-decoration: none;
+        }
 
         #main {
             transition: margin-left 0.4s;
@@ -181,59 +165,38 @@
             color: #6200ea;
         }
         .reservation-form {
-    max-width: 500px;
-    margin: 0 auto;
+    max-width: 400px;  /* Smaller for mobile fit */
+    width: 100%;       /* Always respect screen size */
+    margin: 0 auto;    /* Center the form */
+    background-color: white;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Force padding inside width */
 }
 
-.reservation-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-.form-group input[type="file"] {
-    padding: 5px;
-}
-
-button {
-    width: 100%;
+.reservation-form input,
+.reservation-form button {
+    width: 100%;       /* Fully contained */
+    max-width: 100%;   /* Never overflow */
+    box-sizing: border-box; /* Prevent overflow from padding */
     padding: 12px;
-    background-color: #007BFF;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.reservation-form button {
+    background-color: #6200ea;
     color: white;
     border: none;
-    border-radius: 6px;
-    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-weight: bold;
 }
 
-button:hover {
-    background-color: #0056b3;
+.reservation-form button:hover {
+    background-color: #3700b3;
 }
 
 #bookingConfirmation {
@@ -248,21 +211,21 @@ button:hover {
 
 <body>
 
-    <div class="top-header">
+    <!-- Sidebar Button -->
     <button class="open-btn" onclick="toggleSidebar()">☰</button>
-    <h1 class="site-title vibey-heading">KIMONE'S KOLLECTION</h1>
+
+    <!-- Location Button -->
     <a href="https://maps.app.goo.gl/hxFZgQTcXUJvCLzg7" target="_blank" class="location-button">
-    <span style="font-size: 22px; color: red;">📍</span>
-</a>
-</div>
+        <span style="font-size: 22px; color: red;">📍</span>
+    </a>
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
         <h2>MENU</h2>
-        <a href="#" onclick="showSection('home')">💫DESIGNS</a>
+        <a href="#" onclick="showSection('home')">💫PREVIOUS DESIGNS</a>
         <a href="#" onclick="showSection('menu')">💅🏽PRODUCTS</a>
-        <a href="#" onclick="showSection('booking')">🤳🏽ORDER</a>
-        <a href="#" onclick="showSection('events')">🎉EVENTS</a>
+        <a href="#" onclick="showSection('booking')">📅 RESERVATION</a>
+        <a href="#" onclick="showSection('events')">🎉 EVENTS</a>
 
         <!-- Admin Login Button -->
         <div style="display: flex; justify-content: center; margin-top: 20px;">
@@ -272,63 +235,21 @@ button:hover {
 
     <div id="main">
         <div id="home" class="content-section active">
-    <p>Welcome to Kimone's Kollection. Find your perfect style here.</p>
-</div>
+            <h1 class="site-title vibey-heading">KIMONE'S KOLLECTION</h1>
+            <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
+        </div>
 
         <div id="booking" class="content-section">
-    <h2 style="text-align: center;">CUSTOM ORDER</h2>
-<form onsubmit="submitBooking(event)" class="reservation-form">
-    <h2>Reservation Form</h2>
-
-    <div class="form-group">
-        <label for="name">Name:</label>
+    <h2 style="text-align: center;">RESERVATION</h2>
+    <form onsubmit="submitBooking(event)" class="reservation-form">
         <input type="text" id="name" placeholder="Your Name" required>
-    </div>
-
-    <div class="form-group">
-        <label for="email">Email:</label>
         <input type="email" id="email" placeholder="Email" required>
-    </div>
-
-    <div class="form-group">
-        <label for="emailOption">Select an option:</label>
-        <select id="emailOption" name="emailOption" required>
-            <option value="">--Please choose an option--</option>
-            <option value="now">Now</option>
-            <option value="later">Later</option>
-            <option value="never">Never</option>
-            <option value="nail">Nail</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="phone">Phone Number:</label>
         <input type="text" id="phone" placeholder="Phone Number" required>
-    </div>
-
-    <div class="form-group">
-        <label for="photo1">Upload Photo 1:</label>
-        <input type="file" id="photo1" accept="image/*" required>
-    </div>
-
-    <div class="form-group">
-        <label for="photo2">Upload Photo 2:</label>
-        <input type="file" id="photo2" accept="image/*" required>
-    </div>
-
-    <div class="form-group">
-        <label for="photo3">Upload Photo 3:</label>
-        <input type="file" id="photo3" accept="image/*" required>
-    </div>
-
-    <div class="form-group">
-        <label for="address">Address:</label>
-        <input type="text" id="address" placeholder="Address" required>
-    </div>
-
-    <button type="submit">BOOK NOW</button>
-</form>
-
+        <input type="date" id="date" required>
+        <input type="time" id="time" required>
+        <input type="number" id="people" placeholder="Number of People" required>
+        <button type="submit">BOOK NOW</button>
+    </form>
     <p id="bookingConfirmation"></p>
         </div>
 
