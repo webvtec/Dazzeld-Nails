@@ -224,17 +224,14 @@
     </div>
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const main = document.getElementById('main');
-            if (sidebar.style.left === '-200px') {
-                sidebar.style.left = '0';
-                main.style.marginLeft = '200px';
-            } else {
-                sidebar.style.left = '-200px';
-                main.style.marginLeft = '0';
-            }
-        }
+       function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar.style.left === '-200px') {
+        sidebar.style.left = '0';
+    } else {
+        sidebar.style.left = '-200px';
+    }
+}
 
         function showSection(sectionId) {
             const sections = document.getElementsByClassName('content-section');
