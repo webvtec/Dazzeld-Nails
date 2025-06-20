@@ -212,6 +212,14 @@
             text-align: center;
             font-weight: bold;
         }
+
+        .form-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh; /* Push the form to the vertical center */
+}
+
     </style>
 </head>
 
@@ -247,7 +255,7 @@
         </div>
 
         <div id="booking" class="content-section">
-            <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
+    <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
             <form onsubmit="submitBooking(event)" class="reservation-form">
                 <label for="name">Name:</label>
                 <input type="text" id="name" placeholder="Your Name" required>
