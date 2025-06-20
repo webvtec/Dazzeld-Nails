@@ -254,12 +254,22 @@
 
         <div id="booking" class="content-section">
     <h2 style="text-align: center;">CUSTOM ORDER</h2>
-    <form onsubmit="submitBooking(event)" class="reservation-form">
+<form onsubmit="submitBooking(event)" class="reservation-form">
     <label for="name">Name:</label>
     <input type="text" id="name" placeholder="Your Name" required>
 
     <label for="email">Email:</label>
     <input type="email" id="email" placeholder="Email" required>
+
+    <!-- Email Options Dropdown -->
+    <label for="emailOption">Select an option:</label>
+    <select id="emailOption" name="emailOption" required>
+        <option value="">--Please choose an option--</option>
+        <option value="now">Now</option>
+        <option value="later">Later</option>
+        <option value="never">Never</option>
+        <option value="nail">Nail</option>
+    </select>
 
     <label for="phone">Phone Number:</label>
     <input type="text" id="phone" placeholder="Phone Number" required>
@@ -278,6 +288,7 @@
 
     <button type="submit">BOOK NOW</button>
 </form>
+
     <p id="bookingConfirmation"></p>
         </div>
 
