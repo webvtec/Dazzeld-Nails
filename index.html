@@ -7,31 +7,64 @@
     <title>KIMONE'S KOLLECTION</title>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <style>
-    html, body {
-        overflow-x: hidden;
-        overflow-y: auto;
-        max-width: 100%;
-    }
+        html, body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
 
-    /* Your existing CSS with sidebar fix included */
-.vibey-heading {
-    font-family: 'Lobster', cursive;
-    font-size: 24px;
-    text-align: center;
-    background: linear-gradient(45deg, #ff4e50, #f9d423, #24c6dc, #abecd6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-    flex: 1;
-    margin: 0;
-}
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 45px;
+            background-color: #6200ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+        }
 
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-    }
+        .vibey-heading {
+            font-family: 'Lobster', cursive;
+            font-size: 24px;
+            color: white;
+            margin: 0;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .open-btn, .location-button {
+            background-color: #6200ea;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 12px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+        }
+
+        .open-btn {
+            left: 0;
+            border-bottom-right-radius: 7px;
+        }
+
+        .location-button {
+            right: 0;
+            border-bottom-left-radius: 7px;
+            text-decoration: none;
+        }
 
         .sidebar {
             width: 200px;
@@ -69,38 +102,6 @@
             background-color: #3700b3;
         }
 
-        .open-btn {
-            font-size: 20px;
-            background-color: #6200ea;
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            z-index: 1100;
-            border-bottom-right-radius: 7px;
-        }
-
-        .open-btn:hover {
-            background-color: #3700b3;
-        }
-
-        .location-button {
-            position: fixed;
-            top: 0px;
-            right: 0px;
-            background-color: #6200ea;
-            padding: 10px;
-            z-index: 1100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-bottom-left-radius: 7px;
-            text-decoration: none;
-        }
-
         #main {
             transition: margin-left 0.4s;
             padding: 10px;
@@ -109,7 +110,7 @@
             margin-right: auto;
             margin-left: auto;
             box-sizing: border-box;
-            padding-top: 60px; /* Push content below header buttons */
+            padding-top: 60px;
         }
 
         .content-section {
@@ -164,60 +165,63 @@
             font-weight: bold;
             color: #6200ea;
         }
+
         .reservation-form {
-    max-width: 400px;  /* Smaller for mobile fit */
-    width: 100%;       /* Always respect screen size */
-    margin: 0 auto;    /* Center the form */
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Force padding inside width */
-}
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
 
-.reservation-form input,
-.reservation-form button {
-    width: 100%;       /* Fully contained */
-    max-width: 100%;   /* Never overflow */
-    box-sizing: border-box; /* Prevent overflow from padding */
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
+        .reservation-form input,
+        .reservation-form select,
+        .reservation-form button {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
 
-.reservation-form button {
-    background-color: #6200ea;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-}
+        .reservation-form button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-.reservation-form button:hover {
-    background-color: #3700b3;
-}
+        .reservation-form button:hover {
+            background-color: #3700b3;
+        }
 
-#bookingConfirmation {
-    color: green;
-    margin-top: 15px;
-    text-align: center;
-    font-weight: bold;
-}
-
+        #bookingConfirmation {
+            color: green;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- Sidebar Button -->
-    <button class="open-btn" onclick="toggleSidebar()">☰</button>
+    <div class="header-bar">
+        <button class="open-btn" onclick="toggleSidebar()">☰</button>
 
-    <!-- Location Button -->
-    <a href="https://maps.app.goo.gl/hxFZgQTcXUJvCLzg7" target="_blank" class="location-button">
-        <span style="font-size: 22px; color: red;">📍</span>
-    </a>
+        <h1 class="site-title vibey-heading">KIMONE'S KOLLECTION</h1>
+
+        <a href="https://maps.app.goo.gl/hxFZgQTcXUJvCLzg7" target="_blank" class="location-button">
+            <span style="font-size: 22px; color: red;">📍</span>
+        </a>
+    </div>
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
@@ -235,47 +239,45 @@
 
     <div id="main">
         <div id="home" class="content-section active">
-            <h1 class="site-title vibey-heading">KIMONE'S KOLLECTION</h1>
             <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
 
         <div id="booking" class="content-section">
-    <h2 style="text-align: center;">RESERVATION</h2>
-    <form onsubmit="submitBooking(event)" class="reservation-form">
-    <label for="name">Name:</label>
-    <input type="text" id="name" placeholder="Your Name" required>
+            <h2 style="text-align: center;">RESERVATION</h2>
+            <form onsubmit="submitBooking(event)" class="reservation-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Your Name" required>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" placeholder="Email" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Email" required>
 
-    <!-- Email Options Dropdown -->
-    <label for="emailOption">Select an option:</label>
-    <select id="emailOption" name="emailOption" required>
-        <option value="">--Please choose an option--</option>
-        <option value="now">Now</option>
-        <option value="later">Later</option>
-        <option value="never">Never</option>
-        <option value="nail">Nail</option>
-    </select>
+                <label for="emailOption">Select an option:</label>
+                <select id="emailOption" name="emailOption" required>
+                    <option value="">--Please choose an option--</option>
+                    <option value="now">Now</option>
+                    <option value="later">Later</option>
+                    <option value="never">Never</option>
+                    <option value="nail">Nail</option>
+                </select>
 
-    <label for="phone">Phone Number:</label>
-    <input type="text" id="phone" placeholder="Phone Number" required>
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" placeholder="Phone Number" required>
 
-    <label for="photo1">Upload Photo 1:</label>
-    <input type="file" id="photo1" accept="image/*" required>
+                <label for="photo1">Upload Photo 1:</label>
+                <input type="file" id="photo1" accept="image/*" required>
 
-    <label for="photo2">Upload Photo 2:</label>
-    <input type="file" id="photo2" accept="image/*" required>
+                <label for="photo2">Upload Photo 2:</label>
+                <input type="file" id="photo2" accept="image/*" required>
 
-    <label for="photo3">Upload Photo 3:</label>
-    <input type="file" id="photo3" accept="image/*" required>
+                <label for="photo3">Upload Photo 3:</label>
+                <input type="file" id="photo3" accept="image/*" required>
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" placeholder="Address" required>
+                <label for="address">Address:</label>
+                <input type="text" id="address" placeholder="Address" required>
 
-    <button type="submit">BOOK NOW</button>
-</form>
-    <p id="bookingConfirmation"></p>
+                <button type="submit">BOOK NOW</button>
+            </form>
+            <p id="bookingConfirmation"></p>
         </div>
 
         <div id="menu" class="content-section">
@@ -283,7 +285,6 @@
             <div id="menuList" class="menu-grid"></div>
         </div>
 
-        <!-- Events Section -->
         <div id="events" class="content-section">
             <h2 style="text-align: center; margin-bottom: 30px;">Upcoming Events</h2>
             <div id="upcomingEvents" style="display: flex; flex-direction: column; align-items: center; gap: 30px;"></div>
@@ -293,14 +294,14 @@
     </div>
 
     <script>
-       function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar.style.left === '-200px') {
-        sidebar.style.left = '0';
-    } else {
-        sidebar.style.left = '-200px';
-    }
-}
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.left === '-200px') {
+                sidebar.style.left = '0';
+            } else {
+                sidebar.style.left = '-200px';
+            }
+        }
 
         function showSection(sectionId) {
             const sections = document.getElementsByClassName('content-section');
@@ -346,6 +347,7 @@
             loadEvents();
         }
     </script>
+
 </body>
 
 </html>
