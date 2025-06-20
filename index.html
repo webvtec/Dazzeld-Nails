@@ -67,6 +67,28 @@
             background-color: #3700b3;
         }
 
+        .top-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background-color: #6200ea;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    z-index: 1200;
+}
+
+.site-title {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    flex: 1;
+}
+
         .open-btn {
             font-size: 20px;
             background-color: #6200ea;
@@ -224,6 +246,14 @@
         <a href="#" onclick="showSection('menu')">💅🏽PRODUCTS</a>
         <a href="#" onclick="showSection('booking')">📅 RESERVATION</a>
         <a href="#" onclick="showSection('events')">🎉 EVENTS</a>
+
+        <div class="top-header">
+    <button class="open-btn" onclick="toggleSidebar()">☰</button>
+    <div class="site-title">KIMONE'S KOLLECTION</div>
+    <a href="https://maps.app.goo.gl/hxFZgQTcXUJvCLzg7" target="_blank" class="location-button">
+        <span style="font-size: 22px; color: red;">📍</span>
+    </a>
+</div>
 
         <!-- Admin Login Button -->
         <div style="display: flex; justify-content: center; margin-top: 20px;">
