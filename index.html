@@ -170,18 +170,10 @@
             color: #6200ea;
         }
 
-       .form-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 60px);
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.order-form {
+       .order-form {
     max-width: 400px;
-    width: 100%;
+    width: 90%;
+    margin: 0 auto; /* Perfect horizontal centering */
     background-color: white;
     padding: 20px;
     border-radius: 10px;
@@ -192,6 +184,8 @@
 .order-form input,
 .order-form button {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     padding: 12px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -253,35 +247,31 @@
         </div>
 
             <div id="booking" class="content-section">
-    <div class="form-wrapper">
-        <div class="order-form">
-            <h2 style="text-align: center;">ORDER FORM</h2>
+    <h2 style="text-align: center;">ORDER FORM</h2>
 
-            <form onsubmit="submitOrder(event)">
-                <label for="name">Name:</label>
-                <input type="text" id="name" placeholder="Your Name" required>
+    <form onsubmit="submitOrder(event)" class="order-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Your Name" required>
 
-                <label for="phone">Phone Number:</label>
-                <input type="text" id="phone" placeholder="Phone Number" required>
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" placeholder="Phone Number" required>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" placeholder="Email" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email" required>
 
-                <label for="photo1">Upload Photo 1:</label>
-                <input type="file" id="photo1" accept="image/*" required>
+        <label for="photo1">Upload Photo 1:</label>
+        <input type="file" id="photo1" accept="image/*" required>
 
-                <label for="photo2">Upload Photo 2:</label>
-                <input type="file" id="photo2" accept="image/*" required>
+        <label for="photo2">Upload Photo 2:</label>
+        <input type="file" id="photo2" accept="image/*" required>
 
-                <label for="photo3">Upload Photo 3:</label>
-                <input type="file" id="photo3" accept="image/*" required>
+        <label for="photo3">Upload Photo 3:</label>
+        <input type="file" id="photo3" accept="image/*" required>
 
-                <button type="submit">SUBMIT ORDER</button>
-            </form>
+        <button type="submit">SUBMIT ORDER</button>
+    </form>
 
-            <p id="orderConfirmation"></p>
-        </div>
-    </div>
+    <p id="orderConfirmation"></p>
 </div>
 
         <div id="menu" class="content-section">
