@@ -181,6 +181,12 @@
             box-sizing: border-box;
         }
 
+        .reservation-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
         .reservation-form input,
         .reservation-form select,
         .reservation-form button {
@@ -256,11 +262,10 @@
         </div>
 
         <div id="booking" class="content-section">
-    <div class="form-container">
-        <div>
-            <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
+    <div class="reservation-form-wrapper">
+        <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
 
-            <form onsubmit="submitBooking(event)" class="reservation-form">
+        <form onsubmit="submitBooking(event)" class="reservation-form">
                 <label for="name">Name:</label>
                 <input type="text" id="name" placeholder="Your Name" required>
 
