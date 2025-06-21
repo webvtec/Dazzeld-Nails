@@ -239,11 +239,6 @@
             toggleSidebar();
         }
 
-        function submitBooking(event) {
-            event.preventDefault();
-            document.getElementById('bookingConfirmation').innerText = 'Thank you! Your booking has been submitted.';
-        }
-
         function loadEvents() {
             const events = JSON.parse(localStorage.getItem('events')) || [];
 
