@@ -170,55 +170,6 @@
             color: #6200ea;
         }
 
-        .reservation-form {
-            max-width: 400px;
-            width: 100%;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-        }
-
-        .reservation-form input,
-        .reservation-form select,
-        .reservation-form button {
-            width: 100%;
-            max-width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .reservation-form button {
-            background-color: #6200ea;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .reservation-form button:hover {
-            background-color: #3700b3;
-        }
-
-        #bookingConfirmation {
-            color: green;
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .form-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 100px);
-        }
     </style>
 </head>
 
@@ -252,45 +203,6 @@
         <div id="home" class="content-section active">
             <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
-
-        <div id="booking" class="content-section">
-            <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
-
-            <div class="form-wrapper">
-                <form onsubmit="submitBooking(event)" class="reservation-form">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" placeholder="Your Name" required>
-
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" placeholder="Email" required>
-
-                    <label for="emailOption">Select an option:</label>
-                    <select id="emailOption" name="emailOption" required>
-                        <option value="">--Please choose an option--</option>
-                        <option value="now">Now</option>
-                        <option value="later">Later</option>
-                        <option value="never">Never</option>
-                        <option value="nail">Nail</option>
-                    </select>
-
-                    <label for="phone">Phone Number:</label>
-                    <input type="text" id="phone" placeholder="Phone Number" required>
-
-                    <label for="photo1">Upload Photo 1:</label>
-                    <input type="file" id="photo1" accept="image/*" required>
-
-                    <label for="photo2">Upload Photo 2:</label>
-                    <input type="file" id="photo2" accept="image/*" required>
-
-                    <label for="photo3">Upload Photo 3:</label>
-                    <input type="file" id="photo3" accept="image/*" required>
-
-                    <label for="address">Address:</label>
-                    <input type="text" id="address" placeholder="Address" required>
-
-                    <button type="submit">BOOK NOW</button>
-                </form>
-            </div>
 
             <p id="bookingConfirmation"></p>
         </div>
