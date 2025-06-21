@@ -217,6 +217,13 @@
     text-align: center;
     font-weight: bold;
 }
+        
+        document.getElementById('photos').addEventListener('change', function(event) {
+    if (this.files.length > 3) {
+        alert('You can only upload up to 3 photos.');
+        this.value = ''; // Reset the field if over limit
+    }
+});
 
     </style>
 </head>
