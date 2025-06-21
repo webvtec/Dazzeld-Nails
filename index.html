@@ -170,6 +170,48 @@
             color: #6200ea;
         }
 
+        .order-form {
+    max-width: 400px;
+    width: 90%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.order-form input,
+.order-form button {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.order-form button {
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.order-form button:hover {
+    background-color: #3700b3;
+}
+
+#orderConfirmation {
+    color: green;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
     </style>
 </head>
 
@@ -204,8 +246,33 @@
             <p id="homeDescription">Enjoy great food, drinks, and live sports in a vibrant atmosphere.</p>
         </div>
 
-            <p id="bookingConfirmation"></p>
-        </div>
+            <div id="booking" class="content-section">
+    <h2 style="text-align: center;">ORDER FORM</h2>
+
+    <form onsubmit="submitOrder(event)" class="order-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Your Name" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email" required>
+
+        <label for="photo1">Upload Photo 1:</label>
+        <input type="file" id="photo1" accept="image/*" required>
+
+        <label for="photo2">Upload Photo 2:</label>
+        <input type="file" id="photo2" accept="image/*" required>
+
+        <label for="photo3">Upload Photo 3:</label>
+        <input type="file" id="photo3" accept="image/*" required>
+
+        <button type="submit">SUBMIT ORDER</button>
+    </form>
+
+    <p id="orderConfirmation"></p>
+</div>
 
         <div id="menu" class="content-section">
             <h2>Our Menu</h2>
@@ -238,6 +305,11 @@
             document.getElementById(sectionId).classList.add('active');
             toggleSidebar();
         }
+
+        function submitOrder(event) {
+    event.preventDefault();
+    document.getElementById('orderConfirmation').innerText = 'Thank you! Your order has been submitted.';
+}
 
         function loadEvents() {
             const events = JSON.parse(localStorage.getItem('events')) || [];
