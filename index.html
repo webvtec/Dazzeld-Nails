@@ -213,11 +213,10 @@
         }
         
         .form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 60px); /* Full screen minus header height */
-    padding: 20px; /* Prevents edge clipping on small screens */
+    display: block; /* ✅ Allow natural flow and scrolling */
+    padding-top: 80px; /* ✅ Comfortable space under header */
+    padding-bottom: 40px; /* ✅ Extra bottom breathing room */
+    min-height: auto; /* ✅ Let the content size the section */
     box-sizing: border-box;
 }
 
