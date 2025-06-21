@@ -246,8 +246,6 @@
         <a href="#" onclick="showSection('home')">💫 DESIGNS</a>
         <a href="#" onclick="showSection('menu')">💅🏽 PRODUCTS</a>
         <a href="#" onclick="showSection('booking')">🤳🏽 ORDER</a>
-        <a href="#" onclick="showSection('events')">🎉 EVENTS</a>
-
         <!-- Admin Login Button -->
         <div style="display: flex; justify-content: center; margin-top: 20px;">
             <a href="dashboard.html" style="background-color: white; color: #6200ea; padding: 10px 20px; border-radius: 7px; text-decoration: none; font-weight: bold;">ADMIN</a>
@@ -286,13 +284,6 @@
             <div id="menuList" class="menu-grid"></div>
         </div>
 
-        <div id="events" class="content-section">
-            <h2 style="text-align: center; margin-bottom: 30px;">Upcoming Events</h2>
-            <div id="upcomingEvents" style="display: flex; flex-direction: column; align-items: center; gap: 30px;"></div>
-            <h2 style="text-align: center; margin: 50px 0 30px 0;">Past Events</h2>
-            <div id="pastEvents" style="display: flex; flex-direction: column; align-items: center; gap: 30px;"></div>
-        </div>
-    </div>
 
     <script>
         function toggleSidebar() {
@@ -317,36 +308,7 @@
     event.preventDefault();
     document.getElementById('orderConfirmation').innerText = 'Thank you! Your order has been submitted.';
 }
-
-        function loadEvents() {
-            const events = JSON.parse(localStorage.getItem('events')) || [];
-
-            const now = new Date();
-            const upcomingContainer = document.getElementById('upcomingEvents');
-            const pastContainer = document.getElementById('pastEvents');
-
-            upcomingContainer.innerHTML = '';
-            pastContainer.innerHTML = '';
-
-            events.forEach(event => {
-                const eventCard = `
-                    <div style="width: 100%; max-width: 600px; text-align: center;">
-                        <h3 style="margin-bottom: 10px;">${event.title}</h3>
-                        <img src="${event.imageUrl}" alt="${event.title}" style="width: 100%; border-radius: 10px;">
-                    </div>
-                `;
-
-                if (new Date(event.date) >= now) {
-                    upcomingContainer.innerHTML += eventCard;
-                } else {
-                    pastContainer.innerHTML += eventCard;
-                }
-            });
-        }
-
-        window.onload = function () {
-            loadEvents();
-        }
+            
     </script>
 
 </body>
