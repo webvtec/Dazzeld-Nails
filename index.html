@@ -205,6 +205,15 @@
         .reservation-form button:hover {
             background-color: #3700b3;
         }
+        
+        .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 60px); /* Full screen minus header height */
+    padding: 20px; /* Prevents edge clipping on small screens */
+    box-sizing: border-box;
+}
 
         #bookingConfirmation {
             color: green;
@@ -247,7 +256,10 @@
         </div>
 
         <div id="booking" class="content-section">
+    <div class="form-container">
+        <div>
             <h2 style="text-align: center;">CUSTOMIZE ORDER</h2>
+
             <form onsubmit="submitBooking(event)" class="reservation-form">
                 <label for="name">Name:</label>
                 <input type="text" id="name" placeholder="Your Name" required>
@@ -281,8 +293,11 @@
 
                 <button type="submit">BOOK NOW</button>
             </form>
+
             <p id="bookingConfirmation"></p>
         </div>
+    </div>
+</div>
 
         <div id="menu" class="content-section">
             <h2>Our Menu</h2>
