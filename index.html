@@ -262,7 +262,10 @@
         <option value="HAIR CUT">HAIR CUT</option>
         <option value="LOC MAINTENANCE">LOC MAINTENANCE</option>
       </select>
-      <label><input type="checkbox" id="lateAgreement" required /> I agree to pay 25% extra if I am late</label>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 15px;">
+  <input type="checkbox" id="lateAgreement" required />
+  <label for="lateAgreement">I agree to pay 25% extra if I am late</label>
+</div>
       <button type="submit">Book Now</button>
     </form>
     <p id="bookingMessage"></p>
