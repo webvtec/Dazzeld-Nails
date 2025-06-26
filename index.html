@@ -14,13 +14,11 @@
 
   <style>
     body {
-  font-family: 'Zilla Slab', serif;
-  margin: 0;
-  padding: 0;
-  background-color: #FFFFFF;
-  overflow-y: auto; /* <-- allows vertical scroll */
-  height: 100vh;
-}
+      font-family: 'Zilla Slab', serif;
+      margin: 0;
+      padding: 0;
+      background-color: #FFFFFF;
+    }
 
     .header-bar {
       position: fixed;
@@ -36,6 +34,7 @@
     }
 
     .header-title {
+      font-family: 'Zilla Slab', serif;
       font-size: 26px;
       font-weight: bold;
       background: linear-gradient(90deg, #ff4e50, #f9d423, #24c6dc, #abecd6);
@@ -43,6 +42,7 @@
       -webkit-text-fill-color: transparent;
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
       white-space: nowrap;
+      text-align: center;
     }
 
     .menu-button {
@@ -53,27 +53,15 @@
       background-color: #98FF98;
       color: #FF69B4;
       border: none;
+      border-radius: 0px;
       cursor: pointer;
-      height: 48px;
-      width: 45px;
-      font-size: 22px;
-    }
-
-    .location-button {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: #98FF98;
-      color: red;
-      border: none;
       height: 48px;
       width: 45px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 22px;
-      text-decoration: none;
+      padding: 0;
     }
 
     .menu {
@@ -86,6 +74,8 @@
       padding: 20px;
       transform: translateX(-100%);
       transition: transform 0.3s ease;
+      height: auto;
+      min-height: 100px;
       z-index: 999;
     }
 
@@ -99,45 +89,13 @@
       margin-bottom: 15px;
       text-decoration: none;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .menu a.admin-button {
-      background-color: #6200ea;
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
+    h1 {
       text-align: center;
-    }
-
-    .content-section {
-  display: none;
-  padding-bottom: 50px; /* add space at bottom */
-}
-
-.content-section.active {
-  display: block;
-}
-
-    .gallery-wrapper {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 0 10px;
-    }
-
-    .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-    .gallery-grid img {
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      height: 230px;
-      object-fit: cover;
+      color: #6200ea;
+      margin-top: 80px;
     }
 
     form {
@@ -177,6 +135,87 @@
       font-weight: bold;
       color: green;
       margin-top: 20px;
+    }
+
+    .gallery-category {
+      margin-top: 40px;
+    }
+
+    .gallery-category h3 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 22px;
+      color: #6200ea;
+      text-transform: uppercase;
+    }
+
+    .gallery-wrapper {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+
+    .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+    .gallery-grid img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .menu a.admin-button {
+      background-color: #6200ea;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: bold;
+      display: block;
+      margin: 50px auto 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      width: fit-content;
+    }
+
+    .menu a.admin-button:hover {
+      background-color: #3700b3;
+    }
+
+    .location-button {
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #98FF98;
+      color: red;
+      border: none;
+      padding: 0;
+      border-radius: 0px;
+      cursor: pointer;
+      height: 48px;
+      width: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      text-decoration: none;
     }
   </style>
 </head>
