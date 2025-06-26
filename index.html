@@ -73,26 +73,6 @@
         <button type="button" onclick="selectPeriod('AM')" id="amBtn" class="time-select">AM</button>
         <button type="button" onclick="selectPeriod('PM')" id="pmBtn" class="time-select">PM</button>
         <div id="periodConfirmation" style="margin-bottom: 10px;"></div>
-      <div id="bookingSection" class="content-section">
-    <h1>BOOK APPOINTMENT</h1>
-    <form id="bookingForm" onsubmit="return false;">
-      <label>Name:
-        <input type="text" id="name" required />
-      </label>
-      <label>Phone Number:
-        <input type="text" id="phone" required />
-      </label>
-      <label>Preferred Date:
-        <input type="date" id="date" required />
-      </label>
-      <label>Preferred Time:
-        <input type="text" id="timeInput" maxlength="5" oninput="formatTimeInput()" required />
-      </label>
-      <div style="margin: 10px 0;">
-        <label>Choose AM or PM:</label><br />
-        <button type="button" onclick="selectPeriod('AM')" id="amBtn" class="time-select">AM</button>
-        <button type="button" onclick="selectPeriod('PM')" id="pmBtn" class="time-select">PM</button>
-        <div id="periodConfirmation" style="margin-bottom: 10px;"></div>
       </div>
       <input type="hidden" id="timePeriod" value="" />
       <label>Select Hairstyle Type:
