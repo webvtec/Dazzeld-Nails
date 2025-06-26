@@ -9,7 +9,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID_HERE&components=buttons&currency=USD&disable-funding=venmo"></script>
   <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
@@ -29,7 +28,6 @@
     h1, h2 { text-align: center; color: #6200ea; margin-top: 20px; }
     form { max-width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; width: 90%; box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); }
     form input, form select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-    #paypal-button-container { margin-top: 15px; }
     #bookingMessage { text-align: center; font-weight: bold; color: green; margin-top: 20px; }
     .gallery-category { margin-top: 40px; }
     .gallery-category h3 { text-align: center; margin-bottom: 10px; color: #6200ea; text-transform: uppercase; }
@@ -86,8 +84,18 @@
           <option value="LOC MAINTENANCE">LOC MAINTENANCE</option>
         </select>
       </label>
-      <div id="paypal-button-container"></div>
-    </form>
+      <button type="button" onclick="submitBookingInfo()" style="
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px;
+  width: 100%;
+  font-weight: bold;
+  cursor: pointer;
+">
+  BOOK NOW
+</button>
     <p id="bookingMessage"></p>
   </div>
   <script>
@@ -200,21 +208,6 @@
         window.location.href = `https://wa.me/18763422293?text=${encodeURIComponent(msg)}`;
       });
     }
-    paypal.Buttons({
-      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
-      createOrder: function(data, actions) {
-        return actions.order.create({ purchase_units: [{ amount: { value: '10.00' } }] });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          const date = document.getElementById('date').value;
-          const time = `${document.getElementById('timeInput').value.trim()} ${document.getElementById('timePeriod').value}`;
-          validateTimeSlot(date, time).then(isAvailable => {
-            if (!isAvailable) return alert("Time not available.");
-            saveBookingAndRedirect();
-          });
-        });
-      },
       onError: function(err) {
         alert('An error occurred during payment. Please try again.');
         console.error(err);
