@@ -14,11 +14,13 @@
 
   <style>
     body {
-      font-family: 'Zilla Slab', serif;
-      margin: 0;
-      padding: 0;
-      background-color: #FFFFFF;
-    }
+  font-family: 'Zilla Slab', serif;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  overflow-y: auto; /* <-- allows vertical scroll */
+  height: 100vh;
+}
 
     .header-bar {
       position: fixed;
@@ -108,12 +110,13 @@
     }
 
     .content-section {
-      display: none;
-    }
+  display: none;
+  padding-bottom: 50px; /* add space at bottom */
+}
 
-    .content-section.active {
-      display: block;
-    }
+.content-section.active {
+  display: block;
+}
 
     .gallery-grid {
       display: grid;
