@@ -196,23 +196,6 @@
           });
         });
     }
-    function saveBookingAndRedirect() {
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const date = document.getElementById('date').value;
-      const time = `${document.getElementById('timeInput').value.trim()} ${document.getElementById('timePeriod').value}`;
-      const hairstyle = document.getElementById('hairstyleType').value;
-      const service = `Hairstyle: ${hairstyle}`;
-      db.collection('bookings').add({ name, phone, date, time, service }).then(() => {
-        const msg = `Hello, I'd like to book:\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nService: ${service}`;
-        window.location.href = `https://wa.me/18763422293?text=${encodeURIComponent(msg)}`;
-      });
-    }
-      onError: function(err) {
-        alert('An error occurred during payment. Please try again.');
-        console.error(err);
-      }
-    }).render('#paypal-button-container');
 
     function loadGallery(containerId) {
       const container = document.getElementById(containerId);
