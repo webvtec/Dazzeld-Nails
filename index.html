@@ -244,6 +244,35 @@
       loadGallery('galleryDisplay');
       document.getElementById('date').min = new Date().toISOString().split('T')[0];
     };
+
+    function submitBookingInfo() {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const date = document.getElementById('date').value.trim();
+  const timeInput = document.getElementById('timeInput').value.trim();
+  const period = document.getElementById('timePeriod').value.trim();
+  const hairstyle = document.getElementById('hairstyleType').value.trim();
+
+  if (!name || !phone || !date || !timeInput || !period || !hairstyle) {
+    alert("Please complete the form.");
+    return;
+  }
+
+  const time = `${timeInput} ${period}`;
+  const service = `Hairstyle: ${hairstyle}`;
+
+  // Save to Firestore (admin dashboard)
+  db.collection('bookings').add({ name, phone, date, time, service })
+    .then(() => {
+      // Send to WhatsApp
+      const msg = `Hello, I'd like to book:%0AName: ${name}%0APhone: ${phone}%0ADate: ${date}%0ATime: ${time}%0AService: ${hairstyle}`;
+      window.location.href = `https://wa.me/18763422293?text=${msg}`;
+    })
+    .catch(error => {
+      console.error("Error adding booking: ", error);
+      alert("Something went wrong. Try again.");
+    });
+    }
   </script>
 </body>
 </html>
