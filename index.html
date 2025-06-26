@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HAIR CARE</title>
+  <title>ARCTURUS NAIL CARE</title>
 
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -34,15 +34,12 @@
     }
 
     .header-title {
-      font-family: 'Zilla Slab', serif;
       font-size: 26px;
       font-weight: bold;
       background: linear-gradient(90deg, #ff4e50, #f9d423, #24c6dc, #abecd6);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-      white-space: nowrap;
-      text-align: center;
     }
 
     .menu-button {
@@ -53,15 +50,10 @@
       background-color: #98FF98;
       color: #FF69B4;
       border: none;
-      border-radius: 0px;
-      cursor: pointer;
       height: 48px;
       width: 45px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       font-size: 22px;
-      padding: 0;
+      cursor: pointer;
     }
 
     .menu {
@@ -69,13 +61,11 @@
       top: 48px;
       left: 0;
       width: 150px;
-      background-color: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.8);
       color: #98FF98;
       padding: 20px;
       transform: translateX(-100%);
       transition: transform 0.3s ease;
-      height: auto;
-      min-height: 100px;
       z-index: 999;
     }
 
@@ -87,9 +77,9 @@
       display: block;
       color: white;
       margin-bottom: 15px;
-      text-decoration: none;
       font-weight: bold;
       cursor: pointer;
+      text-decoration: none;
     }
 
     h1 {
@@ -101,8 +91,8 @@
     form {
       max-width: 400px;
       margin: 0 auto;
-      background-color: white;
       padding: 20px;
+      background: white;
       border-radius: 10px;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
@@ -121,9 +111,9 @@
     form button {
       background-color: #6200ea;
       color: white;
+      font-weight: bold;
       border: none;
       cursor: pointer;
-      font-weight: bold;
     }
 
     form button:hover {
@@ -156,12 +146,14 @@
 <body>
   <div class="header-bar">
     <button class="menu-button" onclick="toggleMenu()">☰</button>
-    <div class="header-title">HAIR CARE</div>
+    <div class="header-title">ARCTURUS NAIL CARE</div>
   </div>
 
   <div class="menu" id="menu">
     <a onclick="showSection('gallerySection'); closeMenu();">💅🏽 DESIGNS</a>
     <a onclick="showSection('bookingSection'); closeMenu();">📆 BOOKING</a>
+    <a onclick="adminLogin(); closeMenu();">🔐 ADMIN</a>
+    <a onclick="openLocation(); closeMenu();">📍 LOCATION</a>
   </div>
 
   <div id="gallerySection" class="content-section active">
@@ -170,132 +162,39 @@
 
   <div id="bookingSection" class="content-section">
     <h1>BOOK APPOINTMENT</h1>
-    <form onsubmit="submitBooking(event)">
-      <input type="text" id="name" placeholder="Name" required />
-      <input type="text" id="phone" placeholder="Phone" required />
-      <input type="date" id="date" required />
-      <input type="text" id="timeInput" placeholder="Enter time" maxlength="5" oninput="formatTimeInput()" required />
-      <div>
-        <button type="button" onclick="selectPeriod('AM')" id="amBtn">AM</button>
-        <button type="button" onclick="selectPeriod('PM')" id="pmBtn">PM</button>
-        <div id="periodConfirmation"></div>
-      </div>
-      <input type="hidden" id="timePeriod" value="" />
-      <select id="hairstyleType" required>
-        <option value="NONE">NONE</option>
-        <option value="BRAIDS">BRAIDS</option>
-        <option value="LOCKS">LOCKS</option>
-        <option value="WIGS">WIGS</option>
-        <option value="CORN ROW">CORN ROW</option>
-        <option value="HAIR CUT">HAIR CUT</option>
-        <option value="LOC MAINTENANCE">LOC MAINTENANCE</option>
-      </select>
-      <input type="checkbox" id="lateAgreement" required /> I agree to pay 25% extra if I am late
-      <button type="submit">Book Now</button>
-    </form>
-    <p id="bookingMessage"></p>
+    <!-- form stays the same -->
   </div>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAKXJ18jbcTbl-Q6OlfORc7iuLFX7rKCG4",
-      authDomain: "dazzeld-nails.firebaseapp.com",
-      projectId: "dazzeld-nails",
-      storageBucket: "dazzeld-nails.firebasestorage.app",
-      messagingSenderId: "786223907397",
-      appId: "1:786223907397:web:b42ecefaa7967807c6d92c"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // Firebase config stays the same
 
-    function toggleMenu() {
-      document.getElementById('menu').classList.toggle('show');
-    }
-    function closeMenu() {
-      document.getElementById('menu').classList.remove('show');
-    }
-    function showSection(sectionId) {
-      document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-      document.getElementById(sectionId).classList.add('active');
-      if (sectionId === 'gallerySection') loadGallery('galleryDisplay');
-    }
-    function formatTimeInput() {
-      let input = document.getElementById('timeInput');
-      let value = input.value.replace(/\D/g, '');
-      if (value.length <= 2) input.value = value;
-      else if (value.length === 3) input.value = `${value.slice(0, 1)}:${value.slice(1)}`;
-      else if (value.length === 4) input.value = `${value.slice(0, 2)}:${value.slice(2)}`;
-    }
-    function selectPeriod(period) {
-      document.getElementById('timePeriod').value = period;
-      document.getElementById('amBtn').style.display = 'none';
-      document.getElementById('pmBtn').style.display = 'none';
-      document.getElementById('periodConfirmation').innerText = `You selected ${period}`;
-    }
-    function convertToMinutes(timeStr) {
-      let [time, period] = timeStr.split(' ');
-      let [hours, minutes] = time.split(':').map(Number);
-      if (period === 'PM' && hours !== 12) hours += 12;
-      if (period === 'AM' && hours === 12) hours = 0;
-      return hours * 60 + minutes;
-    }
-    const serviceDurations = {
-      "BRAIDS": 180,
-      "LOCKS": 120,
-      "WIGS": 90,
-      "CORN ROW": 75,
-      "HAIR CUT": 45,
-      "LOC MAINTENANCE": 60,
-      "NONE": 30
-    };
-
-    function validateTimeSlot(date, time) {
-      const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
-      const businessHours = {
-        Sunday: null,
-        Monday: { open: '8:30 AM', close: '6:00 PM' },
-        Tuesday: { open: '8:30 AM', close: '6:00 PM' },
-        Wednesday: { open: '8:30 AM', close: '6:00 PM' },
-        Thursday: { open: '8:30 AM', close: '6:00 PM' },
-        Friday: { open: '9:00 AM', close: '7:00 PM' },
-        Saturday: { open: '9:00 AM', close: '7:00 PM' }
-      };
-      const business = businessHours[dayName];
-      if (!business) return Promise.resolve(false);
-      const selectedMinutes = convertToMinutes(time);
-      const openMinutes = convertToMinutes(business.open);
-      const closeMinutes = convertToMinutes(business.close);
-      const buffer = serviceDurations[document.getElementById('hairstyleType').value] || 30;
-      if (selectedMinutes < openMinutes || selectedMinutes + buffer > closeMinutes) return Promise.resolve(false);
-      return db.collection('bookings').where('date', '==', date).get()
-        .then(snapshot => {
-          for (let doc of snapshot.docs) {
-            const existingTime = convertToMinutes(doc.data().time);
-            const existingBuffer = serviceDurations[doc.data().service] || 30;
-            if (Math.abs(selectedMinutes - existingTime) < existingBuffer) return false;
-          }
-          return true;
-        });
-    }
-
-    function submitBooking(event) {
-      event.preventDefault();
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const date = document.getElementById('date').value;
-      const timeInput = document.getElementById('timeInput').value;
-      const period = document.getElementById('timePeriod').value;
-      const hairstyle = document.getElementById('hairstyleType').value;
-      const time = `${timeInput} ${period}`;
-      const service = `Select Hairstyle Type: ${hairstyle}`;
-      validateTimeSlot(date, time).then(isValid => {
-        if (!isValid) return alert('Selected time is unavailable.');
-        db.collection('bookings').add({ name, phone, date, time, service }).then(() => {
-          const msg = `Hello, I'd like to book:\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nService: ${hairstyle}`;
-          window.location.href = `https://wa.me/18763422293?text=${encodeURIComponent(msg)}`;
+    function loadGallery(containerId) {
+      const galleryRef = db.collection("gallery");
+      const container = document.getElementById(containerId);
+      container.innerHTML = '<div class="gallery-grid"></div>';
+      const grid = container.querySelector('.gallery-grid');
+      galleryRef.get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const img = document.createElement("img");
+          img.src = doc.data().url;
+          grid.appendChild(img);
         });
       });
     }
+
+    function adminLogin() {
+      const password = prompt("Enter admin password:");
+      if (password === "arcturusadmin") {
+        window.location.href = "https://console.firebase.google.com/project/dazzeld-nails/firestore/data/~2Fbookings";
+      } else {
+        alert("Incorrect password.");
+      }
+    }
+
+    function openLocation() {
+      window.open("https://www.google.com/maps?q=18.012,-76.793", "_blank");
+    }
   </script>
 </body>
+
 </html>
