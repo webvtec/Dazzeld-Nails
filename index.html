@@ -544,21 +544,11 @@ function submitBooking(event) {
   const timePeriod = document.getElementById('timePeriod').value;
   const time = `${timeInput} ${timePeriod}`;
 
-  const pedicureType = document.getElementById('pedicureType').value;
-  const manicureType = document.getElementById('manicureType').value;
-
-  // ✅ New: Get Nail Extension Type and Length
-  const nailExtensionType = document.getElementById('nailExtensionType').value;
-  let extensionLength = '';
-
-  if (nailExtensionType !== 'NONE') {
-    extensionLength = document.getElementById('extensionLength').value;
+  const SelectHairstyleType: = document.getElementById('pedicureType').value;
   }
 
   // ✅ Build Service Description
-  let service = `Pedicure: ${pedicureType}, Manicure: ${manicureType}`;
-  if (nailExtensionType !== 'NONE') {
-    service += `, Nail Extension: ${nailExtensionType} (${extensionLength})`;
+  let service = `Select Hairstyle Type:: ${Select Hairstyle Type:},
   }
 
   validateTimeSlot(date, time)
