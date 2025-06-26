@@ -18,6 +18,7 @@
       margin: 0;
       padding: 0;
       background-color: #FFFFFF;
+      overflow-x: hidden;
     }
 
     .header-bar {
@@ -139,6 +140,7 @@
 
     .gallery-category {
       margin-top: 40px;
+      padding: 0 10px;
     }
 
     .gallery-category h3 {
@@ -150,25 +152,27 @@
     }
 
     .gallery-wrapper {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 0 20px; /* increased padding */
-}
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
 
     .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-  margin-bottom: 30px;
-}
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+      width: 100%;
+    }
 
     .gallery-grid img {
-  width: 100%;
-  max-height: 160px; /* reduced height */
-  object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-}
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
 
     .content-section {
       display: none;
@@ -233,7 +237,7 @@
   </div>
 
   <div id="gallerySection" class="content-section active">
-    <div id="galleryDisplay"></div>
+    <div id="galleryDisplay" class="gallery-wrapper"></div>
   </div>
 
   <div id="bookingSection" class="content-section">
@@ -374,7 +378,13 @@
           grouped[category].push(url);
         });
         for (const category in grouped) {
-          container.innerHTML += `<div><h3>${category}</h3><div class="gallery-grid">${grouped[category].map(url => `<img src="${url}"/>`).join('')}</div></div>`;
+          container.innerHTML += `
+            <div class="gallery-category">
+              <h3>${category}</h3>
+              <div class="gallery-grid">
+                ${grouped[category].map(url => `<img src="${url}"/>`).join('')}
+              </div>
+            </div>`;
         }
       });
     }
