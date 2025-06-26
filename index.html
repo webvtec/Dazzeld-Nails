@@ -276,9 +276,6 @@
           <option value="LOC MAINTENANCE">LOC MAINTENANCE</option>
         </select>
 
-      <label for="manicureType">Select Manicure Type:</label>
-</div>
-
 <div style="margin: 15px 0; display: flex; align-items: center;">
   <input type="checkbox" id="lateAgreement" required style="margin-right: 3px;" />
   <label for="lateAgreement" style="font-size: 14px; cursor: pointer; line-height: 1.4;">
@@ -373,17 +370,6 @@ function selectPeriod(period) {
   confirmation.innerText = `You selected ${period}`;
   confirmation.style.fontWeight = 'bold';
   confirmation.style.marginBottom = '10px';
-}
-
-    function showExtensionLengthOptions() {
-  const extensionType = document.getElementById('nailExtensionType').value;
-  const lengthContainer = document.getElementById('extensionLengthContainer');
-
-  if (extensionType !== 'NONE') {
-    lengthContainer.style.display = 'block';
-  } else {
-    lengthContainer.style.display = 'none';
-  }
 }
 
     function loadGallery(containerId) {
@@ -511,18 +497,27 @@ function validateTimeSlot(date, selectedTime) {
         .then((querySnapshot) => {
 
           // Calculate buffer based on selected service
-          const pedicureType = document.getElementById('pedicureType').value;
-          const manicureType = document.getElementById('manicureType').value;
-          const nailExtensionType = document.getElementById('nailExtensionType').value;
+          const BRAIDS = document.getElementById('BRAIDS').value;
+          const LOCKS = document.getElementById('LOCKS').value;
+          const WIGS = document.getElementById('WIGS').value;
+          const CORNROW = document.getElementById('CORN ROW').value;
+          const HAIRCUT = document.getElementById('HAIR CUT').value;
+          const LOCMAINTENANCE = document.getElementById('LOC MAINTENANCE').value;
 
           let buffer = 0;
 
-          if (pedicureType !== 'NONE') {
+          if (BRAIDS !== 'NONE') {
+            buffer = 120;
+          } else if (LOCKS !== 'NONE') {
+            buffer = 120;
+          } else if (WIGS !== 'NONE') {
+            buffer = 40;
+            } else if (CORN ROW !== 'NONE') {
             buffer = 90;
-          } else if (manicureType !== 'NONE') {
-            buffer = 45;
-          } else if (nailExtensionType !== 'NONE') {
+            } else if (HAIR CUT !== 'NONE') {
             buffer = 30;
+            } else if (LOC MAINTENANCE !== 'NONE') {
+            buffer = 50;
           }
 
           for (let doc of querySnapshot.docs) {
