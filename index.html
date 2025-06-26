@@ -167,56 +167,84 @@
   }
 
   async function validateTimeSlot(date, selectedTime) {
-    const hairstyleType = document.getElementById('hairstyleType').value;
-    const duration = serviceDurations[hairstyleType] || 30;
+  const hairstyleType = document.getElementById('hairstyleType').value;
 
-    const businessHours = {
-      'Sunday': null,
-      'Monday': { open: '8:30 AM', close: '6:00 PM' },
-      'Tuesday': { open: '8:30 AM', close: '6:00 PM' },
-      'Wednesday': { open: '8:30 AM', close: '6:00 PM' },
-      'Thursday': { open: '8:30 AM', close: '6:00 PM' },
-      'Friday': { open: '9:00 AM', close: '7:00 PM' },
-      'Saturday': { open: '9:00 AM', close: '7:00 PM' }
-    };
+  // Service buffer times (in minutes)
+  const durationMap = {
+    "BRAIDS": 180,
+    "LOCKS": 120,
+    "WIGS": 90,
+    "CORN ROW": 75,
+    "HAIR CUT": 45,
+    "LOC MAINTENANCE": 60,
+    "NONE": 30
+  };
 
-    const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
-    const business = businessHours[dayName];
-    if (!business) return false;
+  const bufferDuration = durationMap[hairstyleType] || 30;
 
-    const selectedMinutes = convertToMinutes(selectedTime);
-    const openMinutes = convertToMinutes(business.open);
-    const closeMinutes = convertToMinutes(business.close);
+  const businessHours = {
+    Sunday: null,
+    Monday: { open: '8:30 AM', close: '6:00 PM' },
+    Tuesday: { open: '8:30 AM', close: '6:00 PM' },
+    Wednesday: { open: '8:30 AM', close: '6:00 PM' },
+    Thursday: { open: '8:30 AM', close: '6:00 PM' },
+    Friday: { open: '9:00 AM', close: '7:00 PM' },
+    Saturday: { open: '9:00 AM', close: '7:00 PM' }
+  };
 
-    if (selectedMinutes < openMinutes || (selectedMinutes + duration) > closeMinutes) {
-      alert(`This service must fit between ${business.open} and ${business.close}.`);
+  const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+  const business = businessHours[dayName];
+  if (!business) {
+    alert("We are closed on that day.");
+    return false;
+  }
+
+  const selectedMinutes = convertToMinutes(selectedTime);
+  const openMinutes = convertToMinutes(business.open);
+  const closeMinutes = convertToMinutes(business.close);
+
+  // Enforce within working hours
+  if (
+    selectedMinutes < openMinutes ||
+    (selectedMinutes + bufferDuration) > closeMinutes
+  ) {
+    alert(`Booking must be between ${business.open} and ${business.close}, allowing time for the service.`);
+    return false;
+  }
+
+  // Check for unavailable times
+  const unavailSnapshot = await db.collection('unavailableDays').where('date', '==', date).get();
+  for (const doc of unavailSnapshot.docs) {
+    const data = doc.data();
+    const start = convertToMinutes(data.startTime);
+    const end = convertToMinutes(data.endTime);
+    if (data.allDay || (selectedMinutes >= start && selectedMinutes < end)) {
+      alert("This time is unavailable.");
       return false;
     }
+  }
 
-    const unavailSnapshot = await db.collection('unavailableDays').where('date', '==', date).get();
-    for (const doc of unavailSnapshot.docs) {
-      const data = doc.data();
-      const start = convertToMinutes(data.startTime);
-      const end = convertToMinutes(data.endTime);
-      if (data.allDay || (selectedMinutes >= start && selectedMinutes < end)) return false;
+  // Check for booking overlaps
+  const bookingsSnapshot = await db.collection('bookings').where('date', '==', date).get();
+  for (const doc of bookingsSnapshot.docs) {
+    const existing = doc.data();
+    const existingType = existing.service || 'NONE';
+    const existingDuration = durationMap[existingType] || 30;
+
+    const bookedStart = convertToMinutes(existing.time);
+    const bookedEnd = bookedStart + existingDuration;
+    const selectedEnd = selectedMinutes + bufferDuration;
+
+    const overlap = !(selectedEnd <= bookedStart || selectedMinutes >= bookedEnd);
+    if (overlap) {
+      alert("This time conflicts with another booking.");
+      return false;
     }
+  }
 
-    const bookingsSnapshot = await db.collection('bookings').where('date', '==', date).get();
-    for (const doc of bookingsSnapshot.docs) {
-      const booking = doc.data();
-      const bookedTime = convertToMinutes(booking.time);
-      const bookedType = booking.service || "NONE";
-      const bookedDuration = serviceDurations[bookedType] || 30;
+  return true;
+}
 
-      const bookedEnd = bookedTime + bookedDuration;
-      const selectedEnd = selectedMinutes + duration;
-
-      const overlap = !(selectedEnd <= bookedTime || selectedMinutes >= bookedEnd);
-      if (overlap) return false;
-    }
-
-    return true;
-    }
     function loadGallery(containerId) {
       const container = document.getElementById(containerId);
       db.collection('gallery').onSnapshot(snapshot => {
