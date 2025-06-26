@@ -55,14 +55,23 @@
   </div>
   <div id="bookingSection" class="content-section">
     <h1>BOOK APPOINTMENT</h1>
-    <form id="bookingForm">
-      <input type="text" id="name" placeholder="Name" required />
-      <input type="text" id="phone" placeholder="Phone Number" required />
-      <input type="date" id="date" required />
-      <input type="text" id="timeInput" placeholder="ENTER TIME" maxlength="5" oninput="formatTimeInput()" required />
+    <form id="bookingForm" onsubmit="return false;">
+      <label>Name:
+        <input type="text" id="name" required />
+      </label>
+      <label>Phone Number:
+        <input type="text" id="phone" required />
+      </label>
+      <label>Preferred Date:
+        <input type="date" id="date" required />
+      </label>
+      <label>Preferred Time:
+        <input type="text" id="timeInput" maxlength="5" oninput="formatTimeInput()" required />
+      </label>
       <div style="margin: 10px 0;">
-        <button type="button" onclick="selectPeriod('AM')" id="amBtn" style="margin-right: 10px;">AM</button>
-        <button type="button" onclick="selectPeriod('PM')" id="pmBtn">PM</button>
+        <label>Choose AM or PM:</label><br />
+        <button type="button" onclick="selectPeriod('AM')" id="amBtn" class="time-select">AM</button>
+        <button type="button" onclick="selectPeriod('PM')" id="pmBtn" class="time-select">PM</button>
         <div id="periodConfirmation" style="margin-bottom: 10px;"></div>
       <div id="bookingSection" class="content-section">
     <h1>BOOK APPOINTMENT</h1>
