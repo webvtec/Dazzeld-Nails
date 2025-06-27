@@ -675,45 +675,7 @@ function submitBooking(event) {
   }
 }
 
-    document.getElementById('reviewForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const name = document.getElementById('reviewName').value.trim();
-  const comment = document.getElementById('reviewComment').value.trim();
-  const rating = parseInt(document.getElementById('reviewRating').value);
-  const photoFile = document.getElementById('reviewPhoto').files[0];
-  const msg = document.getElementById('reviewSubmitMsg');
-
-  if (!name || !comment || !rating || !photoFile) {
-    msg.style.color = "red";
-    msg.textContent = "Please fill all fields and upload a photo.";
-    return;
-  }
-
-  try {
-    // Upload photo to Firebase Storage
-    const storageRef = firebase.storage().ref(`review_photos/${Date.now()}_${photoFile.name}`);
-    await storageRef.put(photoFile);
-    const photoURL = await storageRef.getDownloadURL();
-
-    // Save review data to Firestore
-    await db.collection('reviews').add({
-      name,
-      comment,
-      rating,
-      photoURL,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });
-
-    msg.style.color = "green";
-    msg.textContent = "Thank you for your review!";
-    document.getElementById('reviewForm').reset();
-  } catch (error) {
-    console.error(error);
-    msg.style.color = "red";
-    msg.textContent = "Error submitting review. Try again.";
-  }
-});
+    
 
 function loadReviews() {
   const container = document.getElementById('reviewsContainer');
@@ -774,12 +736,10 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   }
 
   try {
-    // Upload photo to Storage
     const storageRef = firebase.storage().ref(`review_photos/${Date.now()}_${photoFile.name}`);
     await storageRef.put(photoFile);
     const photoURL = await storageRef.getDownloadURL();
 
-    // Save review to Firestore
     await db.collection('reviews').add({
       name,
       comment,
