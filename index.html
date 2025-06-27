@@ -327,25 +327,23 @@
     <p id="bookingMessage"></p>
   </div>
 
-  <div id="reviewsSection" class="content-section">
+<div id="reviewsSection" class="content-section">
   <h1 style="text-align:center; color:#6200ea;">CLIENT REVIEWS</h1>
 
-  <form id="reviewForm" style="max-width:500px; margin:10px auto;">
-    <input type="text" id="reviewName" placeholder="Your Name" required style="width:100%; margin-bottom:10px; padding:10px;"/>
-    <textarea id="reviewComment" placeholder="Your Review" required style="width:100%; height:80px; margin-bottom:10px; padding:10px;"></textarea>
-    
-    <label for="reviewRating">Rating:</label>
-    <select id="reviewRating" required style="width:100%; padding:10px; margin-bottom:10px;">
-      <option value="">Select Stars</option>
-      <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
-      <option value="4">⭐️⭐️⭐️⭐️</option>
-      <option value="3">⭐️⭐️⭐️</option>
-      <option value="2">⭐️⭐️</option>
-      <option value="1">⭐️</option>
-    </select>
+  <form id="reviewForm" style="max-width:500px; margin:10px auto; text-align:center;">
+    <input type="text" id="reviewName" placeholder="Your Name" required style="width:100%; margin-bottom:10px; padding:10px; border-radius:6px; border:1px solid #ccc;"/>
 
-    <label>Upload a Photo:</label>
-    <input type="file" id="reviewPhoto" accept="image/*" style="margin-bottom:10px;" required/>
+    <textarea id="reviewComment" placeholder="Write your review..." required style="width:100%; height:80px; margin-bottom:10px; padding:10px; border-radius:6px; border:1px solid #ccc;"></textarea>
+
+    <div id="starRating" style="font-size:24px; margin-bottom:10px; cursor:pointer; color:#ccc;">
+      <span data-value="1">★</span>
+      <span data-value="2">★</span>
+      <span data-value="3">★</span>
+      <span data-value="4">★</span>
+      <span data-value="5">★</span>
+    </div>
+
+    <input type="file" id="reviewPhoto" accept="image/*" required style="margin-bottom:10px;"/>
 
     <button type="submit" style="background-color:#6200ea; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer;">Submit Review</button>
   </form>
@@ -717,7 +715,6 @@ function submitBooking(event) {
   }
 });
 
-// Function to load & display reviews
 function loadReviews() {
   const container = document.getElementById('reviewsContainer');
   container.innerHTML = "<p>Loading reviews...</p>";
@@ -732,15 +729,78 @@ function loadReviews() {
     snapshot.forEach(doc => {
       const d = doc.data();
       container.innerHTML += `
-        <div style="background:#f9f9f9; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.1);">
-          <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
-          <p style="color:#f39c12; margin:5px 0;">${'⭐️'.repeat(d.rating || 0)}</p>
-          <img src="${d.photoURL}" alt="Review photo" style="width:100%; max-height:200px; object-fit:cover; margin-bottom:8px; border-radius:6px;"/>
+        <div style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
+          <div style="display:flex; align-items:center; margin-bottom:5px;">
+            <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
+            <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
+          </div>
+          <img src="${d.photoURL}" alt="Review photo" style="width:100%; max-height:200px; object-fit:cover; border-radius:6px; margin-bottom:6px;"/>
           <p style="margin:5px 0;">${d.comment}</p>
         </div>`;
     });
   });
 }
+
+    let selectedRating = 0;
+
+// Handle star rating UI
+document.querySelectorAll('#starRating span').forEach(star => {
+  star.addEventListener('click', () => {
+    selectedRating = parseInt(star.getAttribute('data-value'));
+    document.querySelectorAll('#starRating span').forEach(s => {
+      s.style.color = parseInt(s.getAttribute('data-value')) <= selectedRating ? '#f39c12' : '#ccc';
+    });
+  });
+});
+
+document.getElementById('reviewForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('reviewName').value.trim();
+  const comment = document.getElementById('reviewComment').value.trim();
+  const photoFile = document.getElementById('reviewPhoto').files[0];
+  const msg = document.getElementById('reviewSubmitMsg');
+
+  if (!name || !comment || !selectedRating || !photoFile) {
+    msg.style.color = "red";
+    msg.textContent = "Please fill all fields and select rating/photo.";
+    return;
+  }
+
+  if (photoFile.size > 2 * 1024 * 1024) { // limit to ~2MB
+    msg.style.color = "red";
+    msg.textContent = "Photo too large. Please upload a smaller image.";
+    return;
+  }
+
+  try {
+    // Upload photo to Storage
+    const storageRef = firebase.storage().ref(`review_photos/${Date.now()}_${photoFile.name}`);
+    await storageRef.put(photoFile);
+    const photoURL = await storageRef.getDownloadURL();
+
+    // Save review to Firestore
+    await db.collection('reviews').add({
+      name,
+      comment,
+      rating: selectedRating,
+      photoURL,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    msg.style.color = "green";
+    msg.textContent = "Thank you for your review!";
+    document.getElementById('reviewForm').reset();
+    selectedRating = 0;
+    document.querySelectorAll('#starRating span').forEach(s => s.style.color = '#ccc');
+
+  } catch (error) {
+    console.error(error);
+    msg.style.color = "red";
+    msg.textContent = "Error submitting review.";
+  }
+});
+
 
   </script>
 
