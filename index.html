@@ -682,6 +682,7 @@ function submitBooking(event) {
     
 
 function loadReviews() {
+function loadReviews() {
   const container = document.getElementById('reviewsContainer');
   container.innerHTML = "<p>Loading reviews...</p>";
 
@@ -694,11 +695,13 @@ function loadReviews() {
     container.innerHTML = '';
     snapshot.forEach(doc => {
       const d = doc.data();
+      const reviewId = doc.id;
       container.innerHTML += `
-        <div style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
+        <div id="review-${reviewId}" style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
           <div style="display:flex; align-items:center; margin-bottom:5px;">
             <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
             <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
+            <button onclick="deleteReview('${reviewId}')" style="margin-left:10px; color:red; background:none; border:none; cursor:pointer;">Delete</button>
           </div>
           <p style="margin:5px 0;">${d.comment}</p>
         </div>`;
@@ -752,6 +755,22 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
     msg.textContent = "Error submitting review.";
   }
 });
+
+    function deleteReview(reviewId) {
+  if (confirm("Are you sure you want to delete this review?")) {
+    db.collection('reviews').doc(reviewId).delete()
+      .then(() => {
+        // Remove review from UI immediately
+        const reviewElem = document.getElementById(`review-${reviewId}`);
+        if (reviewElem) reviewElem.remove();
+        alert('Review deleted successfully.');
+      })
+      .catch(error => {
+        console.error("Error deleting review: ", error);
+        alert('Failed to delete review. Try again.');
+      });
+  }
+}
 
 
   </script>
