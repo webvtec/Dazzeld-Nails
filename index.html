@@ -328,31 +328,25 @@
     <p id="bookingMessage"></p>
   </div>
 
-<div id="reviewsSection" class="content-section">
-  <h1 style="text-align:center; color:#6200ea;">CLIENT REVIEWS</h1>
+<form id="reviewForm" style="max-width:500px; margin:10px auto; text-align:center;">
+  <input type="text" id="reviewName" placeholder="Your Name" required
+    style="width:100%; margin-bottom:10px; padding:10px; border-radius:6px; border:1px solid #ccc;" />
 
-  <form id="reviewForm" style="max-width:500px; margin:10px auto; text-align:center;">
-    <input type="text" id="reviewName" placeholder="Your Name" required style="width:100%; margin-bottom:10px; padding:10px; border-radius:6px; border:1px solid #ccc;"/>
+  <textarea id="reviewComment" placeholder="Write your review..." required
+    style="width:100%; height:80px; margin-bottom:10px; padding:10px; border-radius:6px; border:1px solid #ccc;"></textarea>
 
-    <textarea id="reviewComment" placeholder="Write your review..." required style="width:100%; height:80px; margin-bottom:10px; padding:10px; border-radius:6px; border:1px solid #ccc;"></textarea>
+  <div id="starRating" style="font-size:24px; margin-bottom:10px; cursor:pointer; color:#ccc;">
+    <span data-value="1">★</span>
+    <span data-value="2">★</span>
+    <span data-value="3">★</span>
+    <span data-value="4">★</span>
+    <span data-value="5">★</span>
+  </div>
 
-    <div id="starRating" style="font-size:24px; margin-bottom:10px; cursor:pointer; color:#ccc;">
-      <span data-value="1">★</span>
-      <span data-value="2">★</span>
-      <span data-value="3">★</span>
-      <span data-value="4">★</span>
-      <span data-value="5">★</span>
-    </div>
+  <button type="submit" style="background-color:#6200ea; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer;">Submit Review</button>
+</form>
 
-    <input type="file" id="reviewPhoto" accept="image/*" required style="margin-bottom:10px;"/>
-
-    <button type="submit" style="background-color:#6200ea; color:white; border:none; padding:10px 20px; border-radius:6px; cursor:pointer;">Submit Review</button>
-  </form>
-
-  <p id="reviewSubmitMsg" style="text-align:center; color:green;"></p>
-
-  <div id="reviewsContainer" style="max-width:600px; margin:20px auto;"></div>
-</div>
+<p id="reviewSubmitMsg" style="text-align:center; color:green;"></p>
 
   <!-- ✅ Scripts -->
   <script>
@@ -704,7 +698,7 @@ function loadReviews() {
   });
 }
 
-    let selectedRating = 0;
+let selectedRating = 0;
 
 // Handle star rating UI
 document.querySelectorAll('#starRating span').forEach(star => {
@@ -721,31 +715,22 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
 
   const name = document.getElementById('reviewName').value.trim();
   const comment = document.getElementById('reviewComment').value.trim();
-  const photoFile = document.getElementById('reviewPhoto').files[0];
   const msg = document.getElementById('reviewSubmitMsg');
 
-  if (!name || !comment || !selectedRating || !photoFile) {
+  if (!name || !comment || !selectedRating) {
     msg.style.color = "red";
-    msg.textContent = "Please fill all fields and select rating/photo.";
-    return;
-  }
-
-  if (photoFile.size > 2 * 1024 * 1024) { // limit to ~2MB
-    msg.style.color = "red";
-    msg.textContent = "Photo too large. Please upload a smaller image.";
+    msg.textContent = "Please fill all fields and select a star rating.";
     return;
   }
 
   try {
-    const storageRef = firebase.storage().ref(`review_photos/${Date.now()}_${photoFile.name}`);
-    await storageRef.put(photoFile);
-    const photoURL = await storageRef.getDownloadURL();
+    const placeholderImage = "https://via.placeholder.com/400x300?text=No+Image";
 
     await db.collection('reviews').add({
       name,
       comment,
       rating: selectedRating,
-      photoURL,
+      photoURL: placeholderImage,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
 
@@ -756,7 +741,7 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
     document.querySelectorAll('#starRating span').forEach(s => s.style.color = '#ccc');
 
   } catch (error) {
-    console.error(error);
+    console.error("Error submitting review:", error);
     msg.style.color = "red";
     msg.textContent = "Error submitting review.";
   }
