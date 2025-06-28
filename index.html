@@ -758,36 +758,44 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   }
 });
 
-// Load reviews and show delete button only for owners
-function loadReviews() {
+// Load reviews and show delete button only for the owner
+function loadReviews(user) {
   const container = document.getElementById('reviewsContainer');
   container.innerHTML = "<p>Loading reviews...</p>";
 
-  firebase.auth().onAuthStateChanged(user => {
-    db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-      if (snapshot.empty) {
-        container.innerHTML = "<p>No reviews yet.</p>";
-        return;
-      }
+  db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+    if (snapshot.empty) {
+      container.innerHTML = "<p>No reviews yet.</p>";
+      return;
+    }
 
-      container.innerHTML = '';
-      snapshot.forEach(doc => {
-        const d = doc.data();
-        const isOwner = user && d.uid === user.uid;
+    container.innerHTML = '';
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      const isOwner = user && d.uid === user.uid;
 
-        container.innerHTML += `
-          <div style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
-            <div style="display:flex; align-items:center; margin-bottom:5px;">
-              <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
-              <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
-            </div>
-            <p style="margin:5px 0;">${d.comment}</p>
-            ${isOwner ? `<button onclick="deleteReview('${doc.id}')" style="color:red; border:none; background:none; cursor:pointer;">Delete</button>` : ''}
-          </div>`;
-      });
+      container.innerHTML += `
+        <div style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
+          <div style="display:flex; align-items:center; margin-bottom:5px;">
+            <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
+            <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
+          </div>
+          <p style="margin:5px 0;">${d.comment}</p>
+          ${isOwner ? `<button onclick="deleteReview('${doc.id}')" style="color:red; border:none; background:none; cursor:pointer;">Delete</button>` : ''}
+        </div>`;
     });
   });
 }
+
+// ✅ Watch for login/logout and always reload reviews with correct user
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    loadReviews(user);
+  } else {
+    // User logged out → still load reviews (but no delete buttons)
+    loadReviews(null);
+  }
+});
 
 // Delete review function
 function deleteReview(docId) {
@@ -797,18 +805,25 @@ function deleteReview(docId) {
     return;
   }
 
-  db.collection('reviews').doc(docId).get().then(doc => {
-    if (doc.exists && doc.data().uid === user.uid) {
-      return db.collection('reviews').doc(docId).delete();
-    } else {
-      alert("You can't delete reviews you don't own.");
-      throw new Error("Unauthorized delete attempt");
-    }
-  }).then(() => {
-    alert('Review deleted.');
-  }).catch(error => {
-    console.error('Delete error:', error);
-  });
+  db.collection('reviews').doc(docId).get()
+    .then(doc => {
+      if (!doc.exists) {
+        throw new Error("Review not found.");
+      }
+      const data = doc.data();
+      if (data.uid === user.uid) {
+        return db.collection('reviews').doc(docId).delete();
+      } else {
+        alert("You can't delete reviews you don't own.");
+        throw new Error("Unauthorized delete attempt");
+      }
+    })
+    .then(() => {
+      alert('Review deleted.');
+    })
+    .catch(error => {
+      console.error('Delete error:', error);
+    });
 }
 
 // Call loadReviews() when page loads or user logs in
