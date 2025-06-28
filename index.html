@@ -237,16 +237,16 @@
 
   <!-- ✅ Menu -->
   <div class="menu" id="menu">
-    <a onclick="showSection('gallerySection'); closeMenu();">💅🏽 DESIGNS</a>
-<a onclick="showSection('bookingSection'); closeMenu();">📆 BOOKING</a>
-<button id="logoutBtn" style="background-color:red; color:white; padding:10px; border:none; border-radius:6px; cursor:pointer;">
-  🔓 Logout
-</button>
-<a href="#" onclick="logoutUser(); closeMenu(); return false;" style="color: red; font-weight: bold;">
-  🔴 LOGOUT
-</a>
-<a onclick="login(); closeMenu();" class="admin-button">ADMIN</a>
-  </div>
+  <a onclick="showSection('gallerySection'); closeMenu();">💅🏽 DESIGNS</a>
+  <a onclick="showSection('bookingSection'); closeMenu();">📆 BOOKING</a>
+
+  <!-- 🔴 Cleaned logout button -->
+  <button onclick="logoutUser(); closeMenu();" style="background-color:red; color:white; padding:10px; border:none; border-radius:6px; cursor:pointer;">
+    🔓 Logout
+  </button>
+
+  <a onclick="login(); closeMenu();" class="admin-button">ADMIN</a>
+</div>
 
   <!-- ✅ Booking Section -->
   <div id="bookingSection" class="content-section">
