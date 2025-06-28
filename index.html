@@ -700,7 +700,6 @@ function loadReviews() {
             <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
             <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
           </div>
-          <img src="${d.photoURL}" alt="Review photo" style="width:100%; max-height:200px; object-fit:cover; border-radius:6px; margin-bottom:6px;"/>
           <p style="margin:5px 0;">${d.comment}</p>
         </div>`;
     });
@@ -733,13 +732,11 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   }
 
   try {
-    const placeholderImage = "https://via.placeholder.com/400x300?text=No+Image";
 
     await db.collection('reviews').add({
       name,
       comment,
       rating: selectedRating,
-      photoURL: placeholderImage,
       timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
 
