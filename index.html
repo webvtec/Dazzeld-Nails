@@ -796,7 +796,6 @@ firebase.auth().onAuthStateChanged(user => {
   loadReviews(currentUser);  // ✅ Call with correct user
 });
 
-// Delete review function
 function deleteReview(docId) {
   const user = firebase.auth().currentUser;
   if (!user) {
@@ -809,19 +808,21 @@ function deleteReview(docId) {
       if (!doc.exists) {
         throw new Error("Review not found.");
       }
+
       const data = doc.data();
+
       if (data.uid === user.uid) {
-        return db.collection('reviews').doc(docId).delete();
+        // ✅ Only allow delete if review belongs to user
+        return db.collection('reviews').doc(docId).delete().then(() => {
+          alert("Review deleted.");
+        });
       } else {
-        alert("You can't delete reviews you don't own.");
-        throw new Error("Unauthorized delete attempt");
+        alert("You can't delete reviews you didn't write.");
+        throw new Error("Unauthorized delete attempt.");
       }
     })
-    .then(() => {
-      alert('Review deleted.');
-    })
     .catch(error => {
-      console.error('Delete error:', error);
+      console.error("Delete error:", error);
     });
 }
 
