@@ -788,6 +788,18 @@ firebase.auth().onAuthStateChanged(() => {
   loadReviews();
 });
 
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+  firebase.auth().signOut()
+    .then(() => {
+      window.location.href = 'login.html'; // redirect to your login page
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+      alert("Failed to log out. Please try again.");
+    });
+});
+
+
   </script>
 
 </body>
