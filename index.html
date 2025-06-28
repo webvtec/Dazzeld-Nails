@@ -811,8 +811,10 @@ function deleteReview(docId) {
 
       const data = doc.data();
 
+      console.log("Current user UID:", user.uid);
+      console.log("Review UID:", data.uid);
+
       if (data.uid === user.uid) {
-        // ✅ Only allow delete if review belongs to user
         return db.collection('reviews').doc(docId).delete().then(() => {
           alert("Review deleted.");
         });
