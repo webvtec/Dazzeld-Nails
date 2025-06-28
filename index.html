@@ -418,15 +418,16 @@ function closeMenu() {
 }
 
     function showSection(sectionId) {
-      document.querySelectorAll('.content-section').forEach(section =>
-        section.classList.remove('active')
-      );
-      document.getElementById(sectionId).classList.add('active');
+  document.querySelectorAll('.content-section').forEach(section =>
+    section.classList.remove('active')
+  );
+  document.getElementById(sectionId).classList.add('active');
 
-      if (sectionId === 'gallerySection') {
-        loadGallery('galleryDisplay');
-      }
-    }
+  if (sectionId === 'gallerySection') {
+    loadGallery('galleryDisplay');
+  }
+}
+
 
 function formatTimeInput() {
   let input = document.getElementById('timeInput');
