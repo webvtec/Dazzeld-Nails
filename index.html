@@ -419,18 +419,6 @@ function closeMenu() {
   menu.classList.remove('show');
 }
 
-    function showSection(sectionId) {
-  document.querySelectorAll('.content-section').forEach(section =>
-    section.classList.remove('active')
-  );
-  document.getElementById(sectionId).classList.add('active');
-
-  if (sectionId === 'gallerySection') {
-    loadGallery('galleryDisplay');
-  }
-}
-
-
 function formatTimeInput() {
   let input = document.getElementById('timeInput');
   let value = input.value.replace(/\D/g, ''); // Keep only digits
@@ -761,7 +749,6 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   }
 });
 
-// Load reviews and show delete button only for the owner
 function loadReviews(user) {
   const container = document.getElementById('reviewsContainer');
   container.innerHTML = "<p>Loading reviews...</p>";
@@ -778,14 +765,13 @@ function loadReviews(user) {
       const isOwner = user && d.uid === user.uid;
 
       container.innerHTML += `
-        <div style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
-          <div style="display:flex; align-items:center; margin-bottom:5px;">
-            <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
-            <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
-          </div>
-          <p style="margin:5px 0;">${d.comment}</p>
-          ${isOwner ? `<button onclick="deleteReview('${doc.id}')" style="color:red; border:none; background:none; cursor:pointer;">Delete</button>` : ''}
-        </div>`;
+        <div style="background:#fff; border:1px solid #eee; padding:10px; margin-bottom:10px;">
+          <div><strong>${d.name}</strong></div>
+          <div>${'★'.repeat(d.rating)}</div>
+          <div>${d.comment}</div>
+          ${isOwner ? `<button onclick="deleteReview('${doc.id}')" style="color:red; cursor:pointer;">Delete</button>` : ''}
+        </div>
+      `;
     });
   });
 }
@@ -809,22 +795,20 @@ function deleteReview(docId) {
       return;
     }
 
-    const reviewData = doc.data();
-
-    if (reviewData.uid !== user.uid) {
+    const data = doc.data();
+    if (data.uid !== user.uid) {
       alert("You can only delete your own reviews.");
       return;
     }
 
-    // Only now delete
+    // If the review belongs to the current user, delete it
     db.collection('reviews').doc(docId).delete()
       .then(() => alert("Review deleted."))
-      .catch(error => alert("Failed to delete: " + error.message));
+      .catch(error => alert("Failed to delete review: " + error.message));
   }).catch(error => {
     alert("Error fetching review: " + error.message);
   });
 }
-
 
     document.addEventListener('DOMContentLoaded', function () {
   const logoutBtn = document.getElementById('logoutBtn');
