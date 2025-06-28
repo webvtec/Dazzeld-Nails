@@ -826,11 +826,6 @@ function deleteReview(docId) {
     });
 }
 
-// Call loadReviews() when page loads or user logs in
-firebase.auth().onAuthStateChanged(() => {
-  loadReviews();
-});
-
     document.addEventListener('DOMContentLoaded', function () {
   const logoutBtn = document.getElementById('logoutBtn');
   if (logoutBtn) {
