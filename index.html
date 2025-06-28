@@ -239,7 +239,9 @@
   <div class="menu" id="menu">
     <a onclick="showSection('gallerySection'); closeMenu();">💅🏽 DESIGNS</a>
 <a onclick="showSection('bookingSection'); closeMenu();">📆 BOOKING</a>
-<a onclick="showSection('reviewsSection'); closeMenu();">⭐ REVIEWS</a>
+<button id="logoutBtn" style="background-color:red; color:white; padding:10px; border:none; border-radius:6px; cursor:pointer;">
+  🔓 Logout
+</button>
 <a href="#" onclick="logoutUser(); closeMenu(); return false;" style="color: red; font-weight: bold;">
   🔴 LOGOUT
 </a>
@@ -788,15 +790,20 @@ firebase.auth().onAuthStateChanged(() => {
   loadReviews();
 });
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-  firebase.auth().signOut()
-    .then(() => {
-      window.location.href = 'login.html'; // redirect to your login page
-    })
-    .catch((error) => {
-      console.error("Logout error:", error);
-      alert("Failed to log out. Please try again.");
+    document.addEventListener('DOMContentLoaded', function () {
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      firebase.auth().signOut()
+        .then(() => {
+          window.location.href = 'login.html';
+        })
+        .catch((error) => {
+          console.error("Logout error:", error);
+          alert("Failed to log out.");
+        });
     });
+  }
 });
 
 
