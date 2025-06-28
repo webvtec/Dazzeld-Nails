@@ -74,15 +74,6 @@
       background-color: #3367d6;
       box-shadow: 0 6px 15px rgba(51,103,214,0.5);
     }
-    #logoutBtn {
-      background-color: #e53935;
-      box-shadow: 0 4px 10px rgba(229,57,53,0.3);
-      margin-top: 0.5rem;
-    }
-    #logoutBtn:hover {
-      background-color: #ab2723;
-      box-shadow: 0 6px 15px rgba(171,39,35,0.5);
-    }
     #status {
       font-size: 0.9rem;
       color: #555;
@@ -107,21 +98,19 @@
 
     <button id="googleBtn">Sign In with Google</button>
 
-    <button id="logoutBtn" style="display:none;">Log Out</button>
-
     <p id="status"></p>
   </div>
 
   <script>
-    // TODO: Replace with your Firebase config
     const firebaseConfig = {
-  apiKey: "AIzaSyAKXJ18jbcTbl-Q6OlfORc7iuLFX7rKCG4",
-  authDomain: "dazzeld-nails.firebaseapp.com",
-  projectId: "dazzeld-nails",
-  storageBucket: "dazzeld-nails.firebasestorage.app",
-  messagingSenderId: "786223907397",
-  appId: "1:786223907397:web:b42ecefaa7967807c6d92c"
-};
+      apiKey: "AIzaSyAKXJ18jbcTbl-Q6OlfORc7iuLFX7rKCG4",
+      authDomain: "dazzeld-nails.firebaseapp.com",
+      projectId: "dazzeld-nails",
+      storageBucket: "dazzeld-nails.firebasestorage.app",
+      messagingSenderId: "786223907397",
+      appId: "1:786223907397:web:b42ecefaa7967807c6d92c"
+    };
+
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
@@ -131,23 +120,6 @@
     const loginBtn = document.getElementById('loginBtn');
     const signupBtn = document.getElementById('signupBtn');
     const googleBtn = document.getElementById('googleBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        statusText.textContent = `Logged in as: ${user.email}`;
-        logoutBtn.style.display = 'block';
-        loginBtn.style.display = 'none';
-        signupBtn.style.display = 'none';
-        googleBtn.style.display = 'none';
-      } else {
-        statusText.textContent = 'Not logged in';
-        logoutBtn.style.display = 'none';
-        loginBtn.style.display = 'block';
-        signupBtn.style.display = 'block';
-        googleBtn.style.display = 'block';
-      }
-    });
 
     loginBtn.addEventListener('click', () => {
       const email = emailInput.value.trim();
@@ -160,7 +132,7 @@
 
       auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-          statusText.textContent = 'Logged in successfully!';
+          window.location.href = 'index.html'; // ✅ Redirect here
         })
         .catch(err => {
           statusText.textContent = `Login error: ${err.message}`;
@@ -178,7 +150,7 @@
 
       auth.createUserWithEmailAndPassword(email, password)
         .then(() => {
-          statusText.textContent = 'Account created and logged in!';
+          window.location.href = 'index.html'; // ✅ Redirect here
         })
         .catch(err => {
           statusText.textContent = `Signup error: ${err.message}`;
@@ -188,18 +160,11 @@
     googleBtn.addEventListener('click', () => {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
-        .then(result => {
-          statusText.textContent = `Logged in as: ${result.user.email}`;
+        .then(() => {
+          window.location.href = 'index.html'; // ✅ Redirect here
         })
         .catch(err => {
           statusText.textContent = `Google login error: ${err.message}`;
-        });
-    });
-
-    logoutBtn.addEventListener('click', () => {
-      auth.signOut()
-        .then(() => {
-          statusText.textContent = 'Logged out successfully.';
         });
     });
   </script>
