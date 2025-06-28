@@ -66,14 +66,6 @@
       border: none;
       border-top: 1px solid #eee;
     }
-    #googleBtn {
-      background-color: #4285F4;
-      box-shadow: 0 4px 10px rgba(66,133,244,0.3);
-    }
-    #googleBtn:hover {
-      background-color: #3367d6;
-      box-shadow: 0 6px 15px rgba(51,103,214,0.5);
-    }
     #status {
       font-size: 0.9rem;
       color: #555;
@@ -96,8 +88,6 @@
 
     <hr />
 
-    <button id="googleBtn">Sign In with Google</button>
-
     <p id="status"></p>
   </div>
 
@@ -119,7 +109,6 @@
     const statusText = document.getElementById('status');
     const loginBtn = document.getElementById('loginBtn');
     const signupBtn = document.getElementById('signupBtn');
-    const googleBtn = document.getElementById('googleBtn');
 
     loginBtn.addEventListener('click', () => {
       const email = emailInput.value.trim();
@@ -132,7 +121,7 @@
 
       auth.signInWithEmailAndPassword(email, password)
         .then(() => {
-          window.location.href = 'index.html'; // ✅ Redirect here
+          window.location.href = 'index.html';
         })
         .catch(err => {
           statusText.textContent = `Login error: ${err.message}`;
@@ -150,21 +139,10 @@
 
       auth.createUserWithEmailAndPassword(email, password)
         .then(() => {
-          window.location.href = 'index.html'; // ✅ Redirect here
+          window.location.href = 'index.html';
         })
         .catch(err => {
           statusText.textContent = `Signup error: ${err.message}`;
-        });
-    });
-
-    googleBtn.addEventListener('click', () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(() => {
-          window.location.href = 'index.html'; // ✅ Redirect here
-        })
-        .catch(err => {
-          statusText.textContent = `Google login error: ${err.message}`;
         });
     });
   </script>
