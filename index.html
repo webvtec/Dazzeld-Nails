@@ -803,32 +803,28 @@ function deleteReview(docId) {
     return;
   }
 
-  db.collection('reviews').doc(docId).get()
-    .then(doc => {
-      if (!doc.exists) {
-        alert("Review not found.");
-        return;
-      }
+  db.collection('reviews').doc(docId).get().then(doc => {
+    if (!doc.exists) {
+      alert("Review not found.");
+      return;
+    }
 
-      const data = doc.data();
+    const reviewData = doc.data();
 
-      // Check if the logged-in user owns the review
-      if (data.uid === user.uid) {
-        db.collection('reviews').doc(docId).delete()
-          .then(() => {
-            alert("Review deleted.");
-          })
-          .catch(error => {
-            alert("Failed to delete review: " + error.message);
-          });
-      } else {
-        alert("You can only delete your own reviews.");
-      }
-    })
-    .catch(error => {
-      alert("Error checking review ownership: " + error.message);
-    });
+    if (reviewData.uid !== user.uid) {
+      alert("You can only delete your own reviews.");
+      return;
+    }
+
+    // Only now delete
+    db.collection('reviews').doc(docId).delete()
+      .then(() => alert("Review deleted."))
+      .catch(error => alert("Failed to delete: " + error.message));
+  }).catch(error => {
+    alert("Error fetching review: " + error.message);
+  });
 }
+
 
     document.addEventListener('DOMContentLoaded', function () {
   const logoutBtn = document.getElementById('logoutBtn');
