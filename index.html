@@ -239,7 +239,10 @@
   <div class="menu" id="menu">
     <a onclick="showSection('gallerySection'); closeMenu();">💅🏽 DESIGNS</a>
 <a onclick="showSection('bookingSection'); closeMenu();">📆 BOOKING</a>
-    <a onclick="showSection('reviewsSection'); closeMenu();">⭐ REVIEWS</a>
+<a onclick="showSection('reviewsSection'); closeMenu();">⭐ REVIEWS</a>
+<a href="#" onclick="logoutUser(); closeMenu(); return false;" style="color: red; font-weight: bold;">
+  🔴 LOGOUT
+</a>
 <a onclick="login(); closeMenu();" class="admin-button">ADMIN</a>
   </div>
 
@@ -769,6 +772,17 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
         alert('Failed to delete review. Try again.');
       });
   }
+}
+
+    function logoutUser() {
+  firebase.auth().signOut()
+    .then(() => {
+      window.location.href = 'login.html';  // Update to your login page URL
+    })
+    .catch(error => {
+      console.error('Logout failed:', error);
+      alert('Failed to logout. Please try again.');
+    });
 }
 
 
