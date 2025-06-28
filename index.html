@@ -366,6 +366,8 @@
 
   <!-- ✅ Scripts -->
   <script>
+    let currentUser = null;
+
     const firebaseConfig = {
   apiKey: "AIzaSyAKXJ18jbcTbl-Q6OlfORc7iuLFX7rKCG4",
   authDomain: "dazzeld-nails.firebaseapp.com",
@@ -699,7 +701,7 @@ function submitBooking(event) {
   if (sectionId === 'gallerySection') {
     loadGallery('galleryDisplay');
   } else if (sectionId === 'reviewsSection') {
-    loadReviews();
+    loadReviews(currentUser); // ✅ Pass the user here
   }
 }
 
@@ -790,12 +792,8 @@ function loadReviews(user) {
 
 // ✅ Watch for login/logout and always reload reviews with correct user
 firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    loadReviews(user);
-  } else {
-    // User logged out → still load reviews (but no delete buttons)
-    loadReviews(null);
-  }
+  currentUser = user;        // ✅ Save user globally
+  loadReviews(currentUser);  // ✅ Call with correct user
 });
 
 // Delete review function
