@@ -806,25 +806,27 @@ function deleteReview(docId) {
   db.collection('reviews').doc(docId).get()
     .then(doc => {
       if (!doc.exists) {
-        throw new Error("Review not found.");
+        alert("Review not found.");
+        return;
       }
 
       const data = doc.data();
 
-      console.log("Current user UID:", user.uid);
-      console.log("Review UID:", data.uid);
-
+      // Check if the logged-in user owns the review
       if (data.uid === user.uid) {
-        return db.collection('reviews').doc(docId).delete().then(() => {
-          alert("Review deleted.");
-        });
+        db.collection('reviews').doc(docId).delete()
+          .then(() => {
+            alert("Review deleted.");
+          })
+          .catch(error => {
+            alert("Failed to delete review: " + error.message);
+          });
       } else {
-        alert("You can't delete reviews you didn't write.");
-        throw new Error("Unauthorized delete attempt.");
+        alert("You can only delete your own reviews.");
       }
     })
     .catch(error => {
-      console.error("Delete error:", error);
+      alert("Error checking review ownership: " + error.message);
     });
 }
 
