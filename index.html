@@ -331,7 +331,6 @@
     <p id="bookingMessage"></p>
   </div>
 
-<!-- ✅ Review Section -->
 <div id="reviewsSection" class="content-section">
   <h1 style="text-align:center; color:#6200ea;">CLIENT REVIEWS</h1>
 
@@ -357,6 +356,7 @@
 
   <p id="reviewSubmitMsg" style="text-align:center; color:green;"></p>
 
+  <!-- Container where reviews will be loaded -->
   <div id="reviewsContainer" style="max-width:600px; margin:20px auto;"></div>
 </div>
 
@@ -682,38 +682,11 @@ function submitBooking(event) {
   }
 }
 
-    
-
-function loadReviews() {
-  const container = document.getElementById('reviewsContainer');
-  container.innerHTML = "<p>Loading reviews...</p>";
-
-  db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-    if (snapshot.empty) {
-      container.innerHTML = "<p>No reviews yet.</p>";
-      return;
-    }
-
-    container.innerHTML = '';
-    snapshot.forEach(doc => {
-      const d = doc.data();
-      const reviewId = doc.id;
-      container.innerHTML += `
-        <div id="review-${reviewId}" style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
-          <div style="display:flex; align-items:center; margin-bottom:5px;">
-            <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
-            <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
-            <button onclick="deleteReview('${reviewId}')" style="margin-left:10px; color:red; background:none; border:none; cursor:pointer;">Delete</button>
-          </div>
-          <p style="margin:5px 0;">${d.comment}</p>
-        </div>`;
-    });
-  });
-}
+// Assume firebase is initialized and 'db' and 'auth' are set up
 
 let selectedRating = 0;
 
-// Handle star rating UI
+// Star rating UI logic
 document.querySelectorAll('#starRating span').forEach(star => {
   star.addEventListener('click', () => {
     selectedRating = parseInt(star.getAttribute('data-value'));
@@ -723,26 +696,33 @@ document.querySelectorAll('#starRating span').forEach(star => {
   });
 });
 
+// Submit review
 document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert("You must be logged in to submit a review.");
+    return;
+  }
 
   const name = document.getElementById('reviewName').value.trim();
   const comment = document.getElementById('reviewComment').value.trim();
   const msg = document.getElementById('reviewSubmitMsg');
 
-  if (!name || !comment || !selectedRating) {
+  if (!name || !comment || selectedRating === 0) {
     msg.style.color = "red";
     msg.textContent = "Please fill all fields and select a star rating.";
     return;
   }
 
   try {
-
     await db.collection('reviews').add({
       name,
       comment,
       rating: selectedRating,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      uid: user.uid
     });
 
     msg.style.color = "green";
@@ -758,33 +738,55 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
   }
 });
 
-    function deleteReview(reviewId) {
-  if (confirm("Are you sure you want to delete this review?")) {
-    db.collection('reviews').doc(reviewId).delete()
+// Load reviews and show delete button only for owners
+function loadReviews() {
+  const container = document.getElementById('reviewsContainer');
+  container.innerHTML = "<p>Loading reviews...</p>";
+
+  firebase.auth().onAuthStateChanged(user => {
+    db.collection('reviews').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+      if (snapshot.empty) {
+        container.innerHTML = "<p>No reviews yet.</p>";
+        return;
+      }
+
+      container.innerHTML = '';
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        const isOwner = user && d.uid === user.uid;
+
+        container.innerHTML += `
+          <div style="background:#fff; border:1px solid #eee; border-radius:8px; padding:10px; margin-bottom:10px; box-shadow:0 0 5px rgba(0,0,0,0.05);">
+            <div style="display:flex; align-items:center; margin-bottom:5px;">
+              <p style="margin:0; font-weight:bold; color:#6200ea;">${d.name}</p>
+              <span style="margin-left:auto; color:#f39c12;">${'★'.repeat(d.rating)}</span>
+            </div>
+            <p style="margin:5px 0;">${d.comment}</p>
+            ${isOwner ? `<button onclick="deleteReview('${doc.id}')" style="color:red; border:none; background:none; cursor:pointer;">Delete</button>` : ''}
+          </div>`;
+      });
+    });
+  });
+}
+
+// Delete review function
+function deleteReview(docId) {
+  if (confirm('Are you sure you want to delete this review?')) {
+    db.collection('reviews').doc(docId).delete()
       .then(() => {
-        // Remove review from UI immediately
-        const reviewElem = document.getElementById(`review-${reviewId}`);
-        if (reviewElem) reviewElem.remove();
-        alert('Review deleted successfully.');
+        alert('Review deleted.');
       })
       .catch(error => {
-        console.error("Error deleting review: ", error);
-        alert('Failed to delete review. Try again.');
+        console.error('Error deleting review:', error);
+        alert('Failed to delete review.');
       });
   }
 }
 
-    function logoutUser() {
-  firebase.auth().signOut()
-    .then(() => {
-      window.location.href = 'login.html';  // Update to your login page URL
-    })
-    .catch(error => {
-      console.error('Logout failed:', error);
-      alert('Failed to logout. Please try again.');
-    });
-}
-
+// Call loadReviews() when page loads or user logs in
+firebase.auth().onAuthStateChanged(() => {
+  loadReviews();
+});
 
   </script>
 
