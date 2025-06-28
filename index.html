@@ -809,6 +809,17 @@ firebase.auth().onAuthStateChanged(() => {
   }
 });
 
+    function logoutUser() {
+  firebase.auth().signOut()
+    .then(() => {
+      window.location.href = 'login.html'; // or wherever you want after logout
+    })
+    .catch(error => {
+      alert('Logout failed: ' + error.message);
+    });
+}
+
+
 
   </script>
 
