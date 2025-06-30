@@ -706,28 +706,28 @@ function submitBooking(event) {
     .where('reviewed', '==', false)
     .get()
     .then(snapshot => {
-      let showedPrompt = false; // flag to show prompt only once
+      let showedPrompt = false;
       snapshot.forEach(doc => {
         const data = doc.data();
         if (data.timestamp < now && !showedPrompt) {
-          const promptBox = document.getElementById('reviewPrompt');
-          promptBox.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
-          promptBox.style.display = 'block';
+          // Show the modal instead of prompt box
+          const modal = document.getElementById('reviewModal');
+          const text = document.getElementById('reviewModalText');
+          text.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
+          modal.style.display = 'flex';  // show modal as flex to center it
 
-          // Optional: fade out after 10 seconds
-          setTimeout(() => {
-            promptBox.style.display = 'none';
-          }, 10000);
-
-          showSection('reviewsSection');
-
-          showedPrompt = true; // set flag so next documents don’t trigger again
+          showedPrompt = true;
         }
       });
     })
     .catch(error => {
       console.error('Error checking past appointments:', error);
     });
+}
+
+    function goToReviewSection() {
+  document.getElementById('reviewModal').style.display = 'none';
+  showSection('reviewsSection');
 }
 
     function showSection(sectionId) {
@@ -886,6 +886,31 @@ function deleteReview(docId) {
       alert('Logout failed: ' + error.message);
     });
 }
+
+    <!-- 🌸 Review Prompt Modal -->
+<div id="reviewModal" style="
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+  background-color: rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center;
+">
+  <div style="
+    background:#fff; border-radius:8px; max-width:400px; width:90%; padding:20px; 
+    text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  ">
+    <h2 style="color:#6200ea; margin-bottom:10px;">We value your feedback!</h2>
+    <p id="reviewModalText" style="margin-bottom:20px;">
+      How was your appointment? Please leave a review!
+    </p>
+    <button onclick="goToReviewSection()" style="
+      background-color:#6200ea; color:white; border:none; padding:10px 20px; 
+      border-radius:6px; cursor:pointer; font-weight:bold;
+    ">Leave a Review</button>
+
+      <span onclick="document.getElementById('reviewModal').style.display='none'" 
+      style="position:absolute; top:10px; right:20px; font-size:24px; cursor:pointer; color:#aaa;">
+  &times;
+</span>
+  </div>
+</div>
 
 
 
