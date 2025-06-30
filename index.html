@@ -371,14 +371,15 @@
 };
 
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+const db = firebase.firestore();
 
-    firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged(user => {
   if (!user) {
     window.location.href = 'login.html';
   } else {
     currentUser = user;
-    loadReviews(currentUser);  // keep this if you still want to load reviews
+    loadReviews(currentUser);        // Load existing reviews
+    checkForPastAppointments();      // ✅ Prompt for review if appointment passed
   }
 });
 
@@ -623,6 +624,12 @@ function validateTimeSlot(date, selectedTime) {
 function submitBooking(event) {
   event.preventDefault();
 
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert('You must be logged in to book.');
+    return;
+  }
+
   const name = document.getElementById('name').value;
   const phone = document.getElementById('phone').value;
   const date = document.getElementById('date').value;
@@ -632,8 +639,6 @@ function submitBooking(event) {
 
   const pedicureType = document.getElementById('pedicureType').value;
   const manicureType = document.getElementById('manicureType').value;
-
-  // ✅ New: Get Nail Extension Type and Length
   const nailExtensionType = document.getElementById('nailExtensionType').value;
   let extensionLength = '';
 
@@ -641,7 +646,6 @@ function submitBooking(event) {
     extensionLength = document.getElementById('extensionLength').value;
   }
 
-  // ✅ Build Service Description
   let service = `Pedicure: ${pedicureType}, Manicure: ${manicureType}`;
   if (nailExtensionType !== 'NONE') {
     service += `, Nail Extension: ${nailExtensionType} (${extensionLength})`;
@@ -654,16 +658,19 @@ function submitBooking(event) {
         return;
       }
 
-      // Save booking to Firestore
+      const appointmentTimestamp = new Date(`${date} ${time}`).getTime();
+
       db.collection('bookings').add({
+        uid: user.uid,                      // ✅ Store user ID
         name: name,
         phone: phone,
         date: date,
         time: time,
-        service: service
+        service: service,
+        timestamp: appointmentTimestamp,   // ✅ Store exact booking time
+        reviewed: false                    // ✅ Mark as not reviewed
       })
         .then(() => {
-          // Send WhatsApp message after saving booking
           const message = `Hello, I would like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nService: ${service}`;
           const encodedMessage = encodeURIComponent(message);
           const whatsappNumber = '18763422293';
@@ -679,6 +686,26 @@ function submitBooking(event) {
     .catch((error) => {
       console.error('Error during time validation:', error);
       alert('Error validating time. Please try again.');
+    });
+}
+
+    function checkForPastAppointments() {
+  const now = Date.now();
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  db.collection('bookings')
+    .where('uid', '==', user.uid)
+    .where('reviewed', '==', false)
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.timestamp < now) {
+          alert(`Hi ${data.name}, how was your appointment? Please leave a review.`);
+          showSection('reviewsSection');
+        }
+      });
     });
 }
 
