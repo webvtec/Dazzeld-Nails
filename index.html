@@ -722,7 +722,6 @@ function submitBooking(event) {
 }
 
     function checkForPastAppointments() {
-  cofunction checkForPastAppointments() {
   const now = Date.now();
   const user = firebase.auth().currentUser;
   if (!user) return;
@@ -730,9 +729,9 @@ function submitBooking(event) {
   db.collection('bookings')
     .where('uid', '==', user.uid)
     .where('reviewed', '==', false)
-    .where('timestamp', '<', now)
-    .orderBy('timestamp', 'desc')
-    .limit(1)
+    .where('timestamp', '<', now)            // only past appointments
+    .orderBy('timestamp', 'desc')            // order by timestamp
+    .limit(1)                                // only need the most recent
     .get()
     .then(snapshot => {
       if (!snapshot.empty) {
@@ -745,7 +744,7 @@ function submitBooking(event) {
       }
     })
     .catch(error => {
-      console.error('Error checking past appointments:', error);
+      console.error('❌ Error checking past appointments:', error);
     });
 }
 
