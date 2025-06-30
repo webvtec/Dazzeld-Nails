@@ -729,13 +729,12 @@ function submitBooking(event) {
   db.collection('bookings')
     .where('uid', '==', user.uid)
     .where('reviewed', '==', false)
-    .orderBy('timestamp', 'desc')  // just order by timestamp
-    .limit(5)                      // get latest 5 (or more if you like)
     .get()
     .then(snapshot => {
       let showedPrompt = false;
       snapshot.forEach(doc => {
         const data = doc.data();
+        console.log("Booking:", data);  // see if timestamp is correct
         if (typeof data.timestamp === 'number' && data.timestamp < now && !showedPrompt) {
           const modal = document.getElementById('reviewModal');
           const text = document.getElementById('reviewModalText');
@@ -749,6 +748,7 @@ function submitBooking(event) {
       console.error('❌ Error checking past appointments:', error);
     });
 }
+
 
     function goToReviewSection() {
       document.getElementById('reviewModal').style.display = 'none';
