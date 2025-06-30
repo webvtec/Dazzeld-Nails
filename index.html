@@ -330,6 +330,13 @@
 
 <div id="reviewsSection" class="content-section">
   <h1 style="text-align:center; color:#6200ea;">CLIENT REVIEWS</h1>
+  <div id="reviewPrompt" 
+     style="display:none; max-width:500px; margin:20px auto; 
+            background-color:#e8d9fb; color:#6200ea; 
+            border:1px solid #d1aaff; border-radius:6px; 
+            padding:15px; text-align:center; font-weight:500;">
+  Hi, how was your appointment? Please leave a review!
+</div>
 
   <form id="reviewForm" style="max-width:500px; margin:10px auto; text-align:center;">
     <input type="text" id="reviewName" placeholder="Your Name" required
@@ -699,13 +706,27 @@ function submitBooking(event) {
     .where('reviewed', '==', false)
     .get()
     .then(snapshot => {
+      let showedPrompt = false; // flag to show prompt only once
       snapshot.forEach(doc => {
         const data = doc.data();
-        if (data.timestamp < now) {
-          alert(`Hi ${data.name}, how was your appointment? Please leave a review.`);
+        if (data.timestamp < now && !showedPrompt) {
+          const promptBox = document.getElementById('reviewPrompt');
+          promptBox.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
+          promptBox.style.display = 'block';
+
+          // Optional: fade out after 10 seconds
+          setTimeout(() => {
+            promptBox.style.display = 'none';
+          }, 10000);
+
           showSection('reviewsSection');
+
+          showedPrompt = true; // set flag so next documents don’t trigger again
         }
       });
+    })
+    .catch(error => {
+      console.error('Error checking past appointments:', error);
     });
 }
 
