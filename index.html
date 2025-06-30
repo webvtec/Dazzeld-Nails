@@ -729,13 +729,17 @@ function submitBooking(event) {
   db.collection('bookings')
     .where('uid', '==', user.uid)
     .where('reviewed', '==', false)
+    .orderBy('timestamp', 'desc')
+    .limit(5)
     .get()
     .then(snapshot => {
+      console.log("Found", snapshot.size, "bookings"); // ✅ log to see what's returned
       let showedPrompt = false;
       snapshot.forEach(doc => {
         const data = doc.data();
-        console.log("Booking:", data);  // see if timestamp is correct
+        console.log("Booking:", data);  // ✅ log actual data
         if (typeof data.timestamp === 'number' && data.timestamp < now && !showedPrompt) {
+          console.log("✅ Showing modal for:", data);
           const modal = document.getElementById('reviewModal');
           const text = document.getElementById('reviewModalText');
           text.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
@@ -743,6 +747,9 @@ function submitBooking(event) {
           showedPrompt = true;
         }
       });
+      if (!showedPrompt) {
+        console.log("⚠ No past unreviewed booking found");
+      }
     })
     .catch(error => {
       console.error('❌ Error checking past appointments:', error);
