@@ -729,19 +729,21 @@ function submitBooking(event) {
   db.collection('bookings')
     .where('uid', '==', user.uid)
     .where('reviewed', '==', false)
-    .where('timestamp', '<', now)            // only past appointments
-    .orderBy('timestamp', 'desc')            // order by timestamp
-    .limit(1)                                // only need the most recent
+    .orderBy('timestamp', 'desc')  // just order by timestamp
+    .limit(5)                      // get latest 5 (or more if you like)
     .get()
     .then(snapshot => {
-      if (!snapshot.empty) {
-        const data = snapshot.docs[0].data();
-
-        const modal = document.getElementById('reviewModal');
-        const text = document.getElementById('reviewModalText');
-        text.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
-        modal.style.display = 'flex';
-      }
+      let showedPrompt = false;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (typeof data.timestamp === 'number' && data.timestamp < now && !showedPrompt) {
+          const modal = document.getElementById('reviewModal');
+          const text = document.getElementById('reviewModalText');
+          text.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
+          modal.style.display = 'flex';
+          showedPrompt = true;
+        }
+      });
     })
     .catch(error => {
       console.error('❌ Error checking past appointments:', error);
