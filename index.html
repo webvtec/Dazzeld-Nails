@@ -817,12 +817,29 @@ document.getElementById('reviewForm').addEventListener('submit', async (e) => {
     selectedRating = 0;
     document.querySelectorAll('#starRating span').forEach(s => s.style.color = '#ccc');
 
+    // ✅ Update latest unreviewed booking to mark it as reviewed
+    db.collection('bookings')
+      .where('uid', '==', user.uid)
+      .where('reviewed', '==', false)
+      .orderBy('timestamp', 'desc')
+      .limit(1)
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          doc.ref.update({ reviewed: true });
+        });
+      })
+      .catch(error => {
+        console.error("Error updating booking after review:", error);
+      });
+
   } catch (error) {
     console.error("Error submitting review:", error);
     msg.style.color = "red";
     msg.textContent = "Error submitting review.";
   }
 });
+
 
 function loadReviews(user) {
   const container = document.getElementById('reviewsContainer');
