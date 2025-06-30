@@ -722,6 +722,7 @@ function submitBooking(event) {
 }
 
     function checkForPastAppointments() {
+  cofunction checkForPastAppointments() {
   const now = Date.now();
   const user = firebase.auth().currentUser;
   if (!user) return;
@@ -729,19 +730,18 @@ function submitBooking(event) {
   db.collection('bookings')
     .where('uid', '==', user.uid)
     .where('reviewed', '==', false)
-    .where('timestamp', '<', now)               // ✅ only past appointments
-    .orderBy('timestamp', 'desc')               // ✅ get most recent first
-    .limit(1)                                    // ✅ only need to show prompt for one
+    .where('timestamp', '<', now)
+    .orderBy('timestamp', 'desc')
+    .limit(1)
     .get()
     .then(snapshot => {
       if (!snapshot.empty) {
         const data = snapshot.docs[0].data();
 
-        // Show the modal instead of prompt box
         const modal = document.getElementById('reviewModal');
         const text = document.getElementById('reviewModalText');
         text.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
-        modal.style.display = 'flex';  // show modal as flex to center it
+        modal.style.display = 'flex';
       }
     })
     .catch(error => {
