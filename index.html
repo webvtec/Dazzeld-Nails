@@ -416,19 +416,6 @@ firebase.auth().onAuthStateChanged(user => {
 });
 
     function login() {
-      const email = prompt('Enter admin email:');
-      const password = prompt('Enter admin password:');
-
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(() => {
-          window.location.href = 'dashboard.html';
-        })
-        .catch((error) => {
-          alert('Authentication failed: ' + error.message);
-        });
-    }
-
-    function login() {
   const email = prompt('Enter admin email:');
   const password = prompt('Enter admin password:');
 
@@ -662,8 +649,8 @@ function submitBooking(event) {
     return;
   }
 
-  const name = document.getElementById('name').value;
-  const phone = document.getElementById('phone').value;
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
   const date = document.getElementById('date').value;
   const timeInput = document.getElementById('timeInput').value.trim();
   const timePeriod = document.getElementById('timePeriod').value;
@@ -690,33 +677,40 @@ function submitBooking(event) {
         return;
       }
 
+      // ✅ Create timestamp and check if valid
       const appointmentTimestamp = new Date(`${date} ${time}`).getTime();
+      if (isNaN(appointmentTimestamp)) {
+        alert('Invalid date or time selected.');
+        console.error('❌ appointmentTimestamp is NaN:', { date, time });
+        return;
+      }
 
       db.collection('bookings').add({
-        uid: user.uid,                      // ✅ Store user ID
+        uid: user.uid,
         name: name,
         phone: phone,
         date: date,
         time: time,
         service: service,
-        timestamp: appointmentTimestamp,   // ✅ Store exact booking time
-        reviewed: false                    // ✅ Mark as not reviewed
+        timestamp: appointmentTimestamp,
+        reviewed: false
       })
-        .then(() => {
-          const message = `Hello, I would like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nService: ${service}`;
-          const encodedMessage = encodeURIComponent(message);
-          const whatsappNumber = '18763422293';
-          const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      .then(() => {
+        console.log('✅ Booking saved to Firestore');
+        const message = `Hello, I would like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nService: ${service}`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappNumber = '18763422293';
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        window.location.href = whatsappUrl;
+      })
+      .catch((error) => {
+        console.error('❌ Error saving booking:', error);
+        alert('Error saving booking. Please try again.');
+      });
 
-          window.location.href = whatsappUrl;
-        })
-        .catch((error) => {
-          console.error('Error saving booking:', error);
-          alert('Error saving booking. Please try again.');
-        });
     })
     .catch((error) => {
-      console.error('Error during time validation:', error);
+      console.error('❌ Error during time validation:', error);
       alert('Error validating time. Please try again.');
     });
 }
