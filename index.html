@@ -733,22 +733,27 @@ function submitBooking(event) {
     .limit(5)
     .get()
     .then(snapshot => {
-      console.log("Found", snapshot.size, "bookings"); // ✅ log to see what's returned
+      console.log("Found", snapshot.size, "unreviewed bookings");
       let showedPrompt = false;
       snapshot.forEach(doc => {
         const data = doc.data();
-        console.log("Booking:", data);  // ✅ log actual data
-        if (typeof data.timestamp === 'number' && data.timestamp < now && !showedPrompt) {
-          console.log("✅ Showing modal for:", data);
-          const modal = document.getElementById('reviewModal');
-          const text = document.getElementById('reviewModalText');
-          text.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
-          modal.style.display = 'flex';
-          showedPrompt = true;
+        console.log("Booking data:", data);
+        if (typeof data.timestamp === 'number') {
+          console.log("Timestamp:", data.timestamp, "Now:", now);
+          if (data.timestamp < now && !showedPrompt) {
+            console.log("✅ Showing modal for:", data);
+            const modal = document.getElementById('reviewModal');
+            const text = document.getElementById('reviewModalText');
+            text.innerHTML = `Hi ${data.name}, how was your appointment? Please leave a review!`;
+            modal.style.display = 'flex';
+            showedPrompt = true;
+          }
+        } else {
+          console.warn("⚠ Booking timestamp is not a number:", data.timestamp);
         }
       });
       if (!showedPrompt) {
-        console.log("⚠ No past unreviewed booking found");
+        console.log("⚠ No past unreviewed booking found to show prompt");
       }
     })
     .catch(error => {
