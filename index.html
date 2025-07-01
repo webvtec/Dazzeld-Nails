@@ -677,13 +677,28 @@ function submitBooking(event) {
         return;
       }
 
-      // ✅ Create timestamp and check if valid
-      const appointmentTimestamp = new Date(`${date} ${time}`).getTime();
-      if (isNaN(appointmentTimestamp)) {
-        alert('Invalid date or time selected.');
-        console.error('❌ appointmentTimestamp is NaN:', { date, time });
-        return;
-      }
+      function convertTo24Hour(timeStr) {
+  const [time, period] = timeStr.trim().split(' ');
+  let [hours, minutes] = time.split(':').map(Number);
+
+  if (period === 'PM' && hours !== 12) hours += 12;
+  if (period === 'AM' && hours === 12) hours = 0;
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
+}
+
+// Inside your submitBooking() function:
+
+const isoTime = convertTo24Hour(time); // e.g. "14:30:00"
+const appointmentTimestamp = new Date(`${date}T${isoTime}`).getTime();
+
+if (isNaN(appointmentTimestamp)) {
+  alert('Invalid date or time selected.');
+  console.error('❌ appointmentTimestamp is NaN:', { date, time, isoTime });
+  return;
+}
+
+console.log('📆 Appointment timestamp:', new Date(appointmentTimestamp).toString());
 
       db.collection('bookings').add({
         uid: user.uid,
