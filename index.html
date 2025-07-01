@@ -640,6 +640,16 @@ function validateTimeSlot(date, selectedTime) {
     });
 }
 
+function convertTo24Hour(timeStr) {
+  const [time, period] = timeStr.trim().split(' ');
+  let [hours, minutes] = time.split(':').map(Number);
+
+  if (period === 'PM' && hours !== 12) hours += 12;
+  if (period === 'AM' && hours === 12) hours = 0;
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
+}
+
 function submitBooking(event) {
   event.preventDefault();
 
@@ -670,64 +680,54 @@ function submitBooking(event) {
     service += `, Nail Extension: ${nailExtensionType} (${extensionLength})`;
   }
 
-  validateTimeSlot(date, time)
-    .then((isAvailable) => {
-      if (!isAvailable) {
-        alert('This time is not available. Please choose another time.');
-        return;
-      }
+  validateTimeSlot(date, time).then((isAvailable) => {
+    if (!isAvailable) {
+      alert('This time is not available. Please choose another time.');
+      return;
+    }
 
-      function convertTo24Hour(timeStr) {
-  const [time, period] = timeStr.trim().split(' ');
-  let [hours, minutes] = time.split(':').map(Number);
+    const isoTime = convertTo24Hour(time); // e.g., "14:30:00"
+    const appointmentTimestamp = new Date(`${date}T${isoTime}`).getTime();
 
-  if (period === 'PM' && hours !== 12) hours += 12;
-  if (period === 'AM' && hours === 12) hours = 0;
+    if (isNaN(appointmentTimestamp)) {
+      alert('Invalid date or time selected.');
+      console.error('❌ appointmentTimestamp is NaN:', { date, time, isoTime });
+      return;
+    }
 
-  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`;
-}
+    console.log('📆 Appointment timestamp:', appointmentTimestamp, new Date(appointmentTimestamp).toString());
 
-// Inside your submitBooking() function:
+    db.collection('bookings').add({
+      uid: user.uid,
+      name: name,
+      phone: phone,
+      date: date,
+      time: time,
+      service: service,
+      timestamp: appointmentTimestamp,
+      reviewed: false
+    })
+    .then(() => {
+      console.log('✅ Booking saved to Firestore');
 
-const isoTime = convertTo24Hour(time); // e.g. "14:30:00"
-const appointmentTimestamp = new Date(`${date}T${isoTime}`).getTime();
+      const message = `Hello, I would like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nService: ${service}`;
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappNumber = '18763422293';
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-if (isNaN(appointmentTimestamp)) {
-  alert('Invalid date or time selected.');
-  console.error('❌ appointmentTimestamp is NaN:', { date, time, isoTime });
-  return;
-}
-
-console.log('📆 Appointment timestamp:', new Date(appointmentTimestamp).toString());
-
-      db.collection('bookings').add({
-        uid: user.uid,
-        name: name,
-        phone: phone,
-        date: date,
-        time: time,
-        service: service,
-        timestamp: appointmentTimestamp,
-        reviewed: false
-      })
-      .then(() => {
-        console.log('✅ Booking saved to Firestore');
-        const message = `Hello, I would like to book an appointment.\n\nName: ${name}\nPhone: ${phone}\nDate: ${date}\nTime: ${time}\nService: ${service}`;
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappNumber = '18763422293';
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      setTimeout(() => {
         window.location.href = whatsappUrl;
-      })
-      .catch((error) => {
-        console.error('❌ Error saving booking:', error);
-        alert('Error saving booking. Please try again.');
-      });
-
+      }, 500); // ⏱ Delay ensures booking is saved before redirect
     })
     .catch((error) => {
-      console.error('❌ Error during time validation:', error);
-      alert('Error validating time. Please try again.');
+      console.error('❌ Error saving booking:', error);
+      alert('Error saving booking. Please try again.');
     });
+
+  }).catch((error) => {
+    console.error('❌ Error during time validation:', error);
+    alert('Error validating time. Please try again.');
+  });
 }
 
     function checkForPastAppointments() {
